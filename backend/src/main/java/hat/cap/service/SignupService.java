@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class SignupService {
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
     private InstructorMapper instructorMapper;
 
 

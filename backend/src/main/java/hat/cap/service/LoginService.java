@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
     private InstructorMapper instructorMapper;
 
 

@@ -13,7 +13,6 @@ public interface StudentMapper {
 
     @Select("SELECT * FROM students WHERE email = #{email}")
     @Results({
-            @Result(property = "sid", column = "sid"),
             @Result(property = "email", column = "email"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password")
@@ -22,7 +21,6 @@ public interface StudentMapper {
 
     @Select("SELECT * FROM students")
     @Results({
-            @Result(property = "sid", column = "sid"),
             @Result(property = "email", column = "email"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password")
@@ -30,7 +28,7 @@ public interface StudentMapper {
     List<Student> getAllStudents();
 
 
-    @Insert("INSERT INTO students(email,username,password) VALUES(#{email}, #{username}, #{password}")
+    @Insert("INSERT INTO students (email,username,password) VALUES (#{email}, #{username}, #{password})")
     void signUp(String email,String username, String password);
 
     @Update("UPDATE students SET password=#{password} WHERE email =#{email}")
