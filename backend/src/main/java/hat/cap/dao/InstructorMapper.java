@@ -12,7 +12,7 @@ public interface InstructorMapper {
 
     @Select("SELECT * FROM instructors WHERE email = #{email}")
     @Results({
-            @Result(property = "sid", column = "sid"),
+            @Result(property = "iid", column = "iid"),
             @Result(property = "email", column = "email"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password")
@@ -21,7 +21,7 @@ public interface InstructorMapper {
 
     @Select("SELECT * FROM instructors")
     @Results({
-            @Result(property = "sid", column = "sid"),
+            @Result(property = "iid", column = "iid"),
             @Result(property = "email", column = "email"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password")
