@@ -8,12 +8,25 @@ USE `CAP` ;
 -- Table `CAP`.`instructors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CAP`.`instructors` (
-  `iid` INT NOT NULL,
+  `iid` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(100) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`iid`),
   UNIQUE INDEX `iid_UNIQUE` (`iid` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+;
+
+-- -----------------------------------------------------
+-- Table `CAP`.`students`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `CAP`.`students` (
+  `sid` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(100) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`sid`),
+  UNIQUE INDEX `sid_uindex` (`sid` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ;
 
@@ -89,19 +102,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
--- -----------------------------------------------------
--- Table `CAP`.`students`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CAP`.`students` (
-  `sid` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(100) NOT NULL,
-  `password` VARCHAR(100) NOT NULL,
-  `email` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`sid`),
-  UNIQUE INDEX `students_sid_uindex` (`sid` ASC) VISIBLE,
-  UNIQUE INDEX `identity_id_UNIQUE` (`email` ASC) VISIBLE)
-;
 
 
 -- -----------------------------------------------------
