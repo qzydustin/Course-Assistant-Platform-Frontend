@@ -36,6 +36,14 @@ public class Course {
         this.iid = iid;
     }
 
+    public String getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(String course_id) {
+        this.course_id = course_id;
+    }
+
     public String getCourse_name() {
         return course_name;
     }
