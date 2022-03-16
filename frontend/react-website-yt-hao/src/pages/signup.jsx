@@ -14,16 +14,25 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
+import axios from "axios";
 
 const theme = createTheme();
 
 export default function SignUp() {
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
+        const signUpForm = new FormData(event.currentTarget);
+
+        let data = JSON.stringify({
+            "email": signUpForm.get("email"),
+            "username": signUpForm.get("username"),
+            "password": signUpForm.get("password"),
+            "type": signUpForm.get('role-group-label')
+        })
+        // console.log(data);
+
+        axios.post('http://127.0.0.1:8080/signup', data, {headers: {'Content-Type': 'application/json'}}).then((response) => {
+            console.log(response);
         });
     };
 
@@ -115,8 +124,8 @@ export default function SignUp() {
                         </Button>{" "}
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="/SignInSide" variant="body2">
-                                    Already have an account ? Sign in
+                                <Link href="/login" variant="body2">
+                                    Already have an account ? Log in
                                 </Link>{" "}
                             </Grid>{" "}
                         </Grid>{" "}

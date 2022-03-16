@@ -14,18 +14,33 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import axios from "axios";
+
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function Login() {
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
-        });
+        const loginForm = new FormData(event.currentTarget);
+
+        let data = JSON.stringify({
+            "email": loginForm.get("email"),
+            "password": loginForm.get("password"),
+            "type": loginForm.get('role-group-label')
+        })
+        // console.log(data);
+
+        axios.post('http://127.0.0.1:8080/login',
+            data,
+            {headers: {'Content-Type': 'application/json'}}).then(
+            (response) => {
+                console.log(response);
+            });
+
     };
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -60,10 +75,10 @@ export default function SignInSide() {
                     >
                         <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
                             <LockOutlinedIcon/>
-                        </Avatar>{" "}
+                        </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign In{" "}
-                        </Typography>{" "}
+                            Log In
+                        </Typography>
                         <Box
                             component="form"
                             noValidate
@@ -107,7 +122,7 @@ export default function SignInSide() {
                                         control={<Radio/>}
                                         label="Instructor"
                                     />
-                                </RadioGroup>{" "}
+                                </RadioGroup>
                             </FormControl>
                             <Button
                                 type="submit"
@@ -115,22 +130,20 @@ export default function SignInSide() {
                                 variant="contained"
                                 sx={{mt: 3, mb: 2}}
                             >
-                                Sign In{" "}
-                            </Button>{" "}
+                                Sign In
+                            </Button>
                             <Grid container>
-                                {" "}
-                                <Grid item xs></Grid>{" "}
+                                <Grid item xs></Grid>
                                 <Grid item>
-                                    <Link href="signup" variant="body2">
-                                        {" "}
-                                        {"Don't have an account? Sign Up "}{" "}
-                                    </Link>{" "}
+                                    <Link href="/signup" variant="body2">
+                                        {"Don't have an account? Sign Up "}
+                                    </Link>
                                 </Grid>
-                            </Grid>{" "}
+                            </Grid>
                         </Box>
-                    </Box>{" "}
+                    </Box>
                 </Grid>
-            </Grid>{" "}
+            </Grid>
         </ThemeProvider>
     );
 }
