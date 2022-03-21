@@ -15,30 +15,53 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom';
 
 
 const theme = createTheme();
 
 export default function Login() {
 
+    let toDashboard = false;
+    let navigate = useNavigate();
+
+    // update toDashboard
+    // if(toDashboard === true) navigate("/dashboard");
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const loginForm = new FormData(event.currentTarget);
+
 
         let data = JSON.stringify({
             "email": loginForm.get("email"),
             "password": loginForm.get("password"),
             "type": loginForm.get('role-group-label')
         })
+
         // console.log(data);
+
+        function print(data) {
+            console.log(data);
+        }
+
 
         axios.post('http://127.0.0.1:8080/login',
             data,
-            {headers: {'Content-Type': 'application/json'}}).then(
-            (response) => {
-                console.log(response);
-            });
+            {headers: {'Content-Type': 'application/json'}})
+            .then(function(response) {
+                if(response.data == 200){
+                    console.log("Log in success!");
+                    toDashboard = true;
+                    navigate('/dashboard');
+                    // window.moveTo("/dashboard");
+                } else if(response.data == 400){
+                    console.log("Cannot log in.");
+                }
+        });
 
+
+        // console.log(res);
     };
 
 
