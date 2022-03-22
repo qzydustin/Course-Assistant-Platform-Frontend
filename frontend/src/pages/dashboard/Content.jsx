@@ -50,7 +50,7 @@ export default function Content() {
         </Toolbar>
       </AppBar>
       <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
-        Front page content.
+        The first content
       </Typography>
     </Paper>
   );

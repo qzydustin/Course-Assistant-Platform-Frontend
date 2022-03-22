@@ -17,7 +17,6 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-import * as dsController from './dashboardController';
 import {useNavigate} from "react-router-dom";
 
 const categories = [

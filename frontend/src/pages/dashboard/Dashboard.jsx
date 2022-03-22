@@ -9,6 +9,10 @@ import Navigator from './Navigator';
 import Content from './Content';
 import Content_1 from './Content_1';
 import Header from './Header';
+import {store} from '../dashboardStore';
+import { Provider } from 'react-redux';
+
+// import { useSelector } from 'react-redux';
 
 function Copyright() {
   return (
@@ -175,10 +179,20 @@ export default function Dashboard() {
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  console.log("round 0");
+  console.log(store.getState())
+  const localisContentShown = true;
+  const localisContent1Shown = true;
+  // const isContentShown = useSelector(state => state.contentsController.isContentShown);
+  // const isContent1Shown = useSelector(state => state.contentsController.isContent1Shown);
+  // console.log("3 isContentShown = ", isContentShown);
+  // console.log("4 isContentShown = ", isContentShown);
+  console.log("round 1");
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -196,20 +210,24 @@ export default function Dashboard() {
               onClose={handleDrawerToggle}
             />
           )}
+            <Navigator
+                PaperProps={{ style: { width: drawerWidth } }}
+                sx={{ display: { sm: 'block', xs: 'none' } }}
+            />
 
-          <Navigator
-            PaperProps={{ style: { width: drawerWidth } }}
-            sx={{ display: { sm: 'block', xs: 'none' } }}
-          />
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Header onDrawerToggle={handleDrawerToggle} />
-          <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            <Content />
-          </Box>
-          <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            <Content_1 />
-          </Box>
+          {localisContentShown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <Content />
+              </Box>
+          ):null}
+          {localisContent1Shown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <Content_1 />
+              </Box>
+          ):null}
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />
           </Box>

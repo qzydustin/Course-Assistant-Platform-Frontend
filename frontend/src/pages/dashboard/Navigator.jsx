@@ -18,7 +18,10 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-import * as dsController from './dashboardController';
+// import * as dsController from '../dashboardStore';
+
+import { useDispatch } from 'react-redux';
+import { toSwitch1, selectController } from './dashboardSlice';
 
 const categories = [
   {
@@ -50,6 +53,8 @@ const categories = [
   },
 ];
 
+
+
 const item = {
   py: '2px',
   px: 3,
@@ -66,7 +71,9 @@ const itemCategory = {
 };
 
 export default function Navigator(props) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const { ...other } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(true);
@@ -77,6 +84,7 @@ export default function Navigator(props) {
     if (index < 10){
       navigate('/dashboard');
     } else if (index < 20){
+      dispatch(toSwitch1());
       navigate('/courses');
     } else if (index >= 20){
       navigate('/management');
@@ -85,6 +93,7 @@ export default function Navigator(props) {
 
   return (
     <Drawer variant="permanent" {...other}>
+      {/*<Drawer variant="permanent">*/}
       <List disablePadding>
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
           Home page header
@@ -105,6 +114,7 @@ export default function Navigator(props) {
                 <ListItemButton selected={selectedIndex === active}
                                 sx={item}
                                 onClick={(event) => handleListItemClick(event, active)}>
+                                {/*onClick={(event) => {dispatch(toSwitch1());console.log("2nd");}}>*/}
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

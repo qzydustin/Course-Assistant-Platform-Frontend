@@ -7,11 +7,15 @@ import Login from "./pages/login";
 import Dashboard from "./pages/dashboard/Dashboard";
 import CoursePlaza from "./pages/CoursePlaza/CoursePlaza";
 import Management from "./pages/Management/Management";
-
+import {store} from "./pages/dashboardStore";
+import {Provider} from "react-redux";
+import React from "react";
 
 export default function App() {
 
     return (
+        // <div className="App">
+        <Provider store={store}>
         <BrowserRouter>
             <Routes>
                 <Route path="/">
@@ -24,7 +28,11 @@ export default function App() {
                 </Route>
             </Routes>
         </BrowserRouter>
+        </Provider>
+        // </div>
     );
 }
 
-ReactDOM.render(<App/>, document.getElementById("root"));
+ReactDOM.render(
+    <App/>,
+    document.getElementById("root"));

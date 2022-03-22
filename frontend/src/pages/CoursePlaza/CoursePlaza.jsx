@@ -9,7 +9,6 @@ import Navigator from './Navigator';
 import Content from './Content';
 import Content_1 from './Content_1';
 import Header from './Header';
-import * as dsController from './dashboardController';
 
 function Copyright() {
   return (
