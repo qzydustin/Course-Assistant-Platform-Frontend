@@ -128,16 +128,16 @@ export default function Login() {
                                 <RadioGroup
                                     row
                                     aria-labelledby="role-group-label"
-                                    defaultValue="Student"
+                                    defaultValue="student"
                                     name="role-group-label"
                                 >
                                     <FormControlLabel
-                                        value="Student"
+                                        value="student"
                                         control={<Radio/>}
                                         label="Student"
                                     />
                                     <FormControlLabel
-                                        value="Instructor"
+                                        value="instructor"
                                         control={<Radio/>}
                                         label="Instructor"
                                     />
