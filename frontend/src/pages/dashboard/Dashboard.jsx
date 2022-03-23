@@ -12,7 +12,7 @@ import Header from './Header';
 import {store} from '../dashboardStore';
 import { Provider } from 'react-redux';
 
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function Copyright() {
   return (
@@ -186,12 +186,12 @@ export default function Dashboard() {
   console.log("round 0");
   console.log(store.getState())
   const localisContentShown = true;
-  const localisContent1Shown = true;
+  // const localisContent1Shown = true;
   // const isContentShown = useSelector(state => state.contentsController.isContentShown);
-  // const isContent1Shown = useSelector(state => state.contentsController.isContent1Shown);
+  const isContent1Shown = useSelector(state => state.contentsController.isContent1Shown);
   // console.log("3 isContentShown = ", isContentShown);
   // console.log("4 isContentShown = ", isContentShown);
-  console.log("round 1");
+  console.log("isContent1Shown = ", isContent1Shown);
 
 
   return (
@@ -223,7 +223,7 @@ export default function Dashboard() {
                 <Content />
               </Box>
           ):null}
-          {localisContent1Shown ? (
+          {isContent1Shown ? (
               <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
                 <Content_1 />
               </Box>
