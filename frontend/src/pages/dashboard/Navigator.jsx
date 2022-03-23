@@ -18,10 +18,10 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-// import * as dsController from '../dashboardStore';
+
 
 import { useDispatch } from 'react-redux';
-import { toSwitch1, selectController } from './dashboardSlice';
+import { toFrontPage, toSwitch1 } from './dashboardSlice';
 
 const categories = [
   {
@@ -83,8 +83,13 @@ export default function Navigator(props) {
     console.log("index=",index);
     if (index < 10){
       navigate('/dashboard');
+      if (index === 0){
+        dispatch(toFrontPage());
+      }
+      if (index === 1){
+        dispatch(toSwitch1());
+      }
     } else if (index < 20){
-      dispatch(toSwitch1());
       navigate('/courses');
     } else if (index >= 20){
       navigate('/management');

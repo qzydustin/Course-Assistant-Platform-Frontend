@@ -14,22 +14,24 @@ const pageContent = {
 export const contentsSlice = createSlice({
     name: 'contentsController',
     initialState: {
-        // isContentShown: 0
-        // isContentShown: false,
+
+        isContentShown: false,
         isContent1Shown: false,
     },
     reducers: {
+        toFrontPage: (state) => {
+            state.isContentShown = pageContent["Front page"][0].value;
+            state.isContent1Shown = pageContent["Front page"][1].value;
+        },
         toSwitch1: (state) => {
-            // state.isContentShown = 1;
-            state.isContent1Shown = true;
-            // state.isContentShown = pageContent["Switch 1"][0].value;
-            // state.isContent1Shown = pageContent["Switch 1"][0].value;
+            state.isContentShown = pageContent["Switch 1"][0].value;
+            state.isContent1Shown = pageContent["Switch 1"][1].value;
         },
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { toSwitch1 } = contentsSlice.actions
+export const { toFrontPage, toSwitch1 } = contentsSlice.actions
 
 export const selectController = (state) => state.contentsController.isContent1Shown
 
