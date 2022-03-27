@@ -2,8 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const pageContent = {
     'Front page': [
-        { id: 'Content', value: true},
-        { id: 'Content1', value: false},
+        { id: 'Content', value: true },
+        { id: 'Content1', value: false },
+        { id: 'SearchCourse', value: true },
     ],
     'Switch 1': [
         { id: 'Content', value: false},
@@ -22,6 +23,7 @@ export const contentsSlice = createSlice({
         toFrontPage: (state) => {
             state.isContentShown = pageContent["Front page"][0].value;
             state.isContent1Shown = pageContent["Front page"][1].value;
+            state.isSearchCourseShown = pageContent["Front page"][2].value;
         },
         toSwitch1: (state) => {
             state.isContentShown = pageContent["Switch 1"][0].value;

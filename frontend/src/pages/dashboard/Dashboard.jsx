@@ -6,8 +6,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from './Navigator';
-import Content from './Content';
-import Content_1 from './Content_1';
+import Content from './components/Content';
+import Content_1 from './components/Content_1';
+import SearchCourse from './components/SearchCourse';
 import Header from './Header';
 import {store} from '../dashboardStore';
 
@@ -182,14 +183,15 @@ export default function Dashboard() {
     setMobileOpen(!mobileOpen);
   };
 
-  console.log("round 0");
-  console.log(store.getState())
+  // console.log("round 0");
+  // console.log(store.getState())
 
   const isContentShown = useSelector(state => state.contentsController.isContentShown);
   const isContent1Shown = useSelector(state => state.contentsController.isContent1Shown);
+  const isSearchCourseShown = useSelector(state => state.contentsController.isSearchCourseShown);
 
-  console.log("isContentShown = ", isContentShown);
-  console.log("isContent1Shown = ", isContent1Shown);
+  // console.log("isContentShown = ", isContentShown);
+  // console.log("isContent1Shown = ", isContent1Shown);
 
 
   return (
@@ -224,6 +226,11 @@ export default function Dashboard() {
           {isContent1Shown ? (
               <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
                 <Content_1 />
+              </Box>
+          ):null}
+          {isSearchCourseShown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <SearchCourse />
               </Box>
           ):null}
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>

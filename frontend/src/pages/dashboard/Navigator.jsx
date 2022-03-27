@@ -81,19 +81,8 @@ export default function Navigator(props) {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     console.log("index=",index);
-    if (index < 10){
-      navigate('/dashboard');
-      if (index === 0){
-        dispatch(toFrontPage());
-      }
-      if (index === 1){
-        dispatch(toSwitch1());
-      }
-    } else if (index < 20){
-      navigate('/courses');
-    } else if (index >= 20){
-      navigate('/management');
-    }
+    if (index === 0) dispatch(toFrontPage());
+    if (index === 1) dispatch(toSwitch1());
   };
 
   return (
