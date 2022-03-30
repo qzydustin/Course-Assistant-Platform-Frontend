@@ -3,7 +3,6 @@ package hat.cap.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Builder
 @AllArgsConstructor
@@ -26,10 +25,10 @@ public class Course {
     @JoinColumn
     private Instructor instructor;
     private String code;
-    private String name;
+    private String title;
     private String information;
     private String department;
+    private String semester;
     private int unit;
-    private Date semester;
     private int seat;
 }
