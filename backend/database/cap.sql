@@ -5,10 +5,10 @@ USE `CAP`;
 
 CREATE TABLE student
 (
-    id       BIGINT       NOT NULL,
-    email    VARCHAR(255) NULL,
-    username VARCHAR(255) NULL,
-    password VARCHAR(255) NULL,
+    id       BIGINT AUTO_INCREMENT NOT NULL,
+    email    VARCHAR(255)          NOT NULL,
+    username VARCHAR(255)          NOT NULL,
+    password VARCHAR(255)          NOT NULL,
     CONSTRAINT pk_student PRIMARY KEY (id)
 );
 
@@ -17,10 +17,10 @@ ALTER TABLE student
 
 CREATE TABLE instructor
 (
-    id       BIGINT       NOT NULL,
-    email    VARCHAR(255) NULL,
-    username VARCHAR(255) NULL,
-    password VARCHAR(255) NULL,
+    id       BIGINT AUTO_INCREMENT NOT NULL,
+    email    VARCHAR(255)          NOT NULL,
+    username VARCHAR(255)          NOT NULL,
+    password VARCHAR(255)          NOT NULL,
     CONSTRAINT pk_instructor PRIMARY KEY (id)
 );
 
@@ -29,15 +29,15 @@ ALTER TABLE instructor
 
 CREATE TABLE course
 (
-    id            BIGINT       NOT NULL,
-    instructor_id BIGINT       NULL,
-    code          VARCHAR(255) NULL,
-    title         VARCHAR(255) NULL,
-    information   VARCHAR(255) NULL,
-    department    VARCHAR(255) NULL,
-    semester      VARCHAR(255) NULL,
-    unit          INT          NULL,
-    seat          INT          NULL,
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    instructor_id BIGINT                NULL,
+    code          VARCHAR(255)          NOT NULL,
+    title         VARCHAR(255)          NOT NULL,
+    information   VARCHAR(255)          NULL,
+    department    VARCHAR(255)          NOT NULL,
+    semester      VARCHAR(255)          NOT NULL,
+    unit          INT                   NOT NULL,
+    seat          INT                   NOT NULL,
     CONSTRAINT pk_course PRIMARY KEY (id)
 );
 
@@ -49,10 +49,10 @@ ALTER TABLE course
 
 CREATE TABLE student_course
 (
-    id         BIGINT NOT NULL,
-    student_id BIGINT NULL,
-    course_id  BIGINT NULL,
-    grade      INT    NULL,
+    id         BIGINT AUTO_INCREMENT NOT NULL,
+    student_id BIGINT                NULL,
+    course_id  BIGINT                NULL,
+    grade      INT                   NULL,
     CONSTRAINT pk_student_course PRIMARY KEY (id)
 );
 
