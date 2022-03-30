@@ -21,7 +21,7 @@ import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 
 
 import { useDispatch } from 'react-redux';
-import { toFrontPage, toSwitch1 } from './dashboardSlice';
+import { toFrontPage, toSwitch1, toCourseEnroll } from './dashboardSlice';
 
 const categories = [
   {
@@ -71,7 +71,7 @@ const itemCategory = {
 };
 
 export default function Navigator(props) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
 
@@ -83,6 +83,7 @@ export default function Navigator(props) {
     console.log("index=",index);
     if (index === 0) dispatch(toFrontPage());
     if (index === 1) dispatch(toSwitch1());
+    if (index === 20) dispatch(toCourseEnroll());
   };
 
   return (

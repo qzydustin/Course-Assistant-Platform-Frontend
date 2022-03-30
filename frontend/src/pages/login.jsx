@@ -32,7 +32,7 @@ export default function Login() {
         event.preventDefault();
         const loginForm = new FormData(event.currentTarget);
 
-
+        console.log("handle login button");
         let data = JSON.stringify({
             "email": loginForm.get("email"),
             "password": loginForm.get("password"),
@@ -55,9 +55,6 @@ export default function Login() {
                     console.log("Cannot log in.");
                 }
         });
-
-
-        // console.log(res);
     };
 
 
