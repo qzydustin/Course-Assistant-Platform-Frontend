@@ -31,8 +31,8 @@ CREATE TABLE course
 (
     id            BIGINT       NOT NULL,
     instructor_id BIGINT       NULL,
-    course_code   VARCHAR(255) NULL,
-    course_name   VARCHAR(255) NULL,
+    code          VARCHAR(255) NULL,
+    name          VARCHAR(255) NULL,
     information   VARCHAR(255) NULL,
     department    VARCHAR(255) NULL,
     unit          INT          NULL,
@@ -42,10 +42,11 @@ CREATE TABLE course
 );
 
 ALTER TABLE course
-    ADD CONSTRAINT uc_course_course_code_semester UNIQUE (course_code, semester);
+    ADD CONSTRAINT uc_course_code_semester UNIQUE (code, semester);
 
 ALTER TABLE course
     ADD CONSTRAINT FK_COURSE_ON_INSTRUCTOR FOREIGN KEY (instructor_id) REFERENCES instructor (id);
+
 
 CREATE TABLE student_course
 (

@@ -16,7 +16,7 @@ import java.sql.Date;
 @ToString
 @Table(
         uniqueConstraints =
-        @UniqueConstraint(columnNames = {"course_code", "semester"})
+        @UniqueConstraint(columnNames = {"code", "semester"})
 )
 public class Course {
     @Id
@@ -25,8 +25,8 @@ public class Course {
     @ManyToOne
     @JoinColumn
     private Instructor instructor;
-    private String course_code;
-    private String course_name;
+    private String code;
+    private String name;
     private String information;
     private String department;
     private int unit;
