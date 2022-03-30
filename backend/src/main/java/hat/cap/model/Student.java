@@ -2,28 +2,21 @@ package hat.cap.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Builder
-@AllArgsConstructor
 @Entity
 @Data
-@NoArgsConstructor
-@Getter
-@Setter
-@RequiredArgsConstructor
-@ToString
-
+@NoArgsConstructor(force = true)
 public class Student {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique=true)
+    @Column(unique=true,nullable = false)
     private String email;
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
+
 }

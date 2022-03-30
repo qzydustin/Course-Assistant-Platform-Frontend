@@ -1,8 +1,6 @@
 package hat.cap.service;
 
-import hat.cap.dao.InstructorMapper;
 import hat.cap.dao.InstructorRepository;
-import hat.cap.dao.StudentMapper;
 import hat.cap.dao.StudentRepository;
 import hat.cap.model.Instructor;
 import hat.cap.model.Student;

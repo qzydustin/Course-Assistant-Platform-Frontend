@@ -4,19 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
-@AllArgsConstructor
 @Entity
 @Data
-@NoArgsConstructor
-@Getter
-@Setter
-@RequiredArgsConstructor
-@ToString
+@NoArgsConstructor(force = true)
 
 public class Student_Course {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
