@@ -14,6 +14,10 @@ import java.sql.Date;
 @Setter
 @RequiredArgsConstructor
 @ToString
+@Table(
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"course_code", "semester"})
+)
 public class Course {
     @Id
     @GeneratedValue
@@ -26,6 +30,6 @@ public class Course {
     private String information;
     private String department;
     private int unit;
-    private Date offered_time;
-    private int availability;
+    private Date semester;
+    private int seat;
 }

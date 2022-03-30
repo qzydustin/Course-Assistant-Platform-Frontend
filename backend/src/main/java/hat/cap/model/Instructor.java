@@ -2,6 +2,7 @@ package hat.cap.model;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,7 +22,9 @@ public class Instructor {
     @Id
     @GeneratedValue
     private long id;
+
+    @Column(unique=true)
     private String email;
-    private String password;
     private String username;
+    private String password;
 }
