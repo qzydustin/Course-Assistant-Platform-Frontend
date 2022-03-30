@@ -1,7 +1,7 @@
 package hat.cap.service;
 
-import hat.cap.dao.InstructorMapper;
-import hat.cap.dao.StudentMapper;
+import hat.cap.dao.InstructorRepository;
+import hat.cap.dao.StudentRepository;
 import hat.cap.model.Instructor;
 import hat.cap.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,27 +10,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignupService {
     @Autowired
-    private StudentMapper studentMapper;
+    private StudentRepository studentRepository;
     @Autowired
-    private InstructorMapper instructorMapper;
+    private InstructorRepository instructorRepository;
 
 
     public int signup(String email, String username, String password, String type) {
         int state;
         if (type.equals("student")) {
-            Student student = studentMapper.getStudentByEmail(email);
+            Student student = studentRepository.findByEmail(email);
             if (student != null) {
                 state = 412;
             } else {
-                studentMapper.signUp(email, username, password);
+                student = new Student();
+                student.setEmail(email);
+                student.setUsername(username);
+                student.setPassword(password);
+                studentRepository.save(student);
                 state = 200;
             }
         } else {
-            Instructor instructor = instructorMapper.getInstructorByEmail(email);
+            Instructor instructor = instructorRepository.findByEmail(email);
             if (instructor != null) {
                 state = 412;
             } else {
-                instructorMapper.signUp(email, username, password);
+                instructor = new Instructor();
+                instructor.setEmail(email);
+                instructor.setUsername(username);
+                instructor.setPassword(password);
+                instructorRepository.save(instructor);
                 state = 200;
             }
         }
