@@ -1,15 +1,13 @@
-package hat.cap.model;
+package hat.cap.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
 
-
 @Entity
 @Data
 @NoArgsConstructor(force = true)
-
-public class Instructor {
+public class Student {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
@@ -20,4 +18,5 @@ public class Instructor {
     private String username;
     @Column(nullable = false)
     private String password;
+
 }

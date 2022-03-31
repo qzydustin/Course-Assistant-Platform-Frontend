@@ -1,6 +1,6 @@
-package hat.cap.dao;
+package hat.cap.repository;
 
-import hat.cap.model.Student;
+import hat.cap.entity.Student;
 
 import org.springframework.data.repository.CrudRepository;
 

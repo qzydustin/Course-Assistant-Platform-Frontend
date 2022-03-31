@@ -1,6 +1,6 @@
-package hat.cap.dao;
+package hat.cap.repository;
 
-import hat.cap.model.Instructor;
+import hat.cap.entity.Instructor;
 import org.springframework.data.repository.CrudRepository;
 
 public interface InstructorRepository  extends CrudRepository<Instructor,Long> {

@@ -1,9 +1,9 @@
 package hat.cap.service;
 
-import hat.cap.dao.InstructorRepository;
-import hat.cap.dao.StudentRepository;
-import hat.cap.model.Instructor;
-import hat.cap.model.Student;
+import hat.cap.repository.InstructorRepository;
+import hat.cap.repository.StudentRepository;
+import hat.cap.entity.Instructor;
+import hat.cap.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
