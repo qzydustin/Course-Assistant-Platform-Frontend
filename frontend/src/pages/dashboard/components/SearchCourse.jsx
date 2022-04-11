@@ -16,17 +16,17 @@ import {useState} from "react";
 
 const departments = [
     {value: 'Empty', label: ''},
-    {value: 'ComputerScience', label: 'Computer Science',},
+    {value: 'computer science', label: 'Computer Science',},
     {value: 'Engineering', label: 'Engineering',},
     {value: 'Mathematics', label: 'Mathematics',},
 ];
 
 const offeredTimes = [
     {value: 'Empty', label: ''},
-    {value: '2022-spring', label: '2022 Spring',},
-    {value: '2022-2', label: '2022 Summer',},
-    {value: '2022-3', label: '2022 Fall',},
-    {value: '2022-4', label: '2022 Winter',},
+    {value: '2022 spring', label: '2022 Spring',},
+    {value: '2022 summer', label: '2022 Summer',},
+    {value: '2022 fall', label: '2022 Fall',},
+    {value: '2022 winter', label: '2022 Winter',},
 ];
 
 function createData(name, calories, fat, carbs, protein, price) {
@@ -67,18 +67,21 @@ export default function SearchCourse() {
         const courseSearchForm = new FormData(event.currentTarget);
 
         console.log("handle search button");
-        // let data = JSON.stringify({
-        //     "Course ID": courseSearchForm.get("Course ID"),
-        //     "Course name": courseSearchForm.get("Course Name"),
-        //     "Offered Time": courseSearchForm.get("Offered Time"),
-        // })
         let data = JSON.stringify({
             "email": "teststudent@qq.com",
             "password": "123123",
             "type": "student",
-            "department": "computer science",
-            "semester": "2022 Spring"
+            "department": courseSearchForm.get("department"),
+            "offered time": courseSearchForm.get("offered time"),
+            "course name": courseSearchForm.get("course name"),
         })
+        // let data = JSON.stringify({
+        //     "email": "teststudent@qq.com",
+        //     "password": "123123",
+        //     "type": "student",
+        //     "department": "computer science",
+        //     "semester": "2022 Spring"
+        // })
 
         console.log(data);
         // axios.post('http://127.0.0.1:8080/login',
@@ -139,7 +142,7 @@ export default function SearchCourse() {
                                 <TextField
                                     id="Department"
                                     select
-                                    name="Department"
+                                    name="department"
                                     label="Department"
                                     value={department}
                                     onChange={handleDepartmentChange}
@@ -153,7 +156,7 @@ export default function SearchCourse() {
                                 <TextField
                                     id="Offered Time"
                                     select
-                                    name="Offered Time"
+                                    name="offered time"
                                     label="Offered Time"
                                     value={offeredTime}
                                     onChange={handleOfferedTimeChange}
@@ -167,7 +170,7 @@ export default function SearchCourse() {
                                 </TextField>
                                 <TextField
                                     fullWidth
-                                    name="Course Name"
+                                    name="course name"
                                     placeholder="Search course by its name"
                                     InputProps={{
                                         disableUnderline: false,
