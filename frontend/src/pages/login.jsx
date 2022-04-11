@@ -32,7 +32,7 @@ export default function Login() {
         event.preventDefault();
         const loginForm = new FormData(event.currentTarget);
 
-
+        console.log("handle login button");
         let data = JSON.stringify({
             "email": loginForm.get("email"),
             "password": loginForm.get("password"),
@@ -41,27 +41,20 @@ export default function Login() {
 
         // console.log(data);
 
-        function print(data) {
-            console.log(data);
-        }
-
 
         axios.post('http://127.0.0.1:8080/login',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                if(response.data == 200){
+                if(response.data === 200){
                     console.log("Log in success!");
                     toDashboard = true;
                     navigate('/dashboard');
                     // window.moveTo("/dashboard");
-                } else if(response.data == 400){
+                } else if(response.data === 400){
                     console.log("Cannot log in.");
                 }
         });
-
-
-        // console.log(res);
     };
 
 
@@ -132,16 +125,16 @@ export default function Login() {
                                 <RadioGroup
                                     row
                                     aria-labelledby="role-group-label"
-                                    defaultValue="Student"
+                                    defaultValue="student"
                                     name="role-group-label"
                                 >
                                     <FormControlLabel
-                                        value="Student"
+                                        value="student"
                                         control={<Radio/>}
                                         label="Student"
                                     />
                                     <FormControlLabel
-                                        value="Instructor"
+                                        value="instructor"
                                         control={<Radio/>}
                                         label="Instructor"
                                     />

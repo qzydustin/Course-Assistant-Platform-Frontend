@@ -6,8 +6,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from './Navigator';
-import Content from './Content';
+import Content from './components/Content';
+import Content_1 from './components/Content_1';
+import CreateCourse from './components/CreateCourse';
+import SearchCourse from './components/SearchCourse';
 import Header from './Header';
+import {store} from '../dashboardStore';
+
+import { useSelector } from 'react-redux';
+import {Create} from "@mui/icons-material";
 
 function Copyright() {
   return (
@@ -166,7 +173,7 @@ theme = {
 
 const drawerWidth = 256;
 
-export default function Paperbase() {
+export default function Dashboard() {
 
   // read username and password from cookie, send them to the server
   // if the response is true, show user's contend, if not, back to the
@@ -174,10 +181,21 @@ export default function Paperbase() {
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  // console.log("round 0");
+  // console.log(store.getState())
+
+  const isContentShown = useSelector(state => state.contentsController.isContentShown);
+  const isContent1Shown = useSelector(state => state.contentsController.isContent1Shown);
+  const isCreateCourseShown = useSelector(state => state.contentsController.isCreateCourseShown);
+  const isSearchCourseShown = useSelector(state => state.contentsController.isSearchCourseShown);
+
+  console.log("isCreateCourseShown = ", isCreateCourseShown);
+  // console.log("isContent1Shown = ", isContent1Shown);
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -195,17 +213,34 @@ export default function Paperbase() {
               onClose={handleDrawerToggle}
             />
           )}
+            <Navigator
+                PaperProps={{ style: { width: drawerWidth } }}
+                sx={{ display: { sm: 'block', xs: 'none' } }}
+            />
 
-          <Navigator
-            PaperProps={{ style: { width: drawerWidth } }}
-            sx={{ display: { sm: 'block', xs: 'none' } }}
-          />
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Header onDrawerToggle={handleDrawerToggle} />
-          <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            <Content />
-          </Box>
+          {isContentShown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <Content />
+              </Box>
+          ):null}
+          {isContent1Shown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <Content_1/>
+              </Box>
+          ):null}
+          {isCreateCourseShown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <CreateCourse />
+              </Box>
+          ):null}
+          {isSearchCourseShown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <SearchCourse />
+              </Box>
+          ):null}
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />
           </Box>

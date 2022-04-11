@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -18,34 +19,42 @@ import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 
+
+import { useDispatch } from 'react-redux';
+import { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll } from './dashboardSlice';
+
 const categories = [
   {
     id: 'Build',
     children: [
-      {
-        id: 'Front page',
-        icon: <PeopleIcon />,
-        active: true,
-      },
-      { id: 'Switch 1', icon: <DnsRoundedIcon /> },
-      { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> },
-      { id: 'Switch 3', icon: <PublicIcon /> },
-      { id: 'Switch 4', icon: <SettingsEthernetIcon /> },
-      {
-        id: 'Machine learning',
-        icon: <SettingsInputComponentIcon />,
-      },
+      { id: 'Front page', icon: <PeopleIcon />, active: 0,},
+      { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: 1},
+      { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: 2},
+      { id: 'Switch 3', icon: <PublicIcon /> , active: 3},
+      { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: 4},
+      { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: 5},
     ],
   },
   {
-    id: 'Quality',
+    id: 'Course Plaza',
     children: [
-      { id: 'Analytics', icon: <SettingsIcon /> },
-      { id: 'Performance', icon: <TimerIcon /> },
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
+      { id: 'Course_1', icon: <SettingsIcon />, active: 10},
+      { id: 'Course_2', icon: <TimerIcon />, active: 11},
+      { id: 'Course_3', icon: <PhonelinkSetupIcon />, active: 12},
+    ],
+  },
+  {
+    id: 'Management',
+    children: [
+      { id: 'Create Course', icon: <TimerIcon />, active: 20},
+      { id: 'Course Enroll', icon: <SettingsIcon />, active: 21},
+      { id: 'Performance', icon: <TimerIcon />, active: 22},
+      { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: 23},
     ],
   },
 ];
+
+
 
 const item = {
   py: '2px',
@@ -63,34 +72,51 @@ const itemCategory = {
 };
 
 export default function Navigator(props) {
+  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
   const { ...other } = props;
+  const [selectedIndex, setSelectedIndex] = React.useState(true);
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+    console.log("index=",index);
+    if (index === 0) dispatch(toFrontPage());
+    if (index === 1) dispatch(toSwitch1());
+    if (index === 20) dispatch(toCreateCourse());
+    if (index === 21) dispatch(toCourseEnroll());
+  };
 
   return (
     <Drawer variant="permanent" {...other}>
+      {/*<Drawer variant="permanent">*/}
       <List disablePadding>
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-          Paperbase
+          Home page header
         </ListItem>
         <ListItem sx={{ ...item, ...itemCategory }}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText>Project Overview</ListItemText>
+          <ListItemText>Home Icon</ListItemText>
         </ListItem>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#101F33' }}>
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
+            {children.map(({ id: childId, icon, active}) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton selected={active} sx={item}>
+                <ListItemButton selected={selectedIndex === active}
+                                sx={item}
+                                onClick={(event) => handleListItemClick(event, active)}>
+                                {/*onClick={(event) => {dispatch(toSwitch1());console.log("2nd");}}>*/}
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>
               </ListItem>
             ))}
-
             <Divider sx={{ mt: 2 }} />
           </Box>
         ))}
