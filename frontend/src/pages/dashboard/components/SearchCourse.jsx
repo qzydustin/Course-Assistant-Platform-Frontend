@@ -12,16 +12,55 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Row from './TableRow';
+import {useState} from "react";
+
+const departments = [
+    {value: 'Empty', label: ''},
+    {value: 'ComputerScience', label: 'Computer Science',},
+    {value: 'Engineering', label: 'Engineering',},
+    {value: 'Mathematics', label: 'Mathematics',},
+];
 
 const offeredTimes = [
+    {value: 'Empty', label: ''},
     {value: '2022-spring', label: '2022 Spring',},
     {value: '2022-2', label: '2022 Summer',},
     {value: '2022-3', label: '2022 Fall',},
     {value: '2022-4', label: '2022 Winter',},
 ];
 
+function createData(name, calories, fat, carbs, protein, price) {
+    return {
+        name,
+        calories,
+        fat,
+        carbs,
+        protein,
+        price,
+        history: [
+            {
+                date: '2020-01-05',
+                customerId: '11091700',
+                amount: 3,
+            },
+            {
+                date: '2020-01-02',
+                customerId: 'Anonymous',
+                amount: 1,
+            },
+        ],
+    };
+}
 
-export default function Content() {
+const rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
+    createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
+    createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
+    createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
+];
+
+export default function SearchCourse() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -38,7 +77,7 @@ export default function Content() {
         console.log(event.target[1].value)
         // axios.post('http://127.0.0.1:8080/login',
         //     data,
-        //     {headers: {'Content-Type': 'application/json'}})
+        //     {headers: {'SearchCourse-Type': 'application/json'}})
         //     .then(function(response) {
         //         if(response.data === 200){
         //             console.log("Log in success!");
@@ -53,8 +92,19 @@ export default function Content() {
         // console.log(res);
     };
 
-    const [offeredTime, setOfferedTime] = React.useState('2022-spring');
+    // send row data to TableRow.jsx
+    const [rowData, setRowData] = useState('');
 
+    const sendToTableRow = () => {
+        setRowData(rows);
+    }
+
+    const [department, setDepartment] = React.useState('Empty');
+    const [offeredTime, setOfferedTime] = React.useState('Empty');
+
+    const handleDepartmentChange = (event) => {
+        setDepartment(event.target.value);
+    }
     const handleOfferedTimeChange = (event) => {
         setOfferedTime(event.target.value);
     }
@@ -81,15 +131,14 @@ export default function Content() {
                             </Grid>
                             <Grid item xs>
                                 <TextField
-                                    id="Offered Time"
+                                    id="Department"
                                     select
-                                    name="Offered Time"
-                                    label="Offered Time"
-                                    value={offeredTime}
-                                    onChange={handleOfferedTimeChange}
-                                    // helperText="Please select your currency"
+                                    name="Department"
+                                    label="Department"
+                                    value={department}
+                                    onChange={handleDepartmentChange}
                                 >
-                                    {offeredTimes.map((option) => (
+                                    {departments.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
                                             {option.label}
                                         </MenuItem>
@@ -146,7 +195,7 @@ export default function Content() {
                     {/*        variant="standard"*/}
                     {/*    />*/}
                     {/*</Grid>*/}
-                <Row></Row>
+                <Row sendToTableRow={rows}></Row>
             </Box>
         </Paper>
     );
