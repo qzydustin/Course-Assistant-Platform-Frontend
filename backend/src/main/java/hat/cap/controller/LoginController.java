@@ -17,7 +17,7 @@ public class LoginController {
     private LoginService loginService;
 
     @RequestMapping("/login")
-    public Object login(@RequestBody Map<String, String> map) {
+    public ResultData login(@RequestBody Map<String, String> map) {
         return loginService.login(map.get("email"), map.get("password"),map.get("type"));
     }
 }

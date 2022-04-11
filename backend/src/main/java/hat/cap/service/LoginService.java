@@ -18,8 +18,8 @@ public class LoginService {
     private InstructorRepository instructorRepository;
 
 
-    public Object login(String email, String password, String type) {
-        ResultData<String> resultData;
+    public ResultData login(String email, String password, String type) {
+        ResultData resultData;
         if (type.equals("student")) {
             Student student = studentRepository.findByEmail(email);
             if (student == null) {

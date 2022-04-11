@@ -18,8 +18,8 @@ public class SignupService {
     private InstructorRepository instructorRepository;
 
 
-    public Object signup(String email, String username, String password, String type) {
-        ResultData<String> resultData;
+    public ResultData signup(String email, String username, String password, String type) {
+        ResultData resultData;
         if (type.equals("student")) {
             Student student = studentRepository.findByEmail(email);
             if (student != null) {

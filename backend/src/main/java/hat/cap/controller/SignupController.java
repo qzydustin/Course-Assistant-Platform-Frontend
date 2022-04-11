@@ -15,7 +15,7 @@ public class SignupController {
     private SignupService signupService;
 
     @RequestMapping("/signup")
-    public Object signup(@RequestBody Map<String, String> map) {
+    public ResultData signup(@RequestBody Map<String, String> map) {
         return signupService.signup(map.get("email"),map.get("username"),map.get("password"),map.get("type"));
     }
 
