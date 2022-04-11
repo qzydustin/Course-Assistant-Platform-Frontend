@@ -67,14 +67,20 @@ export default function SearchCourse() {
         const courseSearchForm = new FormData(event.currentTarget);
 
         console.log("handle search button");
+        // let data = JSON.stringify({
+        //     "Course ID": courseSearchForm.get("Course ID"),
+        //     "Course name": courseSearchForm.get("Course Name"),
+        //     "Offered Time": courseSearchForm.get("Offered Time"),
+        // })
         let data = JSON.stringify({
-            "Course ID": courseSearchForm.get("Course ID"),
-            "Course name": courseSearchForm.get("Course Name"),
-            "Offered Time": courseSearchForm.get("Offered Time"),
+            "email": "teststudent@qq.com",
+            "password": "123123",
+            "type": "student",
+            "department": "computer science",
+            "semester": "2022 Spring"
         })
-        //
+
         console.log(data);
-        console.log(event.target[1].value)
         // axios.post('http://127.0.0.1:8080/login',
         //     data,
         //     {headers: {'SearchCourse-Type': 'application/json'}})

@@ -50,7 +50,7 @@ export default function Content() {
         </Toolbar>
       </AppBar>
       <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
-        This is the first component.
+        This is CreateCourse.
       </Typography>
     </Paper>
   );

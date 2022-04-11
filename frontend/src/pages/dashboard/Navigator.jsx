@@ -21,7 +21,7 @@ import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 
 
 import { useDispatch } from 'react-redux';
-import { toFrontPage, toSwitch1, toCourseEnroll } from './dashboardSlice';
+import { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll } from './dashboardSlice';
 
 const categories = [
   {
@@ -46,9 +46,10 @@ const categories = [
   {
     id: 'Management',
     children: [
-      { id: 'Course Enroll', icon: <SettingsIcon />, active: 20},
-      { id: 'Performance', icon: <TimerIcon />, active: 21},
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: 22},
+      { id: 'Create Course', icon: <TimerIcon />, active: 20},
+      { id: 'Course Enroll', icon: <SettingsIcon />, active: 21},
+      { id: 'Performance', icon: <TimerIcon />, active: 22},
+      { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: 23},
     ],
   },
 ];
@@ -83,7 +84,8 @@ export default function Navigator(props) {
     console.log("index=",index);
     if (index === 0) dispatch(toFrontPage());
     if (index === 1) dispatch(toSwitch1());
-    if (index === 20) dispatch(toCourseEnroll());
+    if (index === 20) dispatch(toCreateCourse());
+    if (index === 21) dispatch(toCourseEnroll());
   };
 
   return (

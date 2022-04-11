@@ -8,11 +8,13 @@ import Link from '@mui/material/Link';
 import Navigator from './Navigator';
 import Content from './components/Content';
 import Content_1 from './components/Content_1';
+import CreateCourse from './components/CreateCourse';
 import SearchCourse from './components/SearchCourse';
 import Header from './Header';
 import {store} from '../dashboardStore';
 
 import { useSelector } from 'react-redux';
+import {Create} from "@mui/icons-material";
 
 function Copyright() {
   return (
@@ -188,9 +190,10 @@ export default function Dashboard() {
 
   const isContentShown = useSelector(state => state.contentsController.isContentShown);
   const isContent1Shown = useSelector(state => state.contentsController.isContent1Shown);
+  const isCreateCourseShown = useSelector(state => state.contentsController.isCreateCourseShown);
   const isSearchCourseShown = useSelector(state => state.contentsController.isSearchCourseShown);
 
-  // console.log("isContentShown = ", isContentShown);
+  console.log("isCreateCourseShown = ", isCreateCourseShown);
   // console.log("isContent1Shown = ", isContent1Shown);
 
 
@@ -225,7 +228,12 @@ export default function Dashboard() {
           ):null}
           {isContent1Shown ? (
               <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <Content_1 />
+                <Content_1/>
+              </Box>
+          ):null}
+          {isCreateCourseShown ? (
+              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                <CreateCourse />
               </Box>
           ):null}
           {isSearchCourseShown ? (
