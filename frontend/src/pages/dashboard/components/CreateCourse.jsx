@@ -1,57 +1,126 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import MenuItem from '@mui/material/MenuItem';
 
-export default function Content() {
+const currencies = [
+    {
+      value: 'USD',
+      label: '$',
+    },
+    {
+      value: 'EUR',
+      label: '€',
+    },
+    {
+      value: 'BTC',
+      label: '฿',
+    },
+    {
+      value: 'JPY',
+      label: '¥',
+    },
+  ];
+
+
+
+export default function MultilineTextFields() {
+  const [value, setValue] = React.useState('Controlled');
+  const [currency, setCurrency] = React.useState('EUR');
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
   return (
-    <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
-      <AppBar
-        position="static"
-        color="default"
-        elevation={0}
-        sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}
-      >
-        <Toolbar>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <SearchIcon color="inherit" sx={{ display: 'block' }} />
-            </Grid>
-            <Grid item xs>
-              <TextField
-                fullWidth
-                placeholder="Search by email address, phone number, or user UID"
-                InputProps={{
-                  disableUnderline: true,
-                  sx: { fontSize: 'default' },
-                }}
-                variant="standard"
-              />
-            </Grid>
-            <Grid item>
-              <Button variant="contained" sx={{ mr: 1 }}>
-                Add user
-              </Button>
-              <Tooltip title="Reload">
-                <IconButton>
-                  <RefreshIcon color="inherit" sx={{ display: 'block' }} />
-                </IconButton>
-              </Tooltip>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-      <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
-        This is CreateCourse.
-      </Typography>
-    </Paper>
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <div>
+      <TextField
+          id="standard-textarea"
+          label="Course Name"
+          placeholder="Placeholder"
+          multiline
+          variant="standard"
+        />
+        <TextField
+          id="standard-textarea"
+          label="Course ID"
+          placeholder="Placeholder"
+          multiline
+          variant="standard"
+        />
+        <TextField
+          id="standard-textarea"
+          label="Availability"
+          placeholder="Placeholder"
+          multiline
+          variant="standard"
+        />
+        <TextField
+          id="standard-textarea"
+          label="Units"
+          placeholder="Placeholder"
+          multiline
+          variant="standard"
+        />
+        
+      </div>
+
+      
+      <div>
+        <TextField
+          id="standard-select-currency"
+          select
+          label="Department"
+          value={currency}
+          onChange={handleChange}
+          helperText="Please select your department"
+          variant="standard"
+        >
+          {currencies.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          id="standard-select-currency-native"
+          select
+          label="Offered Time"
+          value={currency}
+          onChange={handleChange}
+          SelectProps={{
+            native: true,
+          }}
+          helperText="Please select offered time"
+          variant="standard"
+        >
+          {currencies.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </TextField>
+        </div>
+
+        <div>
+        <TextField
+          id="standard-multiline-static"
+          label="Description"
+          multiline
+          rows={4}
+          defaultValue="Default Value"
+          variant="standard"
+        />
+      </div>
+    </Box>
   );
 }
