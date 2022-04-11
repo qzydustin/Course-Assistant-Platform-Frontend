@@ -1,11 +1,14 @@
 package hat.cap.service;
 
-import hat.cap.dao.InstructorRepository;
-import hat.cap.dao.StudentRepository;
-import hat.cap.model.Instructor;
-import hat.cap.model.Student;
+import hat.cap.entity.ResultData;
+import hat.cap.repository.InstructorRepository;
+import hat.cap.repository.StudentRepository;
+import hat.cap.entity.Instructor;
+import hat.cap.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static hat.cap.entity.ResultDataCode.*;
 
 @Service
 public class SignupService {
@@ -15,34 +18,34 @@ public class SignupService {
     private InstructorRepository instructorRepository;
 
 
-    public int signup(String email, String username, String password, String type) {
-        int state;
+    public ResultData signup(String email, String username, String password, String type) {
+        ResultData resultData;
         if (type.equals("student")) {
             Student student = studentRepository.findByEmail(email);
             if (student != null) {
-                state = 412;
+                resultData = new ResultData<>(USER_HAS_EXIST,null);
             } else {
                 student = new Student();
                 student.setEmail(email);
                 student.setUsername(username);
                 student.setPassword(password);
                 studentRepository.save(student);
-                state = 200;
+                resultData = new ResultData<>(SUCCESS,null);
             }
         } else {
             Instructor instructor = instructorRepository.findByEmail(email);
             if (instructor != null) {
-                state = 412;
+                resultData = new ResultData<>(USER_HAS_EXIST,null);
             } else {
                 instructor = new Instructor();
                 instructor.setEmail(email);
                 instructor.setUsername(username);
                 instructor.setPassword(password);
                 instructorRepository.save(instructor);
-                state = 200;
+                resultData = new ResultData<>(SUCCESS,null);
             }
         }
-        return state;
+        return resultData;
     }
 }
 

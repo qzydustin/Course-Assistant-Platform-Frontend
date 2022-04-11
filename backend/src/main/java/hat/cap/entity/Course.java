@@ -1,4 +1,4 @@
-package hat.cap.model;
+package hat.cap.entity;
 
 import lombok.*;
 
