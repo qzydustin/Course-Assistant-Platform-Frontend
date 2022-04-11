@@ -1,5 +1,6 @@
 package hat.cap.controller;
 
+import hat.cap.entity.ResultData;
 import hat.cap.service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,7 @@ public class SignupController {
     private SignupService signupService;
 
     @RequestMapping("/signup")
-    public int signup(@RequestBody Map<String, String> map) {
+    public Object signup(@RequestBody Map<String, String> map) {
         return signupService.signup(map.get("email"),map.get("username"),map.get("password"),map.get("type"));
     }
 
