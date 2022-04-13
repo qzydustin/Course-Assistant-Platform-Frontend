@@ -1,9 +1,11 @@
 import * as React from 'react';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
+import axios from "axios";
 
 
 const departments = [
@@ -29,46 +31,35 @@ export default function MultilineTextFields() {
         const createCourseForm = new FormData(event.currentTarget);
 
         console.log("handle create course button");
-        // let data = JSON.stringify({
-        //     "Course ID": courseSearchForm.get("Course ID"),
-        //     "Course name": courseSearchForm.get("Course Name"),
-        //     "Offered Time": courseSearchForm.get("Offered Time"),
-        // })
+
         let data = JSON.stringify({
-            "email": "teststudent@qq.com",
-            "password": "123123",
+            "email": "1234",
+            "password": "1234",
             "type": "instructor",
-            "course id": createCourseForm.get("course id"),
-            "course name": createCourseForm.get("course name"),
-            "availability": createCourseForm.get("availability"),
-            "units": createCourseForm.get("units"),
+            "code": createCourseForm.get("course id"),
+            "title": createCourseForm.get("course name"),
+            "seat": createCourseForm.get("availability"),
+            "unit": createCourseForm.get("units"),
             "department": createCourseForm.get("department"),
             "semester": createCourseForm.get("offered time"),
-            "description": createCourseForm.get("description"),
+            "information": createCourseForm.get("description"),
         })
 
         console.log(data);
-        // axios.post('http://127.0.0.1:8080/login',
-        //     data,
-        //     {headers: {'SearchCourse-Type': 'application/json'}})
-        //     .then(function(response) {
-        //         if(response.data === 200){
-        //             console.log("Log in success!");
-        //             toDashboard = true;
-        //             navigate('/dashboard');
-        //             // window.moveTo("/dashboard");
-        //         } else if(response.data === 400){
-        //             console.log("Cannot log in.");
-        //         }
-        //     });
-
-        // console.log(res);
+        axios.post('http://127.0.0.1:8080/add-course',
+            data,
+            {headers: {'Content-Type': 'application/json'}})
+            .then(function(response) {
+                if(response.data.code === 1000){
+                    console.log("Add course successfully!");
+                } else {
+                    console.log(response.data.message);
+                }
+            });
     };
 
-  const [value, setValue] = React.useState('Controlled');
-  // const [currency, setCurrency] = React.useState('EUR');
-  const [department, setDepartment] = React.useState('');
-  const [offeredTime, setOfferedTime] = React.useState('');
+    const [department, setDepartment] = React.useState('');
+    const [offeredTime, setOfferedTime] = React.useState('');
 
 
     const handleDepartmentChange = (event) => {
@@ -78,101 +69,103 @@ export default function MultilineTextFields() {
         setOfferedTime(event.target.value);
     }
 
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-    >
-      <div>
-      <TextField
-          id="standard-textarea"
-          label="Course Name"
-          name="course name"
-          placeholder="Placeholder"
-          multiline
-          variant="standard"
-        />
-        <TextField
-          id="standard-textarea"
-          label="Course ID"
-          name="course id"
-          placeholder="Placeholder"
-          multiline
-          variant="standard"
-        />
-        <TextField
-          id="standard-textarea"
-          label="Availability"
-          name="availability"
-          placeholder="Placeholder"
-          multiline
-          variant="standard"
-        />
-        <TextField
-          id="standard-textarea"
-          label="Units"
-          name="units"
-          placeholder="Placeholder"
-          multiline
-          variant="standard"
-        />
-      </div>
-      <div>
-        <TextField
-          id="standard-select-currency"
-          select
-          label="Department"
-          name="department"
-          value={department}
-          onChange={handleDepartmentChange}
-          helperText="Please select your department"
-          variant="standard"
+    return (
+      <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit}
         >
-          {departments.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+          <div>
           <TextField
+              id="standard-textarea"
+              label="Course Name"
+              name="course name"
+              placeholder="Placeholder"
+              multiline
+              variant="standard"
+            />
+            <TextField
+              id="standard-textarea"
+              label="Course ID"
+              name="course id"
+              placeholder="Placeholder"
+              multiline
+              variant="standard"
+            />
+            <TextField
+              id="standard-textarea"
+              label="Availability"
+              name="availability"
+              placeholder="Placeholder"
+              multiline
+              variant="standard"
+            />
+            <TextField
+              id="standard-textarea"
+              label="Units"
+              name="units"
+              placeholder="Placeholder"
+              multiline
+              variant="standard"
+            />
+          </div>
+          <div>
+            <TextField
               id="standard-select-currency"
               select
-              label="Offered Time"
-              name="offered time"
-              value={offeredTime}
-              onChange={handleOfferedTimeChange}
-              helperText="Please select your offered time"
+              label="Department"
+              name="department"
+              value={department}
+              onChange={handleDepartmentChange}
+              helperText="Please select your department"
               variant="standard"
-          >
-              {offeredTimes.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                  </MenuItem>
+            >
+              {departments.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
               ))}
-          </TextField>
-        </div>
-        <div>
-        <TextField
-          id="standard-multiline-static"
-          label="Description"
-          name="description"
-          multiline
-          rows={4}
-          variant="standard"
-        />
-      </div>
-        <Grid item>
-            <Button type="submit"
-                    variant="contained"
-                    sx={{mr: 1}}>
-                Create Course
-            </Button>
-        </Grid>
-    </Box>
-  );
+            </TextField>
+              <TextField
+                  id="standard-select-currency"
+                  select
+                  label="Offered Time"
+                  name="offered time"
+                  value={offeredTime}
+                  onChange={handleOfferedTimeChange}
+                  helperText="Please select your offered time"
+                  variant="standard"
+              >
+                  {offeredTimes.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                      </MenuItem>
+                  ))}
+              </TextField>
+            </div>
+            <div>
+            <TextField
+              id="standard-multiline-static"
+              label="Description"
+              name="description"
+              multiline
+              rows={4}
+              variant="standard"
+            />
+          </div>
+            <Grid item>
+                <Button type="submit"
+                        variant="contained"
+                        sx={{mr: 1}}>
+                    Create Course
+                </Button>
+            </Grid>
+        </Box>
+      </Paper>
+    );
 }

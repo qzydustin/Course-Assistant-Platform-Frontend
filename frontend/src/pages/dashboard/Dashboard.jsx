@@ -193,8 +193,7 @@ export default function Dashboard() {
   const isCreateCourseShown = useSelector(state => state.contentsController.isCreateCourseShown);
   const isSearchCourseShown = useSelector(state => state.contentsController.isSearchCourseShown);
 
-  console.log("isCreateCourseShown = ", isCreateCourseShown);
-  // console.log("isContent1Shown = ", isContent1Shown);
+
 
 
   return (

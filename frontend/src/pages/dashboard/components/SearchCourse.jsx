@@ -13,6 +13,9 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Row from './TableRow';
 import {useState} from "react";
+import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import { toSwitch1 } from '../dashboardSlice';
 
 const departments = [
     {value: 'Empty', label: ''},
@@ -29,94 +32,82 @@ const offeredTimes = [
     {value: '2022 winter', label: '2022 Winter',},
 ];
 
-function createData(name, calories, fat, carbs, protein, price) {
+function createData(code, title, department, instructor, unit, seat, semester, information) {
     return {
-        name,
-        calories,
-        fat,
-        carbs,
-        protein,
-        price,
-        history: [
-            {
-                date: '2020-01-05',
-                customerId: '11091700',
-                amount: 3,
-            },
-            {
-                date: '2020-01-02',
-                customerId: 'Anonymous',
-                amount: 1,
-            },
-        ],
+        code,
+        title,
+        department,
+        instructor,
+        unit,
+        seat,
+        semester,
+        information,
     };
 }
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-    createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-    createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-    createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
+const courseList = [
+    createData('CSC101', 'Intro101', 'computer science',
+        'Instructor name', '1', '60', '2022 spring', 'description'),
+    createData('CSC102', 'Intro102', 'computer science',
+        'Instructor name', '3', '30', '2022 spring', 'description'),
+    // createData('CSC103', 'Intro103', 'computer science',
+    //     'Instructor name', '3', '40', '2022 spring', 'description'),
 ];
+
+// const rows = [];
 
 export default function SearchCourse() {
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const courseSearchForm = new FormData(event.currentTarget);
-
-        console.log("handle search button");
-        let data = JSON.stringify({
-            "email": "teststudent@qq.com",
-            "password": "123123",
-            "type": "student",
-            "department": courseSearchForm.get("department"),
-            "offered time": courseSearchForm.get("offered time"),
-            "course name": courseSearchForm.get("course name"),
-        })
-        // let data = JSON.stringify({
-        //     "email": "teststudent@qq.com",
-        //     "password": "123123",
-        //     "type": "student",
-        //     "department": "computer science",
-        //     "semester": "2022 Spring"
-        // })
-
-        console.log(data);
-        // axios.post('http://127.0.0.1:8080/login',
-        //     data,
-        //     {headers: {'SearchCourse-Type': 'application/json'}})
-        //     .then(function(response) {
-        //         if(response.data === 200){
-        //             console.log("Log in success!");
-        //             toDashboard = true;
-        //             navigate('/dashboard');
-        //             // window.moveTo("/dashboard");
-        //         } else if(response.data === 400){
-        //             console.log("Cannot log in.");
-        //         }
-        //     });
-
-        // console.log(res);
-    };
-
+    const dispatch = useDispatch();
     // send row data to TableRow.jsx
-    const [rowData, setRowData] = useState('');
-
-    const sendToTableRow = () => {
-        setRowData(rows);
-    }
 
     const [department, setDepartment] = React.useState('Empty');
     const [offeredTime, setOfferedTime] = React.useState('Empty');
+    const [courseListData, setCourseListData] = React.useState('');
 
+    const sendToTableRow = () => {
+        setCourseListData(courseList);
+    }
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);
     }
     const handleOfferedTimeChange = (event) => {
         setOfferedTime(event.target.value);
     }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const courseSearchForm = new FormData(event.currentTarget);
+
+        console.log("handle search button");
+        let data = JSON.stringify({
+            "email": "1234",
+            "password": "1234",
+            "type": "instructor",
+            "department": courseSearchForm.get("department"),
+            "semester": courseSearchForm.get("offered time"),
+            // "title": courseSearchForm.get("course name"),
+        })
+
+        console.log(data);
+        axios.post('http://127.0.0.1:8080/search-course',
+            data,
+            {headers: {'Content-Type': 'application/json'}})
+            .then(function(response) {
+                if(response.data.code === 1000){
+                    console.log("Search course successfully!");
+                    // console.log(response.data.data);
+                    // setCourseListData(response.data.data["0"])
+                    // const rows = [
+                    //     createData(response.data.data["0"].code, response.data.data["0"].title, response.data.data["0"].department, response.data.data["0"].instructor.username,
+                    //     response.data.data["0"].unit, response.data.data["0"].seat, response.data.data["0"].semester, response.data.data["0"].information)
+                    // ];
+                    console.log(courseListData);
+                } else {
+                    console.log(response.data.message);
+                }
+            });
+
+    };
 
     return (
         <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
@@ -194,18 +185,8 @@ export default function SearchCourse() {
                         </Grid>
                     </Toolbar>
                 </AppBar>
-                    {/*<Grid item xs>*/}
-                    {/*    <TextField*/}
-                    {/*        error*/}
-                    {/*        name="Course Name"*/}
-                    {/*        label="Course Name"*/}
-                    {/*        defaultValue="Text Field 2"*/}
-                    {/*        helperText="Incorrect entry."*/}
-                    {/*        variant="standard"*/}
-                    {/*    />*/}
-                    {/*</Grid>*/}
-                <Row sendToTableRow={rows}></Row>
             </Box>
+            <Row sendToTableRow={courseList}></Row>
         </Paper>
     );
 }
