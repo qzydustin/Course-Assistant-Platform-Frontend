@@ -50,11 +50,8 @@ const courseList = [
         'Instructor name', '1', '60', '2022 spring', 'description'),
     createData('CSC102', 'Intro102', 'computer science',
         'Instructor name', '3', '30', '2022 spring', 'description'),
-    // createData('CSC103', 'Intro103', 'computer science',
-    //     'Instructor name', '3', '40', '2022 spring', 'description'),
 ];
 
-// const rows = [];
 
 export default function SearchCourse() {
 
@@ -74,7 +71,7 @@ export default function SearchCourse() {
     const handleOfferedTimeChange = (event) => {
         setOfferedTime(event.target.value);
     }
-    const handleSubmit = (event) => {
+    const handleSearchCourse = (event) => {
         event.preventDefault();
         const courseSearchForm = new FormData(event.currentTarget);
 
@@ -109,6 +106,13 @@ export default function SearchCourse() {
 
     };
 
+    const handleEnroll = (event) => {
+        event.preventDefault();
+        const courseEnrollForm = new FormData(event.currentTarget);
+
+        console.log(courseEnrollForm)
+    }
+
     return (
         <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
             <Box
@@ -116,7 +120,7 @@ export default function SearchCourse() {
                 sx={{'& .MuiTextField-root': {m: 1.5, width: '20ch'},}}
                 noValidate
                 autoComplete="off"
-                onSubmit={handleSubmit}
+                onSubmit={handleSearchCourse}
             >
                 <AppBar
                     position="static"
@@ -186,7 +190,30 @@ export default function SearchCourse() {
                     </Toolbar>
                 </AppBar>
             </Box>
-            <Row sendToTableRow={courseList}></Row>
+            <Box component={"form"}
+                noValidate
+                onSubmit={handleEnroll}>
+                <Row sendToTableRow={courseList} ></Row>
+                <Toolbar>
+                    <Box
+                        sx={{
+                            '& .MuiTextField-root': { m: 0, width: '25ch' },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                        onSubmit={handleEnroll}
+                        sx={{m:1}}
+                    >
+                        <Button type="submit"
+                                variant="contained"
+                                sx={{m:1}}
+                                placement="right-start"
+                        >
+                            Enroll Selected
+                        </Button>
+                    </Box>
+                </Toolbar>
+            </Box>
         </Paper>
     );
 }

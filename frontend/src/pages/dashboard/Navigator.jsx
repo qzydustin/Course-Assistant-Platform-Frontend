@@ -27,29 +27,29 @@ const categories = [
   {
     id: 'Build',
     children: [
-      { id: 'Front page', icon: <PeopleIcon />, active: 0,},
-      { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: 1},
-      { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: 2},
-      { id: 'Switch 3', icon: <PublicIcon /> , active: 3},
-      { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: 4},
-      { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: 5},
+      { id: 'Front page', icon: <PeopleIcon />, active: "Front Page",},
+      { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: "Switch 1"},
+      { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
+      { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
+      { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
+      { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
     ],
   },
   {
     id: 'Course Plaza',
     children: [
-      { id: 'Course_1', icon: <SettingsIcon />, active: 10},
-      { id: 'Course_2', icon: <TimerIcon />, active: 11},
-      { id: 'Course_3', icon: <PhonelinkSetupIcon />, active: 12},
+      { id: 'Course_1', icon: <SettingsIcon />, active: "Course_1"},
+      { id: 'Course_2', icon: <TimerIcon />, active: "Course_2"},
+      { id: 'Course_3', icon: <PhonelinkSetupIcon />, active: "Course_3"},
     ],
   },
   {
     id: 'Management',
     children: [
-      { id: 'Create Course', icon: <TimerIcon />, active: 20},
-      { id: 'Course Enroll', icon: <SettingsIcon />, active: 21},
-      { id: 'Performance', icon: <TimerIcon />, active: 22},
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: 23},
+      { id: 'Create Course', icon: <TimerIcon />, active: "Create Course"},
+      { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
+      { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
+      { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
     ],
   },
 ];
@@ -82,10 +82,10 @@ export default function Navigator(props) {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     console.log("index=",index);
-    if (index === 0) dispatch(toFrontPage());
-    if (index === 1) dispatch(toSwitch1());
-    if (index === 20) dispatch(toCreateCourse());
-    if (index === 21) dispatch(toCourseEnroll());
+    if (index === "Front Page") dispatch(toFrontPage());
+    if (index === "Switch 1") dispatch(toSwitch1());
+    if (index === "Create Course") dispatch(toCreateCourse());
+    if (index === "Course Enroll") dispatch(toCourseEnroll());
   };
 
   return (

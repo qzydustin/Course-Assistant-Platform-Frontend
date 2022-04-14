@@ -42,7 +42,7 @@ function Row(props) {
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={7}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{margin: 1}}>
+                        <Box sx={{margin: 0}}>
                             <Table size="small" aria-label="purchases">
                                 <TableBody>
                                     <TableRow key={row.instructor}>
