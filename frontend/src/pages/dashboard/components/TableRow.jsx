@@ -45,9 +45,9 @@ function Row(props) {
                         <Box sx={{margin: 0}}>
                             <Table size="small" aria-label="purchases">
                                 <TableBody>
-                                    <TableRow key={row.instructor}>
+                                    <TableRow key={row.instructor.username}>
                                         <TableCell component="th" scope="row">{"Instructor"}</TableCell>
-                                        <TableCell>{row.instructor}</TableCell>
+                                        <TableCell>{row.instructor.username}</TableCell>
                                     </TableRow>
                                     <TableRow key={row.unit}>
                                         <TableCell component="th" scope="row">{"Unit"}</TableCell>

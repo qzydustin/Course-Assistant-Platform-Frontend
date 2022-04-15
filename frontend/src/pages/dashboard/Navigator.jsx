@@ -20,8 +20,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 
 
-import { useDispatch } from 'react-redux';
-import { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll } from './dashboardSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll, toCourse_1 } from './dashboardSlice';
 
 const categories = [
   {
@@ -75,7 +75,6 @@ export default function Navigator(props) {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   const { ...other } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(true);
 
@@ -86,7 +85,10 @@ export default function Navigator(props) {
     if (index === "Switch 1") dispatch(toSwitch1());
     if (index === "Create Course") dispatch(toCreateCourse());
     if (index === "Course Enroll") dispatch(toCourseEnroll());
+    if (index === "Course_1") dispatch(toCourse_1("another course"));
   };
+  const courseList =useSelector(state => state.contentsController.courseList)
+  console.log(courseList)
 
   return (
     <Drawer variant="permanent" {...other}>
