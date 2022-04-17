@@ -27,8 +27,8 @@ public class StudentService {
         return resultData;
     }
 
-    public ResultData signup(String email, String username, String password) {
-        ResultData resultData;
+    public ResultData<?> signup(String email, String username, String password) {
+        ResultData<?> resultData;
         Student student = studentRepository.findStudentByEmail(email);
         if (student != null) {
             resultData = new ResultData<>(USER_HAS_EXIST, null);

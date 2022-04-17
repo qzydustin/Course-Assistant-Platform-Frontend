@@ -1,15 +1,13 @@
 package hat.cap.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @NoArgsConstructor(force = true)
-@AllArgsConstructor
+@Getter
+@Setter
 public class StudentCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

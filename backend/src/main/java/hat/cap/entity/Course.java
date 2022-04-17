@@ -1,16 +1,19 @@
 package hat.cap.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @NoArgsConstructor(force = true)
 @Table(name = "Course", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"code", "semester"})
 })
+@Getter
+@Setter
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
