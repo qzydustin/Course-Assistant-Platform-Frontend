@@ -46,13 +46,13 @@ export default function Login() {
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                if(response.data === 200){
+                if(response.data.code === 1000){
                     console.log("Log in success!");
                     toDashboard = true;
                     navigate('/dashboard');
                     // window.moveTo("/dashboard");
-                } else if(response.data === 400){
-                    console.log("Cannot log in.");
+                } else {
+                    console.log(response.data.message);
                 }
         });
     };
