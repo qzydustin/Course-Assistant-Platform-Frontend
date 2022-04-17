@@ -1,5 +1,6 @@
 # mysql
 
+DROP SCHEMA `CAP`;
 CREATE SCHEMA IF NOT EXISTS `CAP`;
 USE `CAP`;
 
@@ -53,11 +54,11 @@ CREATE TABLE student_course
     student_id BIGINT                NULL,
     course_id  BIGINT                NULL,
     grade      INT                   NULL,
-    CONSTRAINT pk_student_course PRIMARY KEY (id)
+    CONSTRAINT pk_studentcourse PRIMARY KEY (id)
 );
 
 ALTER TABLE student_course
-    ADD CONSTRAINT FK_STUDENT_COURSE_ON_COURSE FOREIGN KEY (course_id) REFERENCES course (id);
+    ADD CONSTRAINT FK_STUDENTCOURSE_ON_COURSE FOREIGN KEY (course_id) REFERENCES course (id);
 
 ALTER TABLE student_course
-    ADD CONSTRAINT FK_STUDENT_COURSE_ON_STUDENT FOREIGN KEY (student_id) REFERENCES student (id);
+    ADD CONSTRAINT FK_STUDENTCOURSE_ON_STUDENT FOREIGN KEY (student_id) REFERENCES student (id);
