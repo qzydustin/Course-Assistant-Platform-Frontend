@@ -3,13 +3,15 @@ package hat.cap.service;
 import hat.cap.entity.ResultData;
 import hat.cap.entity.Student;
 import hat.cap.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 import static hat.cap.entity.ResultDataCode.*;
+
 @Service
 public class StudentService {
-    @Autowired
+    @Resource
     private StudentRepository studentRepository;
 
     public ResultData<Student> login(String email, String password) {

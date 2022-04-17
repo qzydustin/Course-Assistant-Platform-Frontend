@@ -1,6 +1,7 @@
 package hat.cap.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,10 +10,10 @@ import javax.persistence.*;
 @NoArgsConstructor(force = true)
 public class Student {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique=true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
     private String username;

@@ -7,20 +7,20 @@ import hat.cap.entity.StudentCourse;
 import hat.cap.repository.CourseRepository;
 import hat.cap.repository.StudentCourseRepository;
 import hat.cap.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static hat.cap.entity.ResultDataCode.*;
 
 @Service
 public class CourseService {
-    @Autowired
+    @Resource
     private CourseRepository courseRepository;
-    @Autowired
+    @Resource
     private StudentRepository studentRepository;
-    @Autowired
+    @Resource
     private StudentCourseRepository studentCourseRepository;
 
     public ResultData<?> searchCoursesByDepartmentAndSemester(String department, String Semester) {

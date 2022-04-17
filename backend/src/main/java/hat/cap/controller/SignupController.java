@@ -3,7 +3,6 @@ package hat.cap.controller;
 import hat.cap.entity.ResultData;
 import hat.cap.service.InstructorService;
 import hat.cap.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,9 +14,9 @@ import static hat.cap.entity.ResultDataCode.USER_TYPE_WRONG;
 
 @RestController
 public class SignupController {
-    @Autowired
+    @Resource
     private InstructorService instructorService;
-    @Autowired
+    @Resource
     private StudentService studentService;
 
     @RequestMapping("/signup")
