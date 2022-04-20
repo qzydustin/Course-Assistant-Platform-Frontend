@@ -32,27 +32,6 @@ const offeredTimes = [
     {value: '2022 winter', label: '2022 Winter',},
 ];
 
-// function createData(code, title, department, instructor, unit, seat, semester, information) {
-//     return {
-//         code,
-//         title,
-//         department,
-//         instructor,
-//         unit,
-//         seat,
-//         semester,
-//         information,
-//     };
-// }
-
-// const courseList = [
-//     createData('CSC101', 'Intro101', 'computer science',
-//         'Instructor name', '1', '60', '2022 spring', 'description'),
-//     createData('CSC102', 'Intro102', 'computer science',
-//         'Instructor name', '3', '30', '2022 spring', 'description'),
-// ];
-
-// const courseList = []
 
 export default function SearchCourse() {
 
@@ -61,11 +40,7 @@ export default function SearchCourse() {
 
     const [department, setDepartment] = React.useState('Empty');
     const [offeredTime, setOfferedTime] = React.useState('Empty');
-    // const [courseListData, setCourseListData] = React.useState('');
-    //
-    // const sendToTableRow = () => {
-    //     setCourseListData(courseList);
-    // }
+    let enrollingCourse = useSelector(state => state.contentsController.enrollingCourse);
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);
     }
@@ -105,9 +80,9 @@ export default function SearchCourse() {
 
     const handleEnroll = (event) => {
         event.preventDefault();
-        const courseEnrollForm = new FormData(event.currentTarget);
+        const courseEnrollForm = enrollingCourse;
 
-        console.log(courseEnrollForm);
+        console.log("Enroll:", courseEnrollForm);
     }
 
     const courseList = useSelector(state => state.contentsController.searchedCourse);

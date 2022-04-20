@@ -36,6 +36,7 @@ export const contentsSlice = createSlice({
         isSearchCourseShown: false,
         courseList : [],
         searchedCourse : [],
+        enrollingCourse : [],
     },
     reducers: {
         toFrontPage: (state) => {
@@ -67,12 +68,21 @@ export const contentsSlice = createSlice({
         },
         renewSearchedCourse:(state, action) => {
             state.searchedCourse = action.payload
-        }
+        },
+        addEnrollCourse:(state, action) => {
+            state.enrollingCourse = [...state.enrollingCourse, action.payload]
+        },
+        removeEnrollCourse:(state, action) =>{
+            state.enrollingCourse = state.enrollingCourse.filter(course =>
+                (course.code !== action.payload.code && course.semester !== action.payload.semester))
+        },
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll, toCourse_1, renewSearchedCourse} = contentsSlice.actions
+export const { toFrontPage, toSwitch1, toCreateCourse,
+    toCourseEnroll, toCourse_1, renewSearchedCourse,
+    addEnrollCourse, removeEnrollCourse} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 
