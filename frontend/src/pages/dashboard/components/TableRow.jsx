@@ -35,15 +35,15 @@ function Row(props) {
                 "isEnroll": true
             });
             dispatch(addEnrollCourse(enrollCourse));
-            // console.log(enrollCourse)
+            console.log("Enrolling: ", enrollCourse);
         } else {
             let removeCourse = JSON.stringify({
                 "code": row.code,
                 "semester": row.semester,
                 "isEnroll": false
             });
-            dispatch(removeEnrollCourse(removeCourse))
-            // console.log(removeCourse)
+            dispatch(removeEnrollCourse(removeCourse));
+            console.log("Remove: ", removeCourse);
         }
     }
     return (

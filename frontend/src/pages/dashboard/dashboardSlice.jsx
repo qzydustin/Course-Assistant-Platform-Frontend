@@ -70,11 +70,11 @@ export const contentsSlice = createSlice({
             state.searchedCourse = action.payload
         },
         addEnrollCourse:(state, action) => {
-            state.enrollingCourse = [...state.enrollingCourse, action.payload]
+            state.enrollingCourse = [...state.enrollingCourse, JSON.parse(action.payload)]
         },
         removeEnrollCourse:(state, action) =>{
             state.enrollingCourse = state.enrollingCourse.filter(course =>
-                (course.code !== action.payload.code && course.semester !== action.payload.semester))
+                (course.code !== JSON.parse(action.payload).code || course.semester !== JSON.parse(action.payload).semester))
         },
     }
 })
