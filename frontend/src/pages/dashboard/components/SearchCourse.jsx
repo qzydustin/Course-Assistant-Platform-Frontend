@@ -15,7 +15,7 @@ import Row from './TableRow';
 import {useState} from "react";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import { toSwitch1 } from '../dashboardSlice';
+import { renewSearchedCourse } from '../dashboardSlice';
 
 const departments = [
     {value: 'Empty', label: ''},
@@ -32,29 +32,6 @@ const offeredTimes = [
     {value: '2022 winter', label: '2022 Winter',},
 ];
 
-function createData(code, title, department, instructor, unit, seat, semester, information) {
-    return {
-        code,
-        title,
-        department,
-        instructor,
-        unit,
-        seat,
-        semester,
-        information,
-    };
-}
-
-const courseList = [
-    createData('CSC101', 'Intro101', 'computer science',
-        'Instructor name', '1', '60', '2022 spring', 'description'),
-    createData('CSC102', 'Intro102', 'computer science',
-        'Instructor name', '3', '30', '2022 spring', 'description'),
-    // createData('CSC103', 'Intro103', 'computer science',
-    //     'Instructor name', '3', '40', '2022 spring', 'description'),
-];
-
-// const rows = [];
 
 export default function SearchCourse() {
 
@@ -63,21 +40,17 @@ export default function SearchCourse() {
 
     const [department, setDepartment] = React.useState('Empty');
     const [offeredTime, setOfferedTime] = React.useState('Empty');
-    const [courseListData, setCourseListData] = React.useState('');
-
-    const sendToTableRow = () => {
-        setCourseListData(courseList);
-    }
+    let enrollingCourse = useSelector(state => state.contentsController.enrollingCourse);
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);
     }
     const handleOfferedTimeChange = (event) => {
         setOfferedTime(event.target.value);
     }
-    const handleSubmit = (event) => {
+    const handleSearchCourse = (event) => {
         event.preventDefault();
-        const courseSearchForm = new FormData(event.currentTarget);
 
+        const courseSearchForm = new FormData(event.currentTarget);
         console.log("handle search button");
         let data = JSON.stringify({
             "email": "1234",
@@ -95,19 +68,24 @@ export default function SearchCourse() {
             .then(function(response) {
                 if(response.data.code === 1000){
                     console.log("Search course successfully!");
-                    // console.log(response.data.data);
-                    // setCourseListData(response.data.data["0"])
-                    // const rows = [
-                    //     createData(response.data.data["0"].code, response.data.data["0"].title, response.data.data["0"].department, response.data.data["0"].instructor.username,
-                    //     response.data.data["0"].unit, response.data.data["0"].seat, response.data.data["0"].semester, response.data.data["0"].information)
-                    // ];
-                    console.log(courseListData);
+                    // console.log(courseListData);
+                    dispatch(renewSearchedCourse(response.data.data));
                 } else {
                     console.log(response.data.message);
+                    dispatch(renewSearchedCourse([]));
                 }
             });
 
     };
+
+    const handleEnroll = (event) => {
+        event.preventDefault();
+        const courseEnrollForm = enrollingCourse;
+
+        console.log("Enroll:", courseEnrollForm);
+    }
+
+    const courseList = useSelector(state => state.contentsController.searchedCourse);
 
     return (
         <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
@@ -116,7 +94,7 @@ export default function SearchCourse() {
                 sx={{'& .MuiTextField-root': {m: 1.5, width: '20ch'},}}
                 noValidate
                 autoComplete="off"
-                onSubmit={handleSubmit}
+                onSubmit={handleSearchCourse}
             >
                 <AppBar
                     position="static"
@@ -186,7 +164,30 @@ export default function SearchCourse() {
                     </Toolbar>
                 </AppBar>
             </Box>
-            <Row sendToTableRow={courseList}></Row>
+            <Box component={"form"}
+                noValidate
+                onSubmit={handleEnroll}>
+                <Row sendToTableRow={courseList} ></Row>
+                <Toolbar>
+                    <Box
+                        sx={{
+                            '& .MuiTextField-root': { m: 0, width: '25ch' },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                        onSubmit={handleEnroll}
+                        sx={{m:1}}
+                    >
+                        <Button type="submit"
+                                variant="contained"
+                                sx={{m:1}}
+                                placement="right-start"
+                        >
+                            Enroll Selected
+                        </Button>
+                    </Box>
+                </Toolbar>
+            </Box>
         </Paper>
     );
 }

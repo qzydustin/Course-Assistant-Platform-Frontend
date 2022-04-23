@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -79,15 +80,17 @@ export default function MultilineTextFields() {
           noValidate
           autoComplete="off"
           onSubmit={handleSubmit}
+          sx={{ml:4,mt:2,gap:2}}
         >
-          <div>
-          <TextField
+          <Box>
+            <TextField
               id="standard-textarea"
               label="Course Name"
               name="course name"
               placeholder="Placeholder"
               multiline
               variant="standard"
+              sx={{m:2}}
             />
             <TextField
               id="standard-textarea"
@@ -96,6 +99,7 @@ export default function MultilineTextFields() {
               placeholder="Placeholder"
               multiline
               variant="standard"
+              sx={{m:2}}
             />
             <TextField
               id="standard-textarea"
@@ -104,6 +108,7 @@ export default function MultilineTextFields() {
               placeholder="Placeholder"
               multiline
               variant="standard"
+              sx={{m:2}}
             />
             <TextField
               id="standard-textarea"
@@ -112,8 +117,9 @@ export default function MultilineTextFields() {
               placeholder="Placeholder"
               multiline
               variant="standard"
+              sx={{m:2}}
             />
-          </div>
+          </Box>
           <div>
             <TextField
               id="standard-select-currency"
@@ -124,6 +130,7 @@ export default function MultilineTextFields() {
               onChange={handleDepartmentChange}
               helperText="Please select your department"
               variant="standard"
+              sx={{m:2}}
             >
               {departments.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -131,24 +138,25 @@ export default function MultilineTextFields() {
                 </MenuItem>
               ))}
             </TextField>
-              <TextField
-                  id="standard-select-currency"
-                  select
-                  label="Offered Time"
-                  name="offered time"
-                  value={offeredTime}
-                  onChange={handleOfferedTimeChange}
-                  helperText="Please select your offered time"
-                  variant="standard"
-              >
-                  {offeredTimes.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                      </MenuItem>
-                  ))}
-              </TextField>
-            </div>
-            <div>
+            <TextField
+              id="standard-select-currency"
+              select
+              label="Offered Time"
+              name="offered time"
+              value={offeredTime}
+              onChange={handleOfferedTimeChange}
+              helperText="Please select your offered time"
+              variant="standard"
+              sx={{m:2}}
+            >
+              {offeredTimes.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                  </MenuItem>
+              ))}
+            </TextField>
+          </div>
+          <div>
             <TextField
               id="standard-multiline-static"
               label="Description"
@@ -156,15 +164,19 @@ export default function MultilineTextFields() {
               multiline
               rows={4}
               variant="standard"
+              sx={{m:2}}
             />
           </div>
-            <Grid item>
-                <Button type="submit"
-                        variant="contained"
-                        sx={{mr: 1}}>
-                    Create Course
-                </Button>
-            </Grid>
+            <Toolbar>
+                <Grid item>
+                    <Button type="submit"
+                            variant="contained"
+                            sx={{m:2}}
+                            placement="right-start">
+                        Create Course
+                    </Button>
+                </Grid>
+            </Toolbar>
         </Box>
       </Paper>
     );

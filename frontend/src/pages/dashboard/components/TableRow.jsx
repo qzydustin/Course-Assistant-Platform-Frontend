@@ -14,18 +14,42 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Checkbox from '@mui/material/Checkbox';
-
+import { addEnrollCourse, removeEnrollCourse } from '../dashboardSlice';
+import {useDispatch} from "react-redux";
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
 function Row(props) {
     const {row} = props;
     const [open, setOpen] = React.useState(false);
+    const dispatch = useDispatch();
 
+
+    const handleCheckboxClick = (event) => {
+        // console.log("on check");
+        // console.log(event.target)
+        if(event.target.checked){
+            let enrollCourse = JSON.stringify({
+                "code": row.code,
+                "semester": row.semester,
+                "isEnroll": true
+            });
+            dispatch(addEnrollCourse(enrollCourse));
+            console.log("Enrolling: ", enrollCourse);
+        } else {
+            let removeCourse = JSON.stringify({
+                "code": row.code,
+                "semester": row.semester,
+                "isEnroll": false
+            });
+            dispatch(removeEnrollCourse(removeCourse));
+            console.log("Remove: ", removeCourse);
+        }
+    }
     return (
         <React.Fragment>
             <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                <TableCell> <Checkbox {...label} /> </TableCell>
+                <TableCell> <Checkbox {...label} role = {row.code} onClick={handleCheckboxClick} /> </TableCell>
                 <TableCell component="th" scope="row">{row.code}</TableCell>
                 <TableCell align="left">{row.title}</TableCell>
                 <TableCell align="left">{row.department}</TableCell>
@@ -42,12 +66,12 @@ function Row(props) {
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={7}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{margin: 1}}>
+                        <Box sx={{margin: 0}}>
                             <Table size="small" aria-label="purchases">
                                 <TableBody>
-                                    <TableRow key={row.instructor}>
+                                    <TableRow key={row.instructor.username}>
                                         <TableCell component="th" scope="row">{"Instructor"}</TableCell>
-                                        <TableCell>{row.instructor}</TableCell>
+                                        <TableCell>{row.instructor.username}</TableCell>
                                     </TableRow>
                                     <TableRow key={row.unit}>
                                         <TableCell component="th" scope="row">{"Unit"}</TableCell>
@@ -76,9 +100,8 @@ Row.propTypes = {
         code: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         department: PropTypes.string.isRequired,
-        instructor: PropTypes.string.isRequired,
-        unit: PropTypes.string.isRequired,
-        seat: PropTypes.string.isRequired,
+        unit: PropTypes.number.isRequired,
+        seat: PropTypes.number.isRequired,
         semester: PropTypes.string.isRequired,
         information: PropTypes.string.isRequired,
     }).isRequired,
@@ -98,9 +121,11 @@ export default function CollapsibleTable({sendToTableRow}) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {/*<FormGroup>*/}
                     {sendToTableRow.map((row) => (
                         <Row key={row.name} row={row}/>
                     ))}
+                    {/*</FormGroup>*/}
                 </TableBody>
             </Table>
         </TableContainer>
