@@ -34,9 +34,10 @@ export default function MultilineTextFields() {
         console.log("handle create course button");
 
         let data = JSON.stringify({
-            "email": "1234",
-            "password": "1234",
+            "email": "Ted@test.com",
+            "password": "123456",
             "type": "instructor",
+            // TODO change email and password
             "code": createCourseForm.get("course id"),
             "title": createCourseForm.get("course name"),
             "seat": createCourseForm.get("availability"),

@@ -32,18 +32,16 @@ function Row(props) {
             let enrollCourse = JSON.stringify({
                 "code": row.code,
                 "semester": row.semester,
-                "isEnroll": true
             });
             dispatch(addEnrollCourse(enrollCourse));
-            console.log("Enrolling: ", enrollCourse);
+            // console.log("Enrolling: ", enrollCourse);
         } else {
             let removeCourse = JSON.stringify({
                 "code": row.code,
                 "semester": row.semester,
-                "isEnroll": false
             });
             dispatch(removeEnrollCourse(removeCourse));
-            console.log("Remove: ", removeCourse);
+            // console.log("Remove: ", removeCourse);
         }
     }
     return (

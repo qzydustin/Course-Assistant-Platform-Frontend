@@ -53,8 +53,9 @@ export default function SearchCourse() {
         const courseSearchForm = new FormData(event.currentTarget);
         console.log("handle search button");
         let data = JSON.stringify({
-            "email": "1234",
-            "password": "1234",
+            "email": "Ted@test.com",
+            "password": "123456",
+            // TODO change email and password
             "type": "instructor",
             "department": courseSearchForm.get("department"),
             "semester": courseSearchForm.get("offered time"),
@@ -80,9 +81,43 @@ export default function SearchCourse() {
 
     const handleEnroll = (event) => {
         event.preventDefault();
-        const courseEnrollForm = enrollingCourse;
+        const courseSearchForm = new FormData(event.currentTarget);
+        console.log("handle search button");
+        console.log("enrollingCourse is ", enrollingCourse);
+        console.log("length is :", enrollingCourse.length);
 
-        console.log("Enroll:", courseEnrollForm);
+        // let code = enrollingCourse.get("code");
+        console.log(enrollingCourse[0]);
+        for (let i = 0; i < enrollingCourse.length; i++){
+            let data = JSON.stringify({
+                "email": "Ted@test.com",
+                "password": "123456",
+                // TODO change email and password
+                "type": "instructor",
+                "code": enrollingCourse[i]["code"],
+                "semester": enrollingCourse[i]["semester"],
+                "student_email": "Smith@test.com"
+            })
+
+            console.log("Enroll:", data);
+            axios.post('http://127.0.0.1:8080/enroll-course-by-instructor',
+                data,
+                {headers: {'Content-Type': 'application/json'}})
+                .then(function(response) {
+                    if(response.data.code === 1000){
+                        console.log("Enroll course successfully!");
+                        // dispatch(renewSearchedCourse(response.data.data));
+                    } else {
+                        console.log(response.data.message);
+                        // dispatch(renewSearchedCourse([]));
+                    }
+                });
+        }
+;
+
+
+
+
     }
 
     const courseList = useSelector(state => state.contentsController.searchedCourse);
