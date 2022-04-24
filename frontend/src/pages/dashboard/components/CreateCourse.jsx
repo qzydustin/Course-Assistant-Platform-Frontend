@@ -51,7 +51,7 @@ export default function CreateCourse({server}) {
             "information": createCourseForm.get("description"),
         })
 
-        console.log(data);
+        // console.log(data);
         axios.post(server.host+'/add-course',
             data,
             {headers: {'Content-Type': 'application/json'}})

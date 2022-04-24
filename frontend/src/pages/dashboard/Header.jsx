@@ -14,12 +14,24 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import {saveEmail, savePassword, saveType} from "./dashboardSlice";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 function Header(props) {
   const { onDrawerToggle } = props;
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
 
+  const handleLogout = (event) => {
+    event.preventDefault()
+    dispatch(saveEmail(''));
+    dispatch(savePassword(''));
+    dispatch(saveType(''));
+    navigate('/login');
+  }
   return (
     <React.Fragment>
       <AppBar color="primary" position="sticky" elevation={0}>
@@ -49,8 +61,9 @@ function Header(props) {
                 }}
                 rel="noopener noreferrer"
                 target="_blank"
+                onClick={handleLogout}
               >
-                Go to docs
+                Log out
               </Link>
             </Grid>
             <Grid item>

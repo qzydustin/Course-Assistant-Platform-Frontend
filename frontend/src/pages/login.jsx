@@ -56,7 +56,7 @@ export default function Login({server}) {
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
                 if(response.data.code === 1000){
-                    console.log("Log in success!");
+                    console.log("Log in successfully!");
                     toDashboard = true;
                     navigate('/dashboard');
                     // window.moveTo("/dashboard");
