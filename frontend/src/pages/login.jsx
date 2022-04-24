@@ -23,11 +23,12 @@ import {useDispatch, useSelector} from "react-redux";
 
 const theme = createTheme();
 
-export default function Login() {
+export default function Login({server}) {
+    // console.log("receive: ", server.host+'/login');
     const dispatch = useDispatch();
-    let email = useSelector(state => state.contentsController.email)
-    let password = useSelector(state => state.contentsController.password)
-    let type = useSelector(state => state.contentsController.type)
+    // let email = useSelector(state => state.contentsController.email)
+    // let password = useSelector(state => state.contentsController.password)
+    // let type = useSelector(state => state.contentsController.type)
 
     let toDashboard = false;
     let navigate = useNavigate();
@@ -43,14 +44,14 @@ export default function Login() {
         // console.log("handle login button");
         // console.log("Type is ", loginForm.get('role-group-label'));
         let data = JSON.stringify({
-            "email": email,
-            "password": password,
-            "type": type,
+            "email": loginForm.get("email"),
+            "password": loginForm.get("password"),
+            "type": loginForm.get('role-group-label'),
         })
 
-        // console.log(data)
+        console.log("log in data is ",data);
 
-        axios.post('http://127.0.0.1:8080/login',
+        axios.post(server.host+'/login',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {

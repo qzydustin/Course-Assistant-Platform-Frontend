@@ -33,7 +33,7 @@ const offeredTimes = [
 ];
 
 
-export default function SearchCourse() {
+export default function SearchCourse({server}) {
 
     const dispatch = useDispatch();
     // send row data to TableRow.jsx
@@ -65,7 +65,7 @@ export default function SearchCourse() {
         })
 
         console.log(data);
-        axios.post('http://127.0.0.1:8080/search-course',
+        axios.post(server.host+'/search-course',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {

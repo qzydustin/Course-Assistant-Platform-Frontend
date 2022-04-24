@@ -18,7 +18,7 @@ import axios from "axios";
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({server}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const signUpForm = new FormData(event.currentTarget);
@@ -31,7 +31,7 @@ export default function SignUp() {
         })
         // console.log(data);
 
-        axios.post('http://127.0.0.1:8080/signup', data, {headers: {'Content-Type': 'application/json'}}).then((response) => {
+        axios.post(server.host+'/signup', data, {headers: {'Content-Type': 'application/json'}}).then((response) => {
             console.log(response);
         });
     };

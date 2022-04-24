@@ -119,11 +119,9 @@ export default function CollapsibleTable({sendToTableRow}) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/*<FormGroup>*/}
-                    {sendToTableRow.map((row) => (
-                        <Row key={row.name} row={row}/>
+                    {sendToTableRow.map((row, idx) => (
+                        <Row key={idx} row={row}/>
                     ))}
-                    {/*</FormGroup>*/}
                 </TableBody>
             </Table>
         </TableContainer>

@@ -173,7 +173,7 @@ theme = {
 
 const drawerWidth = 256;
 
-export default function Dashboard() {
+export default function Dashboard({server}) {
 
   // read username and password from cookie, send them to the server
   // if the response is true, show user's contend, if not, back to the
@@ -232,12 +232,12 @@ export default function Dashboard() {
           ):null}
           {isCreateCourseShown ? (
               <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <CreateCourse />
+                <CreateCourse server={server}/>
               </Box>
           ):null}
           {isSearchCourseShown ? (
               <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <SearchCourse />
+                <SearchCourse server={server}/>
               </Box>
           ):null}
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>

@@ -26,7 +26,7 @@ const offeredTimes = [
 ];
 
 
-export default function MultilineTextFields() {
+export default function CreateCourse({server}) {
 
     let email = useSelector(state => state.contentsController.email)
     let password = useSelector(state => state.contentsController.password)
@@ -52,7 +52,7 @@ export default function MultilineTextFields() {
         })
 
         console.log(data);
-        axios.post('http://127.0.0.1:8080/add-course',
+        axios.post(server.host+'/add-course',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
@@ -80,12 +80,11 @@ export default function MultilineTextFields() {
         <Box
           component="form"
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
+            '& .MuiTextField-root': { m: 1, ml:4, mt:2, width: '25ch' },
           }}
           noValidate
           autoComplete="off"
           onSubmit={handleSubmit}
-          sx={{ml:4,mt:2,gap:2}}
         >
           <Box>
             <TextField
