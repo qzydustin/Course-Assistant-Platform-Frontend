@@ -14,13 +14,13 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import {saveEmail, savePassword, saveType} from "./dashboardSlice";
+import {saveEmail, savePassword, saveType} from "../dashboardSlice";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
-function Header(props) {
+function ManageHeader(props) {
   const { onDrawerToggle } = props;
   const dispatch = useDispatch();
   let navigate = useNavigate();
@@ -92,7 +92,7 @@ function Header(props) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Header's header
+                Course Management
               </Typography>
             </Grid>
             <Grid item>
@@ -115,20 +115,20 @@ function Header(props) {
           </Grid>
         </Toolbar>
       </AppBar>
-      <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-        <Tabs value={0} textColor="inherit">
-          <Tab label="Label_1" />
-          <Tab label="Label_2" />
-          <Tab label="Label_3" />
-          <Tab label="Label_4" />
-        </Tabs>
-      </AppBar>
+      {/*<AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>*/}
+      {/*  <Tabs value={0} textColor="inherit">*/}
+      {/*    <Tab label="Label_1" />*/}
+      {/*    <Tab label="Label_2" />*/}
+      {/*    <Tab label="Label_3" />*/}
+      {/*    <Tab label="Label_4" />*/}
+      {/*  </Tabs>*/}
+      {/*</AppBar>*/}
     </React.Fragment>
   );
 }
 
-Header.propTypes = {
+ManageHeader.propTypes = {
   onDrawerToggle: PropTypes.func.isRequired,
 };
 
-export default Header;
+export default ManageHeader;

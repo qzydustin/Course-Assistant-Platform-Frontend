@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -8,19 +8,18 @@ import Link from '@mui/material/Link';
 import Navigator from './Navigator';
 import Content from './components/Content';
 import Content_1 from './components/Content_1';
+import CourseContent from './components/CourseContent';
 import CreateCourse from './components/CreateCourse';
 import SearchCourse from './components/SearchCourse';
-import Header from './Header';
-import {store} from '../dashboardStore';
-
-import { useSelector } from 'react-redux';
-import {Create} from "@mui/icons-material";
+import ManageHeader from './components/ManageHeader';
+import CourseHeader from "./components/CourseHeader";
+import {useSelector} from 'react-redux';
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Typography variant="body2" color="text.secondary" align="center">
+        {'Copyright © '}
+        <Link color="inherit" href="https://mui.com/">
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}.
@@ -188,11 +187,13 @@ export default function Dashboard({server}) {
   // console.log("round 0");
   // console.log(store.getState())
 
-  const isContentShown = useSelector(state => state.contentsController.isContentShown);
-  const isContent1Shown = useSelector(state => state.contentsController.isContent1Shown);
-  const isCreateCourseShown = useSelector(state => state.contentsController.isCreateCourseShown);
-  const isSearchCourseShown = useSelector(state => state.contentsController.isSearchCourseShown);
+  const isFrontPage = useSelector(state => state.contentsController.isContentShown);
+  const isSwitch1 = useSelector(state => state.contentsController.isContent1Shown);
+  const isCreateCourse = useSelector(state => state.contentsController.isCreateCourseShown);
+  const isSearchCourse = useSelector(state => state.contentsController.isSearchCourseShown);
+  const isActiveCourse = useSelector(state => state.contentsController.activeCourseCode)
 
+  console.log("isActive is ", isActiveCourse);
 
 
 
@@ -219,25 +220,42 @@ export default function Dashboard({server}) {
 
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header onDrawerToggle={handleDrawerToggle} />
-          {isContentShown ? (
-              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <Content />
+          {isFrontPage ? (
+              <Box>
+                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
+                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+                  <Content/>
+                </Box>
               </Box>
           ):null}
-          {isContent1Shown ? (
-              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <Content_1/>
+          {isSwitch1 ? (
+              <Box>
+                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
+                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+                  <Content_1/>
+                </Box>
               </Box>
           ):null}
-          {isCreateCourseShown ? (
-              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <CreateCourse server={server}/>
+          {(isActiveCourse !== '') ? (
+              <Box>
+                <CourseHeader onDrawerToggle={handleDrawerToggle}/>
+                <CourseContent/>
               </Box>
           ):null}
-          {isSearchCourseShown ? (
-              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <SearchCourse server={server}/>
+          {isCreateCourse ? (
+              <Box>
+                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
+                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+                  <CreateCourse server={server}/>
+                </Box>
+              </Box>
+          ):null}
+          {isSearchCourse ? (
+              <Box>
+                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
+                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+                  <SearchCourse server={server}/>
+                </Box>
               </Box>
           ):null}
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
