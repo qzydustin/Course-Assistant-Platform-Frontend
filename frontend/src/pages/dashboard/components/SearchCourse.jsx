@@ -37,6 +37,9 @@ export default function SearchCourse() {
 
     const dispatch = useDispatch();
     // send row data to TableRow.jsx
+    let email = useSelector(state => state.contentsController.email)
+    let password = useSelector(state => state.contentsController.password)
+    let type = useSelector(state => state.contentsController.type)
 
     const [department, setDepartment] = React.useState('Empty');
     const [offeredTime, setOfferedTime] = React.useState('Empty');
@@ -53,10 +56,9 @@ export default function SearchCourse() {
         const courseSearchForm = new FormData(event.currentTarget);
         console.log("handle search button");
         let data = JSON.stringify({
-            "email": "Ted@test.com",
-            "password": "123456",
-            // TODO change email and password
-            "type": "instructor",
+            "email": email,
+            "password": password,
+            "type": type,
             "department": courseSearchForm.get("department"),
             "semester": courseSearchForm.get("offered time"),
             // "title": courseSearchForm.get("course name"),
@@ -90,10 +92,9 @@ export default function SearchCourse() {
         console.log(enrollingCourse[0]);
         for (let i = 0; i < enrollingCourse.length; i++){
             let data = JSON.stringify({
-                "email": "Ted@test.com",
-                "password": "123456",
-                // TODO change email and password
-                "type": "instructor",
+                "email": email,
+                "password": password,
+                "type": type,
                 "code": enrollingCourse[i]["code"],
                 "semester": enrollingCourse[i]["semester"],
                 "student_email": "Smith@test.com"

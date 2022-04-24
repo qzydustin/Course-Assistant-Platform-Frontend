@@ -13,34 +13,42 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
+
+import { saveEmail, savePassword, saveType } from "./dashboard/dashboardSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const theme = createTheme();
 
 export default function Login() {
+    const dispatch = useDispatch();
+    let email = useSelector(state => state.contentsController.email)
+    let password = useSelector(state => state.contentsController.password)
+    let type = useSelector(state => state.contentsController.type)
 
     let toDashboard = false;
     let navigate = useNavigate();
-
-    // update toDashboard
-    // if(toDashboard === true) navigate("/dashboard");
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const loginForm = new FormData(event.currentTarget);
 
-        console.log("handle login button");
+        dispatch(saveEmail(loginForm.get("email")));
+        dispatch(savePassword(loginForm.get("password")));
+        dispatch(saveType(loginForm.get('role-group-label')));
+
+        // console.log("handle login button");
+        // console.log("Type is ", loginForm.get('role-group-label'));
         let data = JSON.stringify({
-            "email": loginForm.get("email"),
-            "password": loginForm.get("password"),
-            "type": loginForm.get('role-group-label')
+            "email": email,
+            "password": password,
+            "type": type,
         })
 
-        // console.log(data);
-
+        // console.log(data)
 
         axios.post('http://127.0.0.1:8080/login',
             data,

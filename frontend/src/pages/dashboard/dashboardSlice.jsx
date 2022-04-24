@@ -30,6 +30,9 @@ const pageContent = {
 export const contentsSlice = createSlice({
     name: 'contentsController',
     initialState: {
+        email:[],
+        password:[],
+        type:[],
         isContentShown: false,
         isContent1Shown: false,
         isCreateCourseShown: false,
@@ -39,6 +42,15 @@ export const contentsSlice = createSlice({
         enrollingCourse : [],
     },
     reducers: {
+        saveEmail: (state, action) => {
+            state.email = action.payload
+        },
+        savePassword: (state, action) => {
+            state.password = action.payload
+        },
+        saveType: (state, action) => {
+            state.type = action.payload
+        },
         toFrontPage: (state) => {
             state.isContentShown = pageContent["Front page"][0].value;
             state.isContent1Shown = pageContent["Front page"][1].value;
@@ -80,7 +92,8 @@ export const contentsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { toFrontPage, toSwitch1, toCreateCourse,
+export const { saveEmail, savePassword, saveType,
+    toFrontPage, toSwitch1, toCreateCourse,
     toCourseEnroll, toCourse_1, renewSearchedCourse,
     addEnrollCourse, removeEnrollCourse} = contentsSlice.actions
 

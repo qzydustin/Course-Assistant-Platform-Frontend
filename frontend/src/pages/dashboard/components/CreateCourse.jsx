@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
 import axios from "axios";
+import {useSelector} from "react-redux";
 
 
 const departments = [
@@ -27,6 +28,10 @@ const offeredTimes = [
 
 export default function MultilineTextFields() {
 
+    let email = useSelector(state => state.contentsController.email)
+    let password = useSelector(state => state.contentsController.password)
+    let type = useSelector(state => state.contentsController.type)
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const createCourseForm = new FormData(event.currentTarget);
@@ -34,10 +39,9 @@ export default function MultilineTextFields() {
         console.log("handle create course button");
 
         let data = JSON.stringify({
-            "email": "Ted@test.com",
-            "password": "123456",
-            "type": "instructor",
-            // TODO change email and password
+            "email": email,
+            "password": password,
+            "type": type,
             "code": createCourseForm.get("course id"),
             "title": createCourseForm.get("course name"),
             "seat": createCourseForm.get("availability"),
