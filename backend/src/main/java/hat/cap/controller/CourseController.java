@@ -1,19 +1,24 @@
 package hat.cap.controller;
 
-import hat.cap.entity.Course;
-import hat.cap.entity.Instructor;
-import hat.cap.entity.ResultData;
+import hat.cap.entityDatabase.Course;
+import hat.cap.entityDatabase.Instructor;
+import hat.cap.entityDatabase.Student;
+import hat.cap.entityResult.ResultCourse;
+import hat.cap.entityResult.ResultData;
 import hat.cap.service.CourseService;
 import hat.cap.service.InstructorService;
+import hat.cap.service.PermissionService;
 import hat.cap.service.StudentService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import static hat.cap.entity.ResultDataCode.*;
+import static hat.cap.resources.StateCode.*;
 
 @RestController
 public class CourseController {
@@ -21,79 +26,151 @@ public class CourseController {
     private CourseService courseService;
     @Resource
     private InstructorService instructorService;
-
     @Resource
     private StudentService studentService;
+    @Resource
+    private PermissionService permissionService;
 
 
-    @RequestMapping("/search-course")
-    public ResultData<?> searchCourse(@RequestBody Map<String, String> map) {
-        ResultData<?> userData;
-        if (map.get("type").equals("student")) {
-            userData = studentService.login(map.get("email"), map.get("password"));
-        } else if (map.get("type").equals("instructor")) {
-            userData = instructorService.login(map.get("email"), map.get("password"));
-        } else {
-            return new ResultData<>(USER_TYPE_WRONG, null);
+    @PostMapping("/get-courses")
+    public ResultData<?> getCourses(@RequestBody Map<String, String> map) {
+        String type = map.get("type");
+        String email = map.get("email");
+        String password = map.get("password");
+        String department = map.get("department");
+        String semester = map.get("semester");
+
+        if (!permissionService.hasPermission(type, email, password)) {
+            return new ResultData<>(NO_PERMISSION);
         }
-        if (userData.getCode() != SUCCESS.getCode()) {
-            return new ResultData<>(NO_PERMISSION, null);
+        List<Course> courses = courseService.getCourses(department, semester);
+        ArrayList<ResultCourse> resultCourses = new ArrayList<>();
+        for (Course course : courses) {
+            resultCourses.add(new ResultCourse(course));
         }
-        return courseService.searchCoursesByDepartmentAndSemester(map.get("department"), map.get("semester"));
+        return new ResultData<>(SUCCESS, resultCourses);
     }
 
-    @RequestMapping("/add-course")
-    public ResultData<?> addCourse(@RequestBody Map<String, String> map) {
-        ResultData<?> resultData;
-        if (!map.get("type").equals("instructor")) {
-            return new ResultData<>(NO_PERMISSION, null);
-        } else {
-            resultData = instructorService.login(map.get("email"), map.get("password"));
-            if (resultData.getCode() != SUCCESS.getCode()) {
-                return new ResultData<>(NO_PERMISSION, null);
-            }
+    @PostMapping("/create-course")
+    public ResultData<?> createCourse(@RequestBody Map<String, String> map) {
+        String type = map.get("type");
+        String email = map.get("email");
+        String password = map.get("password");
+        String code = map.get("code");
+        String title = map.get("title");
+        String information = map.get("information");
+        String department = map.get("department");
+        String semester = map.get("semester");
+        String unit = map.get("unit");
+        String seat = map.get("seat");
+
+        if (!type.equals("instructor")) {
+            return new ResultData<>(USER_TYPE_WRONG);
+        }
+        Instructor instructor = instructorService.getInstructor(email, password);
+        if (instructor == null) {
+            return new ResultData<>(COURSE_INSTRUCTOR_NOT_EXIST);
+        }
+        if (courseService.getCourse(code, semester) != null) {
+            return new ResultData<>(COURSE_HAS_EXIST);
         }
         Course course = new Course();
-        resultData = instructorService.searchByI_email(map.get("email"));
-        if (resultData.getCode() == SUCCESS.getCode()) {
-            course.setInstructor((Instructor) resultData.getData());
-            course.setCode(map.get("code"));
-            course.setTitle(map.get("title"));
-            course.setInformation(map.get("information"));
-            course.setDepartment(map.get("department"));
-            course.setSemester(map.get("semester"));
-            course.setUnit(Integer.parseInt(map.get("unit")));
-            course.setSeat(Integer.parseInt(map.get("seat")));
-            return courseService.addCourse(course);
+        course.setInstructor(instructor);
+        course.setCode(code);
+        course.setTitle(title);
+        course.setInformation(information);
+        course.setDepartment(department);
+        course.setSemester(semester);
+        course.setUnit(Integer.parseInt(unit));
+        course.setSeat(Integer.parseInt(seat));
+        courseService.createCourse(course);
+        return new ResultData<>(SUCCESS);
+
+    }
+
+
+    @PostMapping("/get-course-enrolled-student-number")
+    public ResultData<?> getCourseEnrolledStudentNumber(@RequestBody Map<String, String> map) {
+        String type = map.get("type");
+        String email = map.get("email");
+        String password = map.get("password");
+        String code = map.get("code");
+        String semester = map.get("semester");
+
+        if (!permissionService.hasPermission(type, email, password)) {
+            return new ResultData<>(NO_PERMISSION);
+        }
+        Course course = courseService.getCourse(code, semester);
+        if (course == null) {
+            return new ResultData<>(COURSE_NOT_FOUND);
+        }
+        int courseEnrolledStudentNumber = courseService.getCourseEnrolledStudentNumber(course);
+
+        return new ResultData<>(SUCCESS, courseEnrolledStudentNumber);
+    }
+
+
+    @PostMapping("/enroll-course")
+    public ResultData<?> enrollCourse(@RequestBody Map<String, String> map) {
+        String type = map.get("type");
+        String email = map.get("email");
+        String password = map.get("password");
+        String code = map.get("code");
+        String semester = map.get("semester");
+        String studentEmail;
+        if (type.equals("student")) {
+            studentEmail = email;
         } else {
-            return new ResultData<>(COURSE_INSTRUCTOR_NOT_EXIST, null);
+            studentEmail = map.get("student_email");
         }
 
+        if (!permissionService.hasPermission(type, email, password)) {
+            return new ResultData<>(NO_PERMISSION);
+        }
+        Student student = studentService.getStudent(studentEmail);
+        if (student == null) {
+            return new ResultData<>(USER_NOT_EXIST);
+        }
+        Course course = courseService.getCourse(code, semester);
+        if (course == null) {
+            return new ResultData<>(COURSE_NOT_FOUND);
+        }
+        if (courseService.hasEnrolledCourse(student, course)) {
+            return new ResultData<>(COURSE_HAS_BEEN_ENROLLED);
+        }
+        // instructor type branch
+        if (type.equals("instructor")) {
+            courseService.enrollCourse(student, course);
+            return new ResultData<>(SUCCESS);
+        }
+        // student type branch
+        int courseEnrolledStudentNumber = courseService.getCourseEnrolledStudentNumber(course);
+        if (course.getSeat() - courseEnrolledStudentNumber > 0) {
+            courseService.enrollCourse(student, course);
+            return new ResultData<>(SUCCESS);
+        }
+        return new ResultData<>(COURSE_IS_FULL);
     }
 
-    @RequestMapping("/enroll-course-by-student")
-    public ResultData<?> enrollCourseByStudent(@RequestBody Map<String, String> map) {
-        if (!map.get("type").equals("student")) {
-            return new ResultData<>(USER_TYPE_WRONG, null);
+    @PostMapping("/get-enrolled-courses")
+    public ResultData<?> getEnrolledCourses(@RequestBody Map<String, String> map) {
+        String type = map.get("type");
+        String email = map.get("email");
+        String password = map.get("password");
+
+        if (!permissionService.hasPermission(type, email, password)) {
+            return new ResultData<>(NO_PERMISSION);
         }
-        ResultData<?> resultData = studentService.login(map.get("email"), map.get("password"));
-        if (resultData.getCode() != SUCCESS.getCode()) {
-            return new ResultData<>(NO_PERMISSION, null);
+        if (type.equals("student")) {
+            Student student = studentService.getStudent(email, password);
+            ArrayList<ResultCourse> resultCourses = courseService.getEnrolledCourses(student);
+            return new ResultData<>(SUCCESS, resultCourses);
         }
-        return courseService.enrollCourseByStudent(map.get("email"), map.get("code"), map.get("semester"));
+        if (type.equals("instructor")) {
+            Instructor instructor = instructorService.getInstructor(email, password);
+            ArrayList<ResultCourse> resultCourses = courseService.getEnrolledCourses(instructor);
+            return new ResultData<>(SUCCESS, resultCourses);
+        }
+        return new ResultData<>(USER_TYPE_WRONG);
     }
-
-    @RequestMapping("/enroll-course-by-instructor")
-    public ResultData<?> enrollCourseByInstructor(@RequestBody Map<String, String> map) {
-        if (!map.get("type").equals("instructor")) {
-            return new ResultData<>(USER_TYPE_WRONG, null);
-        }
-        ResultData<?> resultData = instructorService.login(map.get("email"), map.get("password"));
-        if (resultData.getCode() != SUCCESS.getCode()) {
-            return new ResultData<>(NO_PERMISSION, null);
-        }
-        return courseService.enrollCourseByInstructor(map.get("student_email"), map.get("code"), map.get("semester"));
-    }
-
-
 }

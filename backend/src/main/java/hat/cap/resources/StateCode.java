@@ -1,12 +1,13 @@
-package hat.cap.entity;
+package hat.cap.resources;
 
 import lombok.Getter;
 
 @Getter
-public enum ResultDataCode {
+public enum StateCode {
     // common
     SUCCESS(1000, "SUCCESS"),
     NO_PERMISSION(1001, "NO_PERMISSION"),
+    UNKNOWN_ERROR(1002, "UNKNOWN_ERROR"),
 
     // user
     USER_HAS_EXIST(2000, "USER_HAS_EXIST"),
@@ -19,13 +20,14 @@ public enum ResultDataCode {
     COURSE_HAS_EXIST(3001, "COURSE_HAS_EXIST"),
     COURSE_INSTRUCTOR_NOT_EXIST(3002, "COURSE_INSTRUCTOR_NOT_EXIST"),
     COURSE_IS_FULL(3003, "COURSE_IS_FULL"),
+    COURSE_HAS_BEEN_ENROLLED(3003, "COURSE_HAS_BEEN_ENROLLED"),
 
     ;
 
     private final int code;
     private final String message;
 
-    ResultDataCode(int code, String message) {
+    StateCode(int code, String message) {
         this.code = code;
         this.message = message;
     }

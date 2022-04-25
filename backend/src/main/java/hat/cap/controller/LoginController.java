@@ -1,16 +1,18 @@
 package hat.cap.controller;
 
-import hat.cap.entity.ResultData;
+import hat.cap.entityResult.ResultData;
 import hat.cap.service.InstructorService;
+import hat.cap.service.PermissionService;
 import hat.cap.service.StudentService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Map;
 
-import static hat.cap.entity.ResultDataCode.USER_TYPE_WRONG;
+import static hat.cap.resources.StateCode.NO_PERMISSION;
+import static hat.cap.resources.StateCode.SUCCESS;
 
 @RestController
 public class LoginController {
@@ -20,15 +22,19 @@ public class LoginController {
     @Resource
     private StudentService studentService;
 
+    @Resource
+    private PermissionService permissionService;
 
-    @RequestMapping("/login")
+
+    @PostMapping("/login")
     public ResultData<?> login(@RequestBody Map<String, String> map) {
-        if (map.get("type").equals("student")) {
-            return studentService.login(map.get("email"), map.get("password"));
-        } else if (map.get("type").equals("instructor")) {
-            return instructorService.login(map.get("email"), map.get("password"));
-        } else {
-            return new ResultData<>(USER_TYPE_WRONG, null);
+        String type = map.get("type");
+        String email = map.get("email");
+        String password = map.get("password");
+
+        if (!permissionService.hasPermission(type, email, password)) {
+            return new ResultData<>(NO_PERMISSION);
         }
+        return new ResultData<>(SUCCESS);
     }
 }

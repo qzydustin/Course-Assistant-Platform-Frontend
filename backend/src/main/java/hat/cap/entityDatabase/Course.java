@@ -1,6 +1,5 @@
-package hat.cap.entity;
+package hat.cap.entityDatabase;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

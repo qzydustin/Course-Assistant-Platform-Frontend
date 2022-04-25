@@ -1,6 +1,8 @@
-package hat.cap.entity;
+package hat.cap.entityDatabase;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
