@@ -37,7 +37,7 @@ export const contentsSlice = createSlice({
         isContent1Shown: false,
         isCreateCourseShown: false,
         isSearchCourseShown: false,
-        activeCourse: '',
+        activeCourse: {},
         searchedCourse: [],
         enrollingCourse: [],
         enrolledCourse: [],

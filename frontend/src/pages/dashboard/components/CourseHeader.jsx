@@ -22,9 +22,8 @@ const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 function ManageHeader(props) {
   const { onDrawerToggle } = props.onDrawerToggle;
-  const activeCourse = props.activeCourse;
+  const activeCourse = useSelector(state => state.contentsController.activeCourse);
 
-  // console.log("Header props is ", props);
   console.log("activeCourse is ", activeCourse);
   const dispatch = useDispatch();
   let navigate = useNavigate();
@@ -102,7 +101,7 @@ function ManageHeader(props) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                {JSON.parse(activeCourse)["code"]}
+                {activeCourse.code}
               </Typography>
             </Grid>
             <Grid item>

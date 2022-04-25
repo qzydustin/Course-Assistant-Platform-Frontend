@@ -195,7 +195,7 @@ export default function Dashboard({server}) {
   const isSearchCourse = useSelector(state => state.contentsController.isSearchCourseShown);
   const activeCourse = useSelector(state => state.contentsController.activeCourse)
 
-  console.log("isActive is ", activeCourse);
+  // console.log("isActive is ", activeCourse);
 
   let email = localStorage.getItem('myEmail')
   let password = localStorage.getItem('myPassword')
@@ -266,7 +266,7 @@ export default function Dashboard({server}) {
           ):null}
           {(activeCourse !== '') ? (
               <Box>
-                <CourseHeader activeCourse={activeCourse} onDrawerToggle={handleDrawerToggle}/>
+                <CourseHeader onDrawerToggle={handleDrawerToggle}/>
                 <CourseContent/>
               </Box>
           ):null}

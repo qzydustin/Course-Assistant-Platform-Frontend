@@ -45,9 +45,7 @@ export default function Navigator(props) {
 
   let enrolledCourse = useSelector(state => state.contentsController.enrolledCourse);
   let type = localStorage.getItem('myType')
-  let categories = []
-  categories = [
-      ...categories,
+  let categories = [
       {
         id: 'Build',
         children: [
@@ -63,7 +61,12 @@ export default function Navigator(props) {
       ...categories,
       {
         id: 'Course Plaza',
-        children: enrolledCourse.map( course => ({ id: course.code, icon:<NotesIcon/>, active: course.code, semester:course.semester})),
+        children: enrolledCourse.map( course => (
+            { id: course.code,
+              icon:<NotesIcon/>,
+              active: course.code,
+              semester: course.semester,
+              courseID: course.id})),
       }];
   if (type === 'student'){
     categories = [
@@ -106,19 +109,18 @@ export default function Navigator(props) {
     if (active === "Course Enroll") dispatch(toCourseEnroll());
   };
 
-  const handleCourseListClick = (event, active, semester) => {
+  const handleCourseListClick = (event, active, semester, courseID) => {
     setSelectedIndex(active);
-    console.log("active=",active);
+    let activeCourse = {
+      code: active,
+      semester: semester,
+      id: courseID
+    }
+    console.log("active=",activeCourse);
 
-    let activeCourse = JSON.stringify({
-      "code": active,
-      "semester": semester,
-    })
     dispatch(toActiveCourse(activeCourse));
   };
 
-  const activeCourse = useSelector(state => state.contentsController.activeCourse)
-  // console.log("activeCourse is ", activeCourse);
 
   return (
     <Drawer variant="permanent" {...other}>
@@ -139,11 +141,11 @@ export default function Navigator(props) {
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
             {id === 'Course Plaza' ? (
-                children.map(({ id: childId, icon, active, semester}) => (
+                children.map(({ id: childId, icon, active, semester, courseID}) => (
                     <ListItem disablePadding key={childId}>
                     <ListItemButton selected={selectedIndex === active}
                                     sx={item}
-                                    onClick={(event) => handleCourseListClick(event, active, semester)}>
+                                    onClick={(event) => handleCourseListClick(event, active, semester, courseID)}>
                       <ListItemIcon>{icon}</ListItemIcon>
                       <ListItemText>{childId}</ListItemText>
                     </ListItemButton>
