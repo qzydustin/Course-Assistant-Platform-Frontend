@@ -37,6 +37,10 @@ export default function Login({server}) {
         event.preventDefault();
         const loginForm = new FormData(event.currentTarget);
 
+        localStorage.setItem('myEmail', loginForm.get("email"));
+        localStorage.setItem('myPassword', loginForm.get("password"));
+        localStorage.setItem('myType', loginForm.get("role-group-label"));
+
         dispatch(saveEmail(loginForm.get("email")));
         dispatch(savePassword(loginForm.get("password")));
         dispatch(saveType(loginForm.get('role-group-label')));

@@ -30,9 +30,9 @@ const pageContent = {
 export const contentsSlice = createSlice({
     name: 'contentsController',
     initialState: {
-        email:[],
-        password:[],
-        type:[],
+        email: localStorage.getItem("myEmail"),
+        password: localStorage.getItem("myPassword"),
+        type: localStorage.getItem("myType"),
         isContentShown: false,
         isContent1Shown: false,
         isCreateCourseShown: false,
@@ -40,6 +40,7 @@ export const contentsSlice = createSlice({
         activeCourse: [],
         searchedCourse: [],
         enrollingCourse: [],
+        enrolledCourse: [],
     },
     reducers: {
         saveEmail: (state, action) => {
@@ -88,10 +89,13 @@ export const contentsSlice = createSlice({
         addEnrollCourse:(state, action) => {
             state.enrollingCourse = [...state.enrollingCourse, JSON.parse(action.payload)]
         },
-        removeEnrollCourse:(state, action) =>{
+        removeEnrollCourse:(state, action) => {
             state.enrollingCourse = state.enrollingCourse.filter(course =>
                 (course.code !== JSON.parse(action.payload).code || course.semester !== JSON.parse(action.payload).semester))
         },
+        updateEnrolledCourse:(state, action) => {
+            state.enrolledCourse = action.payload
+        }
     }
 })
 
@@ -99,7 +103,7 @@ export const contentsSlice = createSlice({
 export const { saveEmail, savePassword, saveType,
     toFrontPage, toSwitch1, toCreateCourse,
     toCourseEnroll, toActiveCourse, renewSearchedCourse,
-    addEnrollCourse, removeEnrollCourse} = contentsSlice.actions
+    addEnrollCourse, removeEnrollCourse, updateEnrolledCourse} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

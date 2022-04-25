@@ -8,14 +8,13 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import {store} from "./pages/dashboardStore";
 import {Provider} from "react-redux";
 import React from "react";
-import server from "./server.json";
 
 
 export default function App({server}) {
-    // const {server} = server;
     console.log("app server: ", server);
+    if (!server) return <p>Loading...</p>;
+
     return (
-        // <div className="App">
         <Provider store={store}>
         <BrowserRouter>
             <Routes>
@@ -28,7 +27,6 @@ export default function App({server}) {
             </Routes>
         </BrowserRouter>
         </Provider>
-        // </div>
     );
 }
 

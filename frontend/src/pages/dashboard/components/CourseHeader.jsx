@@ -21,7 +21,11 @@ import {useNavigate} from "react-router-dom";
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 function ManageHeader(props) {
-  const { onDrawerToggle } = props;
+  const { onDrawerToggle } = props.onDrawerToggle;
+  const activeCourse = JSON.parse(props.activeCourse);
+  // activeCourse = JSON.parse(activeCourse);
+  // console.log("Header props is ", props);
+  // console.log("activeCourse props is ", activeCourse);
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -92,7 +96,7 @@ function ManageHeader(props) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Course's Header
+                {activeCourse["code"]}
               </Typography>
             </Grid>
             <Grid item>

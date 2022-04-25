@@ -43,6 +43,8 @@ export default function Navigator(props) {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  let enrolledCourse = useSelector(state => state.contentsController.enrolledCourse);
+
   let categories = [
     {
       id: 'Build',
@@ -57,11 +59,7 @@ export default function Navigator(props) {
     },
     {
       id: 'Course Plaza',
-      children: [
-        { id: 'csc 101', icon: <NotesIcon />, active: 'csc 101', semester: '2022 spring'},
-        { id: 'csc 102', icon: <NotesIcon />, active: 'csc 102', semester: '2022 spring'},
-        { id: 'csc 103', icon: <NotesIcon />, active: 'csc 103', semester: '2022 spring'},
-      ],
+      children: enrolledCourse.map( course => ({ id: course.code, icon:<NotesIcon/>, active: course.code, semester:course.semester})),
     },
     {
       id: 'Management',
@@ -98,8 +96,8 @@ export default function Navigator(props) {
     dispatch(toActiveCourse(activeCourse));
   };
 
-  const activeCourse =useSelector(state => state.contentsController.activeCourse)
-  console.log(activeCourse)
+  const activeCourse = useSelector(state => state.contentsController.activeCourse)
+  // console.log("activeCourse is ", activeCourse);
 
   return (
     <Drawer variant="permanent" {...other}>

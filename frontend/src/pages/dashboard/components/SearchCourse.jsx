@@ -91,28 +91,52 @@ export default function SearchCourse({server}) {
         // let code = enrollingCourse.get("code");
         console.log(enrollingCourse[0]);
         for (let i = 0; i < enrollingCourse.length; i++){
-            let data = JSON.stringify({
-                "email": email,
-                "password": password,
-                "type": type,
-                "code": enrollingCourse[i]["code"],
-                "semester": enrollingCourse[i]["semester"],
-                "student_email": "Smith@test.com"
-            })
 
-            console.log("Enroll:", data);
-            axios.post('http://127.0.0.1:8080/enroll-course-by-instructor',
-                data,
-                {headers: {'Content-Type': 'application/json'}})
-                .then(function(response) {
-                    if(response.data.code === 1000){
-                        console.log("Enroll course successfully!");
-                        // dispatch(renewSearchedCourse(response.data.data));
-                    } else {
-                        console.log(response.data.message);
-                        // dispatch(renewSearchedCourse([]));
-                    }
-                });
+            if(type === "instructor"){
+                let data = JSON.stringify({
+                    "email": email,
+                    "password": password,
+                    "type": type,
+                    "code": enrollingCourse[i]["code"],
+                    "semester": enrollingCourse[i]["semester"],
+                    "student_email": "Smith@test.com"
+                })
+                console.log("Enroll:", data);
+                axios.post(server.host+'/enroll-course-by-instructor',
+                    data,
+                    {headers: {'Content-Type': 'application/json'}})
+                    .then(function(response) {
+                        if(response.data.code === 1000){
+                            console.log("Enroll course successfully!");
+                            // dispatch(renewSearchedCourse(response.data.data));
+                        } else {
+                            console.log(response.data.message);
+                            // dispatch(renewSearchedCourse([]));
+                        }
+                    });
+            } else {
+                let data = JSON.stringify({
+                    "email": email,
+                    "password": password,
+                    "type": type,
+                    "code": enrollingCourse[i]["code"],
+                    "semester": enrollingCourse[i]["semester"],
+                })
+                axios.post(server.host+'/enroll-course-by-student',
+                    data,
+                    {headers: {'Content-Type': 'application/json'}})
+                    .then(function(response) {
+                        if(response.data.code === 1000){
+                            console.log("Enroll course successfully!");
+                            // dispatch(renewSearchedCourse(response.data.data));
+                        } else {
+                            console.log(response.data.message);
+                            // dispatch(renewSearchedCourse([]));
+                        }
+                    });
+            }
+
+
         }
 ;
 
