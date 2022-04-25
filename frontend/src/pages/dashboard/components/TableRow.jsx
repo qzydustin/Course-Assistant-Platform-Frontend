@@ -14,8 +14,10 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Checkbox from '@mui/material/Checkbox';
-import { addEnrollCourse, removeEnrollCourse } from '../dashboardSlice';
-import {useDispatch} from "react-redux";
+import {addEnrollCourse, removeEnrollCourse, updateEnrolledCourse} from '../dashboardSlice';
+import {useDispatch, useSelector} from "react-redux";
+import Button from "@mui/material/Button";
+import axios from "axios";
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
@@ -23,7 +25,13 @@ function Row(props) {
     const {row} = props;
     const [open, setOpen] = React.useState(false);
     const dispatch = useDispatch();
+    const [hasChecked, setHasChecked] = React.useState(false);
+    const [availability, setAvailability] = React.useState(0);
 
+    let email = localStorage.getItem('myEmail')
+    let password = localStorage.getItem('myPassword')
+    let type = localStorage.getItem('myType')
+    const server = useSelector(state => state.contentsController.server);
 
     const handleCheckboxClick = (event) => {
         // console.log("on check");
@@ -43,6 +51,33 @@ function Row(props) {
             dispatch(removeEnrollCourse(removeCourse));
             // console.log("Remove: ", removeCourse);
         }
+    }
+
+    const handleCheckAvailability = (event) => {
+        let checkCourse = JSON.stringify({
+            "email": email,
+            "password": password,
+            "type": type,
+            "code": row.code,
+            "semester": row.semester,
+        })
+
+        console.log("checkCourse is ", checkCourse);
+        axios.post(server.host+'/get-course-enrolled-student-number',
+            checkCourse,
+            {headers: {'Content-Type': 'application/json'}})
+            .then(function(response) {
+                if(response.data.code === 1000){
+                    console.log("Get enrolled course number successfully!");
+                    setAvailability(row.seat - response.data.data);
+                    setHasChecked(true);
+                    // dispatch(updateEnrolledCourse(response.data.data))
+                    // dispatch(renewSearchedCourse(response.data.data));
+                } else {
+                    console.log(response.data.message);
+                    // dispatch(renewSearchedCourse([]));
+                }
+            });
     }
     return (
         <React.Fragment>
@@ -71,17 +106,23 @@ function Row(props) {
                                         <TableCell component="th" scope="row">{"Instructor"}</TableCell>
                                         <TableCell>{row.instructorName}</TableCell>
                                     </TableRow>
-                                    <TableRow key={row.unit}>
+                                    <TableRow key={"unit"}>
                                         <TableCell component="th" scope="row">{"Unit"}</TableCell>
                                         <TableCell>{row.unit}</TableCell>
                                     </TableRow>
-                                    <TableRow key={row.seat}>
-                                        <TableCell component="th" scope="row">{"Availability"}</TableCell>
+                                    <TableRow key={"seat"}>
+                                        <TableCell component="th" scope="row">{"Capacity"}</TableCell>
                                         <TableCell>{row.seat}</TableCell>
                                     </TableRow>
-                                    <TableRow key={row.semester}>
+                                    <TableRow key={"semester"}>
                                         <TableCell component="th" scope="row">{"Offered Time"}</TableCell>
                                         <TableCell>{row.semester}</TableCell>
+                                    </TableRow>
+                                    <TableRow key={"availability"}>
+                                        <TableCell component="th" scope="row">{"Availability"}</TableCell>
+                                        {hasChecked ?
+                                            (<TableCell>{availability}</TableCell>):
+                                            (<TableCell><Button onClick={handleCheckAvailability}>Check</Button></TableCell>)}
                                     </TableRow>
                                 </TableBody>
                             </Table>

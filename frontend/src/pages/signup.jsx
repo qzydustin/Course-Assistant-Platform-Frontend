@@ -37,6 +37,8 @@ export default function SignUp({server}) {
             if(response.data.code === 1000){
                 console.log("Sign up suceessfully!");
                 navigate('/login');
+            } else {
+                console.log(response.data.message)
             }
         });
     };

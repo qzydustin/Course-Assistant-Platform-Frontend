@@ -14,6 +14,7 @@ export default function App({server}) {
     console.log("app server: ", server);
     if (!server) return <p>Loading...</p>;
 
+    // console.log("app server: ", localStorage.getItem("myServer"))
     return (
         <Provider store={store}>
         <BrowserRouter>

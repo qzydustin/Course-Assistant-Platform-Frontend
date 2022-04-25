@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 
-import { saveEmail, savePassword, saveType } from "./dashboard/dashboardSlice";
+import { saveEmail, savePassword, saveType, saveServer } from "./dashboard/dashboardSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -29,7 +29,7 @@ export default function Login({server}) {
     // let email = useSelector(state => state.contentsController.email)
     // let password = useSelector(state => state.contentsController.password)
     // let type = useSelector(state => state.contentsController.type)
-
+    dispatch(saveServer(server));
     let toDashboard = false;
     let navigate = useNavigate();
 
