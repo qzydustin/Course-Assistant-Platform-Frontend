@@ -1,15 +1,12 @@
 package hat.cap.entityResult;
 
 import hat.cap.entityDatabase.Course;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class ResultCourse {
+    private Long id;
     private String code;
     private String title;
     private String information;
@@ -20,6 +17,7 @@ public class ResultCourse {
     private int seat;
 
     public ResultCourse(Course course) {
+        id = course.getId();
         code = course.getCode();
         title = course.getTitle();
         information = course.getInformation();

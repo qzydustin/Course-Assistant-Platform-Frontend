@@ -65,4 +65,8 @@ public class CourseService {
     public boolean hasEnrolledCourse(Student student, Course course) {
         return studentCourseRepository.findStudentCourseByStudentAndCourse(student, course) != null;
     }
+
+    public Course getCourse(Long id) {
+        return courseRepository.findCourseById(id);
+    }
 }

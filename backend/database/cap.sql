@@ -62,3 +62,42 @@ ALTER TABLE student_course
 
 ALTER TABLE student_course
     ADD CONSTRAINT FK_STUDENTCOURSE_ON_STUDENT FOREIGN KEY (student_id) REFERENCES student (id);
+
+CREATE TABLE post
+(
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    course_id     BIGINT                NULL,
+    title         VARCHAR(255)          NOT NULL,
+    content       VARCHAR(255)          NULL,
+    student_id    BIGINT                NULL,
+    instructor_id BIGINT                NULL,
+    CONSTRAINT pk_post PRIMARY KEY (id)
+);
+
+ALTER TABLE post
+    ADD CONSTRAINT FK_POST_ON_COURSE FOREIGN KEY (course_id) REFERENCES course (id);
+
+ALTER TABLE post
+    ADD CONSTRAINT FK_POST_ON_INSTRUCTOR FOREIGN KEY (instructor_id) REFERENCES instructor (id);
+
+ALTER TABLE post
+    ADD CONSTRAINT FK_POST_ON_STUDENT FOREIGN KEY (student_id) REFERENCES student (id);
+
+CREATE TABLE post_comment
+(
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    post_id       BIGINT                NULL,
+    comment       VARCHAR(255)          NULL,
+    student_id    BIGINT                NULL,
+    instructor_id BIGINT                NULL,
+    CONSTRAINT pk_postcomment PRIMARY KEY (id)
+);
+
+ALTER TABLE post_comment
+    ADD CONSTRAINT FK_POSTCOMMENT_ON_INSTRUCTOR FOREIGN KEY (instructor_id) REFERENCES instructor (id);
+
+ALTER TABLE post_comment
+    ADD CONSTRAINT FK_POSTCOMMENT_ON_POST FOREIGN KEY (post_id) REFERENCES post (id);
+
+ALTER TABLE post_comment
+    ADD CONSTRAINT FK_POSTCOMMENT_ON_STUDENT FOREIGN KEY (student_id) REFERENCES student (id);

@@ -1,6 +1,6 @@
 package hat.cap.controller;
 
-import hat.cap.entityResult.ResultData;
+import hat.cap.entityResult.Result;
 import hat.cap.service.PermissionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,14 +20,14 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public ResultData<?> login(@RequestBody Map<String, String> map) {
+    public Result<?> login(@RequestBody Map<String, String> map) {
         String type = map.get("type");
         String email = map.get("email").toLowerCase();
         String password = map.get("password");
 
         if (!permissionService.hasPermission(type, email, password)) {
-            return new ResultData<>(NO_PERMISSION);
+            return new Result<>(NO_PERMISSION);
         }
-        return new ResultData<>(SUCCESS);
+        return new Result<>(SUCCESS);
     }
 }
