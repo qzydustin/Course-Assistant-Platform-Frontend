@@ -197,9 +197,12 @@ export default function Dashboard({server}) {
 
   console.log("isActive is ", activeCourse);
 
-  let email = useSelector(state => state.contentsController.email)
-  let password = useSelector(state => state.contentsController.password)
-  let type = useSelector(state => state.contentsController.type)
+  let email = localStorage.getItem('myEmail')
+  let password = localStorage.getItem('myPassword')
+  let type = localStorage.getItem('myType')
+  // let email = useSelector(state => state.contentsController.email)
+  // let password = useSelector(state => state.contentsController.password)
+  // let type = useSelector(state => state.contentsController.type)
 
   let user = JSON.stringify({
     "email": email,

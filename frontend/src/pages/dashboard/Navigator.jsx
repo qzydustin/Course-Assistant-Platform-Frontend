@@ -44,33 +44,54 @@ export default function Navigator(props) {
   const dispatch = useDispatch();
 
   let enrolledCourse = useSelector(state => state.contentsController.enrolledCourse);
+  let type = localStorage.getItem('myType')
+  let categories = []
+  categories = [
+      ...categories,
+      {
+        id: 'Build',
+        children: [
+          { id: 'Front page', icon: <PeopleIcon />, active: "Front Page",},
+          { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: "Switch 1"},
+          { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
+          { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
+          { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
+          { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
+        ],
+      }];
+  categories = [
+      ...categories,
+      {
+        id: 'Course Plaza',
+        children: enrolledCourse.map( course => ({ id: course.code, icon:<NotesIcon/>, active: course.code, semester:course.semester})),
+      }];
+  if (type === 'student'){
+    categories = [
+      ...categories,
+      {
+        id: 'Management',
+        children: [
+          { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
+          { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
+          { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
+        ],
+      }];
+  }
+  if (type === 'instructor'){
+      categories = [
+        ...categories,
+        {
+          id: 'Management',
+          children: [
+            { id: 'Create Course', icon: <TimerIcon />, active: "Create Course"},
+            { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
+            { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
+            { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
+          ],
+        }];
+    }
 
-  let categories = [
-    {
-      id: 'Build',
-      children: [
-        { id: 'Front page', icon: <PeopleIcon />, active: "Front Page",},
-        { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: "Switch 1"},
-        { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
-        { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
-        { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
-        { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
-      ],
-    },
-    {
-      id: 'Course Plaza',
-      children: enrolledCourse.map( course => ({ id: course.code, icon:<NotesIcon/>, active: course.code, semester:course.semester})),
-    },
-    {
-      id: 'Management',
-      children: [
-        { id: 'Create Course', icon: <TimerIcon />, active: "Create Course"},
-        { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
-        { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
-        { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
-      ],
-    },
-  ];
+  console.log("categories is ", categories);
 
   const { ...other } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(true);

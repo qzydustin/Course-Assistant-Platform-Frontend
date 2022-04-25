@@ -14,23 +14,29 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import {saveEmail, savePassword, saveType} from "../dashboardSlice";
-import {useDispatch} from "react-redux";
+import {saveEmail, savePassword, saveType, changeTab} from "../dashboardSlice";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 function ManageHeader(props) {
   const { onDrawerToggle } = props.onDrawerToggle;
-  const activeCourse = JSON.parse(props.activeCourse);
-  // activeCourse = JSON.parse(activeCourse);
+  const activeCourse = props.activeCourse;
+
   // console.log("Header props is ", props);
-  // console.log("activeCourse props is ", activeCourse);
+  console.log("activeCourse is ", activeCourse);
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
+  const tabValue = useSelector(state => state.contentsController.activeTab)
+  const handleChange = (event, newValue) => {
+    dispatch(changeTab(newValue));
+  };
+
   const handleLogout = (event) => {
-    event.preventDefault()
+    event.preventDefault();
+    localStorage.clear();
     dispatch(saveEmail(''));
     dispatch(savePassword(''));
     dispatch(saveType(''));
@@ -96,7 +102,7 @@ function ManageHeader(props) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                {activeCourse["code"]}
+                {JSON.parse(activeCourse)["code"]}
               </Typography>
             </Grid>
             <Grid item>
@@ -120,7 +126,7 @@ function ManageHeader(props) {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-        <Tabs value={0} textColor="inherit">
+        <Tabs value={tabValue} textColor="inherit" onChange={handleChange}>
           <Tab label="Main" />
           <Tab label="Discussion" />
           <Tab label="Assignment" />

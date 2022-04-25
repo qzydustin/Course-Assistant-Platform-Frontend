@@ -28,9 +28,12 @@ const offeredTimes = [
 
 export default function CreateCourse({server}) {
 
-    let email = useSelector(state => state.contentsController.email)
-    let password = useSelector(state => state.contentsController.password)
-    let type = useSelector(state => state.contentsController.type)
+    let email = localStorage.getItem('myEmail')
+    let password = localStorage.getItem('myPassword')
+    let type = localStorage.getItem('myType')
+    // let email = useSelector(state => state.contentsController.email)
+    // let password = useSelector(state => state.contentsController.password)
+    // let type = useSelector(state => state.contentsController.type)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -52,7 +55,7 @@ export default function CreateCourse({server}) {
         })
 
         // console.log(data);
-        axios.post(server.host+'/add-course',
+        axios.post(server.host+'/create-course',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {

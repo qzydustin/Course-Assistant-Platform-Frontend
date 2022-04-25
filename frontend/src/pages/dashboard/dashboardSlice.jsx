@@ -37,10 +37,11 @@ export const contentsSlice = createSlice({
         isContent1Shown: false,
         isCreateCourseShown: false,
         isSearchCourseShown: false,
-        activeCourse: [],
+        activeCourse: '',
         searchedCourse: [],
         enrollingCourse: [],
         enrolledCourse: [],
+        activeTab: 0,
     },
     reducers: {
         saveEmail: (state, action) => {
@@ -95,6 +96,9 @@ export const contentsSlice = createSlice({
         },
         updateEnrolledCourse:(state, action) => {
             state.enrolledCourse = action.payload
+        },
+        changeTab:(state, action) => {
+            state.activeTab = action.payload
         }
     }
 })
@@ -103,7 +107,7 @@ export const contentsSlice = createSlice({
 export const { saveEmail, savePassword, saveType,
     toFrontPage, toSwitch1, toCreateCourse,
     toCourseEnroll, toActiveCourse, renewSearchedCourse,
-    addEnrollCourse, removeEnrollCourse, updateEnrolledCourse} = contentsSlice.actions
+    addEnrollCourse, removeEnrollCourse, updateEnrolledCourse, changeTab} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

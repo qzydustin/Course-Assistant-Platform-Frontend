@@ -12,10 +12,9 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Row from './TableRow';
-import {useState} from "react";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import { renewSearchedCourse } from '../dashboardSlice';
+import {renewSearchedCourse} from '../dashboardSlice';
 
 const departments = [
     {value: 'Empty', label: ''},
@@ -36,10 +35,13 @@ const offeredTimes = [
 export default function SearchCourse({server}) {
 
     const dispatch = useDispatch();
-    // send row data to TableRow.jsx
-    let email = useSelector(state => state.contentsController.email)
-    let password = useSelector(state => state.contentsController.password)
-    let type = useSelector(state => state.contentsController.type)
+
+    let email = localStorage.getItem('myEmail')
+    let password = localStorage.getItem('myPassword')
+    let type = localStorage.getItem('myType')
+    // let email = useSelector(state => state.contentsController.email)
+    // let password = useSelector(state => state.contentsController.password)
+    // let type = useSelector(state => state.contentsController.type)
 
     const [department, setDepartment] = React.useState('Empty');
     const [offeredTime, setOfferedTime] = React.useState('Empty');
@@ -65,7 +67,7 @@ export default function SearchCourse({server}) {
         })
 
         console.log(data);
-        axios.post(server.host+'/search-course',
+        axios.post(server.host+'/get-courses',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
@@ -91,9 +93,9 @@ export default function SearchCourse({server}) {
         // let code = enrollingCourse.get("code");
         console.log(enrollingCourse[0]);
         for (let i = 0; i < enrollingCourse.length; i++){
-
+            let data = [];
             if(type === "instructor"){
-                let data = JSON.stringify({
+                data = JSON.stringify({
                     "email": email,
                     "password": password,
                     "type": type,
@@ -102,41 +104,28 @@ export default function SearchCourse({server}) {
                     "student_email": "Smith@test.com"
                 })
                 console.log("Enroll:", data);
-                axios.post(server.host+'/enroll-course-by-instructor',
-                    data,
-                    {headers: {'Content-Type': 'application/json'}})
-                    .then(function(response) {
-                        if(response.data.code === 1000){
-                            console.log("Enroll course successfully!");
-                            // dispatch(renewSearchedCourse(response.data.data));
-                        } else {
-                            console.log(response.data.message);
-                            // dispatch(renewSearchedCourse([]));
-                        }
-                    });
             } else {
-                let data = JSON.stringify({
+                data = JSON.stringify({
                     "email": email,
                     "password": password,
                     "type": type,
                     "code": enrollingCourse[i]["code"],
                     "semester": enrollingCourse[i]["semester"],
                 })
-                axios.post(server.host+'/enroll-course-by-student',
-                    data,
-                    {headers: {'Content-Type': 'application/json'}})
-                    .then(function(response) {
-                        if(response.data.code === 1000){
-                            console.log("Enroll course successfully!");
-                            // dispatch(renewSearchedCourse(response.data.data));
-                        } else {
-                            console.log(response.data.message);
-                            // dispatch(renewSearchedCourse([]));
-                        }
-                    });
             }
 
-
+            axios.post(server.host + '/enroll-course',
+                data,
+                {headers: {'Content-Type': 'application/json'}})
+                .then(function (response) {
+                    if (response.data.code === 1000) {
+                        console.log("Enroll course successfully!");
+                        // dispatch(renewSearchedCourse(response.data.data));
+                    } else {
+                        console.log(response.data.message);
+                        // dispatch(renewSearchedCourse([]));
+                    }
+                });
         }
 ;
 
