@@ -35,7 +35,7 @@ public class CourseController {
     @PostMapping("/get-courses")
     public ResultData<?> getCourses(@RequestBody Map<String, String> map) {
         String type = map.get("type");
-        String email = map.get("email");
+        String email = map.get("email").toLowerCase();
         String password = map.get("password");
         String department = map.get("department");
         String semester = map.get("semester");
@@ -54,7 +54,7 @@ public class CourseController {
     @PostMapping("/create-course")
     public ResultData<?> createCourse(@RequestBody Map<String, String> map) {
         String type = map.get("type");
-        String email = map.get("email");
+        String email = map.get("email").toLowerCase();
         String password = map.get("password");
         String code = map.get("code");
         String title = map.get("title");
@@ -92,7 +92,7 @@ public class CourseController {
     @PostMapping("/get-course-enrolled-student-number")
     public ResultData<?> getCourseEnrolledStudentNumber(@RequestBody Map<String, String> map) {
         String type = map.get("type");
-        String email = map.get("email");
+        String email = map.get("email").toLowerCase();
         String password = map.get("password");
         String code = map.get("code");
         String semester = map.get("semester");
@@ -113,7 +113,7 @@ public class CourseController {
     @PostMapping("/enroll-course")
     public ResultData<?> enrollCourse(@RequestBody Map<String, String> map) {
         String type = map.get("type");
-        String email = map.get("email");
+        String email = map.get("email").toLowerCase();
         String password = map.get("password");
         String code = map.get("code");
         String semester = map.get("semester");
@@ -155,7 +155,7 @@ public class CourseController {
     @PostMapping("/get-enrolled-courses")
     public ResultData<?> getEnrolledCourses(@RequestBody Map<String, String> map) {
         String type = map.get("type");
-        String email = map.get("email");
+        String email = map.get("email").toLowerCase();
         String password = map.get("password");
 
         if (!permissionService.hasPermission(type, email, password)) {

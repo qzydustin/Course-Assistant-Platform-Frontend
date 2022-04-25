@@ -24,7 +24,7 @@ public class SignupController {
     @PostMapping("/signup")
     public ResultData<?> signup(@RequestBody Map<String, String> map) {
         String type = map.get("type");
-        String email = map.get("email");
+        String email = map.get("email").toLowerCase();
         String username = map.get("username");
         String password = map.get("password");
 
