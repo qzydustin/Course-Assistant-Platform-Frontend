@@ -24,7 +24,12 @@ public enum Code {
 
     // post
     POST_TITLE_IS_EMPTY(4000, "POST_TITLE_IS_EMPTY"),
-    POST_NOT_EXIST(4001, "POST_NOT_EXIST");
+    POST_NOT_EXIST(4001, "POST_NOT_EXIST"),
+
+    // announcement
+    ANNOUNCEMENT_TITLE_IS_EMPTY(5001, "ANNOUNCEMENT_TITLE_IS_EMPTY");
+
+
 
     private final int code;
     private final String message;

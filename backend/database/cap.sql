@@ -101,3 +101,15 @@ ALTER TABLE post_comment
 
 ALTER TABLE post_comment
     ADD CONSTRAINT FK_POSTCOMMENT_ON_STUDENT FOREIGN KEY (student_id) REFERENCES student (id);
+
+CREATE TABLE announcement
+(
+    id        BIGINT AUTO_INCREMENT NOT NULL,
+    title     VARCHAR(255)          NOT NULL,
+    content   VARCHAR(255)          NULL,
+    course_id BIGINT                NULL,
+    CONSTRAINT pk_announcement PRIMARY KEY (id)
+);
+
+ALTER TABLE announcement
+    ADD CONSTRAINT FK_ANNOUNCEMENT_ON_COURSE FOREIGN KEY (course_id) REFERENCES course (id);

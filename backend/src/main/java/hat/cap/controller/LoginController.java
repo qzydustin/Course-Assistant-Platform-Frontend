@@ -1,7 +1,11 @@
 package hat.cap.controller;
 
+import hat.cap.entityDatabase.Instructor;
+import hat.cap.entityDatabase.Student;
 import hat.cap.entityResult.Result;
-import hat.cap.service.PermissionService;
+import hat.cap.entityResult.ResultUser;
+import hat.cap.service.InstructorService;
+import hat.cap.service.StudentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +18,10 @@ import static hat.cap.entityResult.Code.SUCCESS;
 
 @RestController
 public class LoginController {
-
     @Resource
-    private PermissionService permissionService;
+    private StudentService studentService;
+    @Resource
+    private InstructorService instructorService;
 
 
     @PostMapping("/login")
@@ -25,9 +30,14 @@ public class LoginController {
         String email = map.get("email").toLowerCase();
         String password = map.get("password");
 
-        if (!permissionService.hasPermission(type, email, password)) {
+        if(type.equals("student")){
+            Student student= studentService.getStudent(email,password);
+            return new Result<>(SUCCESS,new ResultUser(student));
+        }else if(type.equals("instructor")){
+            Instructor instructor=instructorService.getInstructor(email,password);
+            return new Result<>(SUCCESS,new ResultUser(instructor));
+        }else {
             return new Result<>(NO_PERMISSION);
         }
-        return new Result<>(SUCCESS);
     }
 }
