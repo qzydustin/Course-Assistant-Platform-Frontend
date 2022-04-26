@@ -39,7 +39,7 @@ public class PostService {
     }
 
     public List<ResultPostComment> getComments(Post post) {
-        List<PostComment> postComments = postCommentRepository.findPostCommentByPost(post);
+        List<PostComment> postComments = postCommentRepository.findPostCommentsByPost(post);
         ArrayList<ResultPostComment> resultPostComments = new ArrayList<>();
         for (PostComment postComment : postComments) {
             resultPostComments.add(new ResultPostComment((postComment)));

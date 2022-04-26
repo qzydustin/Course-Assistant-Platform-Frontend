@@ -87,7 +87,7 @@ CREATE TABLE post_comment
 (
     id            BIGINT AUTO_INCREMENT NOT NULL,
     post_id       BIGINT                NULL,
-    comment       VARCHAR(255)          NULL,
+    context       VARCHAR(255)          NULL,
     student_id    BIGINT                NULL,
     instructor_id BIGINT                NULL,
     CONSTRAINT pk_postcomment PRIMARY KEY (id)

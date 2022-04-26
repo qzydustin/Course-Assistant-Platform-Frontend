@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 
 public interface PostCommentRepository extends CrudRepository<PostComment, Long> {
-    List<PostComment> findPostCommentByPost(Post post);
+    List<PostComment> findPostCommentsByPost(Post post);
 
     PostComment findPostCommentById(Long id);
 }

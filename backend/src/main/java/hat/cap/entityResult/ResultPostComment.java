@@ -8,14 +8,14 @@ import lombok.Data;
 public class ResultPostComment {
     private long id;
     private String postTitle;
-    private String comment;
+    private String context;
     private String studentName;
     private String instructorName;
 
     public ResultPostComment(PostComment postComment) {
         id = postComment.getId();
         postTitle = postComment.getPost().getTitle();
-        comment = postComment.getContext();
+        context = postComment.getContext();
         if (postComment.getStudent() != null) {
             studentName = postComment.getStudent().getUsername();
         } else {

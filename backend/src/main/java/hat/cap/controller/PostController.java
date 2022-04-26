@@ -13,8 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-import static hat.cap.resources.StateCode.NO_PERMISSION;
-import static hat.cap.resources.StateCode.SUCCESS;
+import static hat.cap.resources.StateCode.*;
 
 @RestController
 
@@ -61,14 +60,18 @@ public class PostController {
         if (!permissionService.hasCoursePermission(type, email, password, courseID)) {
             return new Result<>(NO_PERMISSION);
         }
+        if(title.isEmpty()){
+            return new Result<>(POST_TITLE_IS_EMPTY);
+        }
         Post post = new Post();
         post.setCourse(courseService.getCourse(courseID));
         post.setTitle(title);
         post.setContent(content);
         if (type.equals("student")) {
             post.setStudent(studentService.getStudent(email));
+        }else{
+            post.setInstructor(instructorService.getInstructor(email));
         }
-        post.setInstructor(instructorService.getInstructor(email));
         postService.createPost(post);
         return new Result<>(SUCCESS);
     }

@@ -53,7 +53,7 @@ public class PostCommentController {
         String type = map.get("type");
         String email = map.get("email").toLowerCase();
         String password = map.get("password");
-        Long courseID = Long.valueOf(map.get("courseId"));
+        Long courseID = Long.valueOf(map.get("courseID"));
         Long postID = Long.valueOf(map.get("postID"));
         String content = map.get("content");
 
@@ -66,8 +66,9 @@ public class PostCommentController {
         postComment.setPost(postService.getPost(postID));
         if (type.equals("student")) {
             postComment.setStudent(studentService.getStudent(email));
+        }else{
+            postComment.setInstructor(instructorService.getInstructor(email));
         }
-        postComment.setInstructor(instructorService.getInstructor(email));
         postService.createPostComment(postComment);
         return new Result<>(SUCCESS);
     }

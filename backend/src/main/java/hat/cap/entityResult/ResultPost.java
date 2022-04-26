@@ -11,7 +11,7 @@ public class ResultPost {
     private String courseCode;
     private String title;
     private String content;
-    private String postName;
+    private String posterName;
 
     public ResultPost(Post post) {
         id = post.getId();
@@ -19,9 +19,9 @@ public class ResultPost {
         title = post.getTitle();
         content = post.getContent();
         if (post.getStudent() != null) {
-            postName = post.getStudent().getUsername();
+            posterName = post.getStudent().getUsername();
         } else {
-            postName = post.getInstructor().getUsername();
+            posterName = post.getInstructor().getUsername();
         }
     }
 }
