@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-import static hat.cap.resources.StateCode.*;
+import static hat.cap.entityResult.Code.*;
 
 @RestController
 
@@ -60,7 +60,7 @@ public class PostController {
         if (!permissionService.hasCoursePermission(type, email, password, courseID)) {
             return new Result<>(NO_PERMISSION);
         }
-        if(title.isEmpty()){
+        if (title.isEmpty()) {
             return new Result<>(POST_TITLE_IS_EMPTY);
         }
         Post post = new Post();
@@ -69,7 +69,7 @@ public class PostController {
         post.setContent(content);
         if (type.equals("student")) {
             post.setStudent(studentService.getStudent(email));
-        }else{
+        } else {
             post.setInstructor(instructorService.getInstructor(email));
         }
         postService.createPost(post);

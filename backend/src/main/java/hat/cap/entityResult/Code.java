@@ -1,9 +1,9 @@
-package hat.cap.resources;
+package hat.cap.entityResult;
 
 import lombok.Getter;
 
 @Getter
-public enum StateCode {
+public enum Code {
     // common
     SUCCESS(1000, "SUCCESS"),
     NO_PERMISSION(1001, "NO_PERMISSION"),
@@ -23,15 +23,13 @@ public enum StateCode {
     COURSE_HAS_BEEN_ENROLLED(3003, "COURSE_HAS_BEEN_ENROLLED"),
 
     // post
-    POST_TITLE_IS_EMPTY(4000,"POST_TITLE_IS_EMPTY"),
-    POST_NOT_EXIST(4001,"POST_NOT_EXIST")
-
-    ;
+    POST_TITLE_IS_EMPTY(4000, "POST_TITLE_IS_EMPTY"),
+    POST_NOT_EXIST(4001, "POST_NOT_EXIST");
 
     private final int code;
     private final String message;
 
-    StateCode(int code, String message) {
+    Code(int code, String message) {
         this.code = code;
         this.message = message;
     }

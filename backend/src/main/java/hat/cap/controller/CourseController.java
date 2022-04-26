@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static hat.cap.resources.StateCode.*;
+import static hat.cap.entityResult.Code.*;
 
 @RestController
 public class CourseController {

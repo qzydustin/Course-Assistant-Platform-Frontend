@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Map;
 
-import static hat.cap.resources.StateCode.NO_PERMISSION;
-import static hat.cap.resources.StateCode.SUCCESS;
+import static hat.cap.entityResult.Code.NO_PERMISSION;
+import static hat.cap.entityResult.Code.SUCCESS;
 
 @RestController
 public class LoginController {

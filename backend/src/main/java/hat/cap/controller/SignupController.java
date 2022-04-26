@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Map;
 
-import static hat.cap.resources.StateCode.*;
+import static hat.cap.entityResult.Code.*;
 
 @RestController
 public class SignupController {

@@ -4,7 +4,10 @@ import hat.cap.entityDatabase.Post;
 import hat.cap.entityDatabase.PostComment;
 import hat.cap.entityResult.Result;
 import hat.cap.entityResult.ResultPostComment;
-import hat.cap.service.*;
+import hat.cap.service.InstructorService;
+import hat.cap.service.PermissionService;
+import hat.cap.service.PostService;
+import hat.cap.service.StudentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +16,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-import static hat.cap.resources.StateCode.*;
+import static hat.cap.entityResult.Code.*;
 
 @RestController
 
@@ -61,7 +64,7 @@ public class PostCommentController {
             return new Result<>(NO_PERMISSION);
         }
         Post post = postService.getPost(postID);
-        if(post==null){
+        if (post == null) {
             return new Result<>(POST_NOT_EXIST);
         }
         PostComment postComment = new PostComment();
@@ -69,7 +72,7 @@ public class PostCommentController {
         postComment.setPost(post);
         if (type.equals("student")) {
             postComment.setStudent(studentService.getStudent(email));
-        }else{
+        } else {
             postComment.setInstructor(instructorService.getInstructor(email));
         }
         postService.createPostComment(postComment);
