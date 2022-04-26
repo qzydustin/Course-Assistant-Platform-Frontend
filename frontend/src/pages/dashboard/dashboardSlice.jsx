@@ -45,7 +45,7 @@ export const contentsSlice = createSlice({
         server:{host: localStorage.getItem("myServer")},
         posts:[],
         activePostID:{},
-        avtiveComments:[]
+        activeComments:[]
     },
     reducers: {
         saveEmail: (state, action) => {
@@ -86,7 +86,8 @@ export const contentsSlice = createSlice({
             state.isContent1Shown = false;
             state.isCreateCourseShown = false;
             state.isSearchCourseShown = false;
-            state.activeCourse = action.payload
+            state.activeCourse = action.payload;
+            state.activeTab = 0;
         },
         renewSearchedCourse:(state, action) => {
             state.searchedCourse = action.payload

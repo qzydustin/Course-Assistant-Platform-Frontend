@@ -38,7 +38,7 @@ export default function Discussion() {
     const dispatch = useDispatch();
     const [isNewPost, setIsNewPost] = React.useState(false);
     let posts = useSelector(state => state.contentsController.posts);
-    let avtiveComments = useSelector(state => state.contentsController.avtiveComments);
+    let activeComments = useSelector(state => state.contentsController.activeComments);
 
     const activePostID = useSelector(state => state.contentsController.activePostID);
 
@@ -235,7 +235,7 @@ export default function Discussion() {
                 ) :
                 (<Grid xs={8} padding={3}>
                     <List sx={{width: '100%', bgcolor: 'background.paper'}}>
-                        {avtiveComments.map((comment) => (
+                        {activeComments.map((comment) => (
                             <Grid>
                                 <ListItem alignItems="flex-start">
                                     <ListItemText
@@ -257,12 +257,12 @@ export default function Discussion() {
                             autoComplete="off"
                             onSubmit={handleNewCommentSubmit}
                         >
-                            {/*<TextField fullWidth*/}
-                            {/*           variant="outlined"*/}
-                            {/*           label="Title"*/}
-                            {/*           name="title"*/}
-                            {/*           sx={{m: 1}}>*/}
-                            {/*</TextField>*/}
+                            <TextField fullWidth
+                                       variant="outlined"
+                                       label="Title"
+                                       name="title"
+                                       sx={{m: 1}}>
+                            </TextField>
                             <TextField multiline
                                        fullWidth
                                        rows={8}
