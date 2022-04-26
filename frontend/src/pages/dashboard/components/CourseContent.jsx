@@ -130,9 +130,9 @@ export default function CourseContent() {
                                         Announcement
                                     </Grid>
                                     <Grid item>
-                                        <Button sx={{ mr: 1 }} onClick={handleClickOpen}>
+                                        {(type === 'instructor')? (<Button sx={{ mr: 1 }} onClick={handleClickOpen}>
                                             New Announcement
-                                        </Button>
+                                        </Button>):null}
                                         <Dialog open={open} onClose={handleClose}>
                                             <Box
                                                 component="form"

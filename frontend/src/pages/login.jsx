@@ -24,29 +24,22 @@ import {useDispatch, useSelector} from "react-redux";
 const theme = createTheme();
 
 export default function Login({server}) {
-    // console.log("receive: ", server.host+'/login');
+
     const dispatch = useDispatch();
-    // let email = useSelector(state => state.contentsController.email)
-    // let password = useSelector(state => state.contentsController.password)
-    // let type = useSelector(state => state.contentsController.type)
+
     dispatch(saveServer(server));
-    let toDashboard = false;
+
     let navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const loginForm = new FormData(event.currentTarget);
 
-        localStorage.setItem('myEmail', loginForm.get("email"));
-        localStorage.setItem('myPassword', loginForm.get("password"));
-        localStorage.setItem('myType', loginForm.get("role-group-label"));
-
         dispatch(saveEmail(loginForm.get("email")));
         dispatch(savePassword(loginForm.get("password")));
         dispatch(saveType(loginForm.get('role-group-label')));
 
-        // console.log("handle login button");
-        // console.log("Type is ", loginForm.get('role-group-label'));
+
         let data = JSON.stringify({
             "email": loginForm.get("email"),
             "password": loginForm.get("password"),
@@ -60,10 +53,14 @@ export default function Login({server}) {
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
                 if(response.data.code === 1000){
-                    console.log("Log in successfully!");
-                    toDashboard = true;
+                    console.log("Log in successfully!", response);
+
+                    localStorage.setItem('myEmail', loginForm.get("email"));
+                    localStorage.setItem('myPassword', loginForm.get("password"));
+                    localStorage.setItem('myType', loginForm.get("role-group-label"));
+                    localStorage.setItem('myUserName', response.data.data.username);
+
                     navigate('/dashboard');
-                    // window.moveTo("/dashboard");
                 } else {
                     console.log(response.data.message);
                 }
