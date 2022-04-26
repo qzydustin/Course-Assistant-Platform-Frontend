@@ -18,7 +18,6 @@ import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import {renewActivePost, renewActiveComments, addActiveComments} from "../../dashboardSlice";
 
-
 function Div(props) {
     return null;
 }
@@ -39,31 +38,11 @@ export default function Discussion() {
     const [isNewPost, setIsNewPost] = React.useState(false);
     let posts = useSelector(state => state.contentsController.posts);
     let activeComments = useSelector(state => state.contentsController.activeComments);
-
     const activePostID = useSelector(state => state.contentsController.activePostID);
 
     function handleThreadClick(postID) {
         setIsNewPost(false)
         dispatch(renewActivePost(postID))
-        let getComments = JSON.stringify({
-            "email": email,
-            "password": password,
-            "type": type,
-            "courseID": courseID,
-            "postID": postID,
-        })
-
-        console.log("getComments is ", getComments)
-        axios.post(server.host + '/get-comments',
-            getComments,
-            {headers: {'Content-Type': 'application/json'}})
-            .then(function (response) {
-                console.log(response.data.message);
-                if (response.data.code === 1000) {
-                    console.log(response.data.data);
-                    // dispatch(renewActivePost(response.data.data))
-                }
-            });
 
         handleGetComment(postID);
     }
@@ -93,14 +72,12 @@ export default function Discussion() {
             .then(function (response) {
                 console.log(response.data.message);
                 if (response.data.code === 1000) {
-                    // console.log(response.data.data);
-                    // dispatch(updateEnrolledCourse(response.data.data))
-                    // dispatch(renewSearchedCourse(response.data.data));
+
                 }
             });
     }
 
-    const handleNewCommentSubmit = (event) =>{
+    const handleNewCommentSubmit = (event) => {
         console.log("handle commnent submit")
         event.preventDefault();
         const postCreationForm = new FormData(event.currentTarget);
@@ -118,12 +95,11 @@ export default function Discussion() {
             newComment,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
-                console.log(response.data.message);
+                console.log(response.data);
                 if (response.data.code === 1000) {
-                    // dispatch(addActiveComments())
+                    handleGetComment(activePostID);
                 }
             });
-        handleGetComment(activePostID);
     }
 
     function handleGetComment(postID){
@@ -134,14 +110,13 @@ export default function Discussion() {
             "courseID": courseID,
             "postID": postID,
         })
-        console.log("comment is : ", comments);
+        console.log("get comments is : ", comments);
         axios.post(server.host + '/get-comments',
             comments,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
-                console.log(response.data.message);
+                console.log("get comment response is ", response.data);
                 if (response.data.code === 1000) {
-                    console.log(response.data.data);
                     dispatch(renewActiveComments(response.data.data));
                 }
             });
@@ -217,7 +192,7 @@ export default function Discussion() {
                                 </TextField>
                             </Grid>
                             <Grid padding={2}>
-                                <Stack direction="row" spacing={2}>
+                                <Stack direction="row" spacing={40}>
                                     <Button variant="outlined"
                                             startIcon={<DeleteIcon/>}>
                                         Delete
@@ -257,12 +232,12 @@ export default function Discussion() {
                             autoComplete="off"
                             onSubmit={handleNewCommentSubmit}
                         >
-                            <TextField fullWidth
-                                       variant="outlined"
-                                       label="Title"
-                                       name="title"
-                                       sx={{m: 1}}>
-                            </TextField>
+                            {/*<TextField fullWidth*/}
+                            {/*           variant="outlined"*/}
+                            {/*           label="Title"*/}
+                            {/*           name="title"*/}
+                            {/*           sx={{m: 1}}>*/}
+                            {/*</TextField>*/}
                             <TextField multiline
                                        fullWidth
                                        rows={8}
@@ -272,7 +247,7 @@ export default function Discussion() {
                                        sx={{m: 1}}>
                             </TextField>
                             <Grid padding={2}>
-                                <Stack direction="row" spacing={2}>
+                                <Stack direction="row" spacing={25}>
                                     <Button variant="outlined"
                                             startIcon={<DeleteIcon/>}>
                                         Delete

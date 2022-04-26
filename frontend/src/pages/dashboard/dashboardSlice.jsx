@@ -45,7 +45,8 @@ export const contentsSlice = createSlice({
         server:{host: localStorage.getItem("myServer")},
         posts:[],
         activePostID:{},
-        activeComments:[]
+        activeComments:[],
+        activeAnnouncement:[]
     },
     reducers: {
         saveEmail: (state, action) => {
@@ -115,10 +116,13 @@ export const contentsSlice = createSlice({
             state.activePostID = action.payload
         },
         renewActiveComments:(state,action) =>{
-            state.avtiveComments = action.payload
+            state.activeComments = action.payload
         },
         addActiveComments:(state,action) =>{
-            state.avtiveComments = [...state.avtiveComments, action.payload]
+            state.activeComments = [...state.activeComments, action.payload]
+        },
+        renewActiveAnnouncements:(state, action) => {
+            state.activeAnnouncement = action.payload
         }
     }
 })
@@ -129,7 +133,8 @@ export const { saveEmail, savePassword, saveType,
     toCourseEnroll, toActiveCourse, renewSearchedCourse,
     addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
     changeTab, saveServer,
-    renewPosts, renewActivePost, renewActiveComments, addActiveComments} = contentsSlice.actions
+    renewPosts, renewActivePost, renewActiveComments, addActiveComments,
+    renewActiveAnnouncements} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 
