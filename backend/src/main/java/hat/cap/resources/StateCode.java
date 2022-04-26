@@ -23,7 +23,9 @@ public enum StateCode {
     COURSE_HAS_BEEN_ENROLLED(3003, "COURSE_HAS_BEEN_ENROLLED"),
 
     // post
-    POST_TITLE_IS_EMPTY(4000,"POST_TITLE_IS_EMPTY")
+    POST_TITLE_IS_EMPTY(4000,"POST_TITLE_IS_EMPTY"),
+    POST_NOT_EXIST(4001,"POST_NOT_EXIST")
+
     ;
 
     private final int code;
