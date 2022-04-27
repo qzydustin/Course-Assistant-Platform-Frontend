@@ -87,7 +87,7 @@ CREATE TABLE post_comment
 (
     id            BIGINT AUTO_INCREMENT NOT NULL,
     post_id       BIGINT                NULL,
-    context       VARCHAR(255)          NULL,
+    content       VARCHAR(255)          NULL,
     student_id    BIGINT                NULL,
     instructor_id BIGINT                NULL,
     CONSTRAINT pk_postcomment PRIMARY KEY (id)
@@ -113,3 +113,35 @@ CREATE TABLE announcement
 
 ALTER TABLE announcement
     ADD CONSTRAINT FK_ANNOUNCEMENT_ON_COURSE FOREIGN KEY (course_id) REFERENCES course (id);
+
+CREATE TABLE assignment
+(
+    id         BIGINT AUTO_INCREMENT NOT NULL,
+    course_id  BIGINT                NULL,
+    title      VARCHAR(255)          NOT NULL,
+    content    VARCHAR(255)          NULL,
+    file_path  VARCHAR(255)          NULL,
+    start_date datetime              NULL,
+    end_date   datetime              NULL,
+    CONSTRAINT pk_assignment PRIMARY KEY (id)
+);
+
+ALTER TABLE assignment
+    ADD CONSTRAINT FK_ASSIGNMENT_ON_COURSE FOREIGN KEY (course_id) REFERENCES course (id);
+
+CREATE TABLE assignment_submission
+(
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    assignment_id BIGINT                NULL,
+    content       VARCHAR(255)          NULL,
+    file_path     VARCHAR(255)          NULL,
+    student_id    BIGINT                NULL,
+    submitDate    datetime              NULL,
+    CONSTRAINT pk_assignmentsubmission PRIMARY KEY (id)
+);
+
+ALTER TABLE assignment_submission
+    ADD CONSTRAINT FK_ASSIGNMENTSUBMISSION_ON_ASSIGNMENT FOREIGN KEY (assignment_id) REFERENCES assignment (id);
+
+ALTER TABLE assignment_submission
+    ADD CONSTRAINT FK_ASSIGNMENTSUBMISSION_ON_STUDENT FOREIGN KEY (student_id) REFERENCES student (id);

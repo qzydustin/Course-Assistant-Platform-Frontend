@@ -5,25 +5,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor(force = true)
 @Getter
 @Setter
-public class PostComment {
+public class AssignmentSubmission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     @JoinColumn
-    private Post post;
+    private Assignment assignment;
     @Column
     private String content;
+    @Column
+    private String filePath;
     @ManyToOne
     @JoinColumn
     private Student student;
-    @ManyToOne
-    @JoinColumn
-    private Instructor instructor;
-
+    @Column
+    private Date submitDate;
 }

@@ -68,7 +68,7 @@ public class PostCommentController {
             return new Result<>(POST_NOT_EXIST);
         }
         PostComment postComment = new PostComment();
-        postComment.setContext(content);
+        postComment.setContent(content);
         postComment.setPost(post);
         if (type.equals("student")) {
             postComment.setStudent(studentService.getStudent(email));
