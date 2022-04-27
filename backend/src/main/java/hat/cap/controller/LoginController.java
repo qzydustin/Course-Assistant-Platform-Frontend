@@ -30,13 +30,13 @@ public class LoginController {
         String email = map.get("email").toLowerCase();
         String password = map.get("password");
 
-        if(type.equals("student")){
-            Student student= studentService.getStudent(email,password);
-            return new Result<>(SUCCESS,new ResultUser(student));
-        }else if(type.equals("instructor")){
-            Instructor instructor=instructorService.getInstructor(email,password);
-            return new Result<>(SUCCESS,new ResultUser(instructor));
-        }else {
+        if (type.equals("student")) {
+            Student student = studentService.getStudent(email, password);
+            return new Result<>(SUCCESS, new ResultUser(student));
+        } else if (type.equals("instructor")) {
+            Instructor instructor = instructorService.getInstructor(email, password);
+            return new Result<>(SUCCESS, new ResultUser(instructor));
+        } else {
             return new Result<>(NO_PERMISSION);
         }
     }

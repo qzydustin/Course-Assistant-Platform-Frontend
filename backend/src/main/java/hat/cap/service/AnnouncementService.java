@@ -2,10 +2,7 @@ package hat.cap.service;
 
 import hat.cap.entityDatabase.Announcement;
 import hat.cap.entityDatabase.Course;
-import hat.cap.entityDatabase.Post;
-import hat.cap.entityDatabase.PostComment;
 import hat.cap.entityResult.ResultAnnouncement;
-import hat.cap.entityResult.ResultPostComment;
 import hat.cap.repository.AnnouncementRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +15,7 @@ public class AnnouncementService {
     @Resource
     private AnnouncementRepository announcementRepository;
 
-    public List<ResultAnnouncement> getAnnouncements(Course course){
+    public List<ResultAnnouncement> getAnnouncements(Course course) {
         List<Announcement> announcements = announcementRepository.findAnnouncementsByCourse(course);
         ArrayList<ResultAnnouncement> resultAnnouncements = new ArrayList<>();
         for (Announcement announcement : announcements) {

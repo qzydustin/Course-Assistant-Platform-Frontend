@@ -1,13 +1,16 @@
 package hat.cap.controller;
 
 
-import hat.cap.entityDatabase.Course;
 import hat.cap.entityDatabase.Assignment;
+import hat.cap.entityDatabase.Course;
 import hat.cap.entityResult.Result;
 import hat.cap.entityResult.ResultAssignment;
-import hat.cap.service.*;
+import hat.cap.service.AssignmentService;
+import hat.cap.service.CourseService;
+import hat.cap.service.PermissionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -17,7 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static hat.cap.entityResult.Code.*;
-import static hat.cap.entityResult.Code.SUCCESS;
+
+@RestController
 
 public class AssignmentController {
     @Resource
@@ -54,8 +58,8 @@ public class AssignmentController {
         String title = map.get("title");
         String content = map.get("content");
         String filePath = map.get("filePath");
-        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").parse(map.get("startDate"));
-        Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").parse(map.get("endDate"));
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(map.get("startDate"));
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(map.get("endDate"));
 
 
         if (!permissionService.hasCoursePermission(type, email, password, courseID)) {

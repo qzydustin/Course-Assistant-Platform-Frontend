@@ -1,10 +1,13 @@
 package hat.cap.controller;
 
-import hat.cap.entityDatabase.*;
+import hat.cap.entityDatabase.Assignment;
+import hat.cap.entityDatabase.AssignmentSubmission;
+import hat.cap.entityDatabase.Student;
 import hat.cap.entityResult.Result;
 import hat.cap.entityResult.ResultAssignmentSubmission;
-import hat.cap.entityResult.ResultPostComment;
-import hat.cap.service.*;
+import hat.cap.service.AssignmentService;
+import hat.cap.service.PermissionService;
+import hat.cap.service.StudentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import static hat.cap.entityResult.Code.*;
-import static hat.cap.entityResult.Code.SUCCESS;
 
 @RestController
 public class AssignmentSubmissionController {
@@ -58,7 +60,7 @@ public class AssignmentSubmissionController {
         Long assignmentID = Long.valueOf(map.get("assignmentID"));
         String content = map.get("content");
         String filePath = map.get("filePath");
-        Date submitDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").parse(map.get("submitDate"));
+        Date submitDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(map.get("submitDate"));
 
 
         if (!permissionService.hasCoursePermission(type, email, password, courseID)) {
@@ -68,7 +70,7 @@ public class AssignmentSubmissionController {
         if (assignment == null) {
             return new Result<>(ASSIGNMENT_NOT_EXIST);
         }
-        Student student =studentService.getStudent("email");
+        Student student = studentService.getStudent("email");
         AssignmentSubmission assignmentSubmission = new AssignmentSubmission();
         assignmentSubmission.setStudent(student);
         assignmentSubmission.setAssignment(assignment);

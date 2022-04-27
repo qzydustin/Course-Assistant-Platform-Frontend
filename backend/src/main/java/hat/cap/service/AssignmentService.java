@@ -1,12 +1,12 @@
 package hat.cap.service;
 
-import hat.cap.entityDatabase.Course;
 import hat.cap.entityDatabase.Assignment;
 import hat.cap.entityDatabase.AssignmentSubmission;
+import hat.cap.entityDatabase.Course;
 import hat.cap.entityResult.ResultAssignment;
 import hat.cap.entityResult.ResultAssignmentSubmission;
-import hat.cap.repository.AssignmentSubmissionRepository;
 import hat.cap.repository.AssignmentRepository;
+import hat.cap.repository.AssignmentSubmissionRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

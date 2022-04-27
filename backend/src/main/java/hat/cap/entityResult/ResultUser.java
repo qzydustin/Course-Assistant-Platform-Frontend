@@ -10,15 +10,16 @@ public class ResultUser {
     private String type;
     private String username;
 
-    public ResultUser(Student student){
+    public ResultUser(Student student) {
         id = student.getId();
         type = "student";
-        username=student.getUsername();
+        username = student.getUsername();
     }
-    public ResultUser(Instructor instructor){
+
+    public ResultUser(Instructor instructor) {
         id = instructor.getId();
         type = "instructor";
-        username=instructor.getUsername();
+        username = instructor.getUsername();
     }
 
 }

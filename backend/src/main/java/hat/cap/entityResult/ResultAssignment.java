@@ -15,13 +15,13 @@ public class ResultAssignment {
     private Date startDate;
     private Date endDate;
 
-    public ResultAssignment(Assignment assignment){
-        id= assignment.getId();
-        courseCode= assignment.getCourse().getCode();
-        title=assignment.getTitle();
-        content=assignment.getContent();
-        filePath=assignment.getFilePath();
-        startDate=assignment.getStartDate();
-        endDate=assignment.getEndDate();
+    public ResultAssignment(Assignment assignment) {
+        id = assignment.getId();
+        courseCode = assignment.getCourse().getCode();
+        title = assignment.getTitle();
+        content = assignment.getContent();
+        filePath = assignment.getFilePath();
+        startDate = assignment.getStartDate();
+        endDate = assignment.getEndDate();
     }
 }

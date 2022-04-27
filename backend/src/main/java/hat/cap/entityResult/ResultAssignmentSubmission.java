@@ -13,11 +13,11 @@ public class ResultAssignmentSubmission {
     private String filePath;
     private Date submitDate;
 
-    public ResultAssignmentSubmission(AssignmentSubmission assignmentSubmission){
+    public ResultAssignmentSubmission(AssignmentSubmission assignmentSubmission) {
         id = assignmentSubmission.getId();
-        assignmentTitle =assignmentSubmission.getAssignment().getTitle();
-        content=assignmentSubmission.getContent();
-        filePath=assignmentSubmission.getFilePath();
-        submitDate =assignmentSubmission.getSubmitDate();
+        assignmentTitle = assignmentSubmission.getAssignment().getTitle();
+        content = assignmentSubmission.getContent();
+        filePath = assignmentSubmission.getFilePath();
+        submitDate = assignmentSubmission.getSubmitDate();
     }
 }

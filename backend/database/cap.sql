@@ -136,7 +136,7 @@ CREATE TABLE assignment_submission
     content       VARCHAR(255)          NULL,
     file_path     VARCHAR(255)          NULL,
     student_id    BIGINT                NULL,
-    submitDate    datetime              NULL,
+    submit_date   datetime              NULL,
     CONSTRAINT pk_assignmentsubmission PRIMARY KEY (id)
 );
 

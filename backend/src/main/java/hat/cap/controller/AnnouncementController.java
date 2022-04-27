@@ -2,11 +2,11 @@ package hat.cap.controller;
 
 import hat.cap.entityDatabase.Announcement;
 import hat.cap.entityDatabase.Course;
-import hat.cap.entityDatabase.Post;
 import hat.cap.entityResult.Result;
 import hat.cap.entityResult.ResultAnnouncement;
-import hat.cap.entityResult.ResultPost;
-import hat.cap.service.*;
+import hat.cap.service.AnnouncementService;
+import hat.cap.service.CourseService;
+import hat.cap.service.PermissionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,7 +53,7 @@ public class AnnouncementController {
         String title = map.get("title");
         String content = map.get("content");
 
-        if(!type.equals("instructor")){
+        if (!type.equals("instructor")) {
             return new Result<>(USER_TYPE_WRONG);
         }
         if (!permissionService.hasCoursePermission(type, email, password, courseID)) {
