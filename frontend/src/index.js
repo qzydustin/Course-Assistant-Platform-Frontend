@@ -5,12 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {store} from './pages/dashboardStore';
 import { Provider } from 'react-redux';
+import server from "./server.json";
 
-
+localStorage.setItem("myServer", server.host);
 ReactDOM.render(
   <React.StrictMode>
       {/*<Provider store={store}>*/}
-          <App />
+          <App server={server}/>
       {/*</Provider>*/}
   </React.StrictMode>,
   document.getElementById('root')

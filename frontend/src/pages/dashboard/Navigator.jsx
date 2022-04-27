@@ -18,42 +18,10 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-
+import NotesIcon from '@mui/icons-material/Notes';
 
 import {useDispatch, useSelector} from 'react-redux';
-import { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll, toCourse_1 } from './dashboardSlice';
-
-const categories = [
-  {
-    id: 'Build',
-    children: [
-      { id: 'Front page', icon: <PeopleIcon />, active: "Front Page",},
-      { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: "Switch 1"},
-      { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
-      { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
-      { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
-      { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
-    ],
-  },
-  {
-    id: 'Course Plaza',
-    children: [
-      { id: 'Course_1', icon: <SettingsIcon />, active: "Course_1"},
-      { id: 'Course_2', icon: <TimerIcon />, active: "Course_2"},
-      { id: 'Course_3', icon: <PhonelinkSetupIcon />, active: "Course_3"},
-    ],
-  },
-  {
-    id: 'Management',
-    children: [
-      { id: 'Create Course', icon: <TimerIcon />, active: "Create Course"},
-      { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
-      { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
-    ],
-  },
-];
-
+import { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll, toActiveCourse } from './dashboardSlice';
 
 
 const item = {
@@ -75,20 +43,84 @@ export default function Navigator(props) {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  let enrolledCourse = useSelector(state => state.contentsController.enrolledCourse);
+  let type = localStorage.getItem('myType')
+  let categories = [
+      {
+        id: 'Build',
+        children: [
+          { id: 'Front page', icon: <PeopleIcon />, active: "Front Page",},
+          { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: "Switch 1"},
+          { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
+          { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
+          { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
+          { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
+        ],
+      }];
+  categories = [
+      ...categories,
+      {
+        id: 'Course Plaza',
+        children: enrolledCourse.map( course => (
+            { id: course.code,
+              icon:<NotesIcon/>,
+              active: course.code,
+              semester: course.semester,
+              courseID: course.id})),
+      }];
+  if (type === 'student'){
+    categories = [
+      ...categories,
+      {
+        id: 'Management',
+        children: [
+          { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
+          { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
+          { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
+        ],
+      }];
+  }
+  if (type === 'instructor'){
+      categories = [
+        ...categories,
+        {
+          id: 'Management',
+          children: [
+            { id: 'Create Course', icon: <TimerIcon />, active: "Create Course"},
+            { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
+            { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
+            { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
+          ],
+        }];
+    }
+
+  console.log("categories is ", categories);
+
   const { ...other } = props;
   const [selectedIndex, setSelectedIndex] = React.useState(true);
 
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-    console.log("index=",index);
-    if (index === "Front Page") dispatch(toFrontPage());
-    if (index === "Switch 1") dispatch(toSwitch1());
-    if (index === "Create Course") dispatch(toCreateCourse());
-    if (index === "Course Enroll") dispatch(toCourseEnroll());
-    if (index === "Course_1") dispatch(toCourse_1("another course"));
+  const handleNonCourseListClick = (event, active) => {
+    setSelectedIndex(active);
+    console.log("active=",active);
+    dispatch(toActiveCourse(''));
+    if (active === "Front Page") dispatch(toFrontPage());
+    if (active === "Switch 1") dispatch(toSwitch1());
+    if (active === "Create Course") dispatch(toCreateCourse());
+    if (active === "Course Enroll") dispatch(toCourseEnroll());
   };
-  const courseList =useSelector(state => state.contentsController.courseList)
-  console.log(courseList)
+
+  const handleCourseListClick = (event, active, semester, courseID) => {
+    setSelectedIndex(active);
+    let activeCourse = {
+      code: active,
+      semester: semester,
+      id: courseID
+    }
+    console.log("active=",activeCourse);
+
+    dispatch(toActiveCourse(activeCourse));
+  };
+
 
   return (
     <Drawer variant="permanent" {...other}>
@@ -108,17 +140,25 @@ export default function Navigator(props) {
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active}) => (
-              <ListItem disablePadding key={childId}>
-                <ListItemButton selected={selectedIndex === active}
-                                sx={item}
-                                onClick={(event) => handleListItemClick(event, active)}>
-                                {/*onClick={(event) => {dispatch(toSwitch1());console.log("2nd");}}>*/}
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText>{childId}</ListItemText>
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {id === 'Course Plaza' ? (
+                children.map(({ id: childId, icon, active, semester, courseID}) => (
+                    <ListItem disablePadding key={childId}>
+                    <ListItemButton selected={selectedIndex === active}
+                                    sx={item}
+                                    onClick={(event) => handleCourseListClick(event, active, semester, courseID)}>
+                      <ListItemIcon>{icon}</ListItemIcon>
+                      <ListItemText>{childId}</ListItemText>
+                    </ListItemButton>
+                    </ListItem>))):(
+                children.map(({ id: childId, icon, active}) => (
+                    <ListItem disablePadding key={childId}>
+                    <ListItemButton selected={selectedIndex === active}
+                                    sx={item}
+                                    onClick={(event) => handleNonCourseListClick(event, active)}>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText>{childId}</ListItemText>
+                    </ListItemButton>
+                    </ListItem>)))}
             <Divider sx={{ mt: 2 }} />
           </Box>
         ))}

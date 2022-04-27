@@ -30,15 +30,34 @@ const pageContent = {
 export const contentsSlice = createSlice({
     name: 'contentsController',
     initialState: {
+        email: localStorage.getItem("myEmail"),
+        password: localStorage.getItem("myPassword"),
+        type: localStorage.getItem("myType"),
         isContentShown: false,
         isContent1Shown: false,
         isCreateCourseShown: false,
         isSearchCourseShown: false,
-        courseList : [],
-        searchedCourse : [],
-        enrollingCourse : [],
+        activeCourse: {},
+        searchedCourse: [],
+        enrollingCourse: [],
+        enrolledCourse: [],
+        activeTab: 0,
+        server:{host: localStorage.getItem("myServer")},
+        posts:[],
+        activePostID:{},
+        activeComments:[],
+        activeAnnouncement:[]
     },
     reducers: {
+        saveEmail: (state, action) => {
+            state.email = action.payload
+        },
+        savePassword: (state, action) => {
+            state.password = action.payload
+        },
+        saveType: (state, action) => {
+            state.type = action.payload
+        },
         toFrontPage: (state) => {
             state.isContentShown = pageContent["Front page"][0].value;
             state.isContent1Shown = pageContent["Front page"][1].value;
@@ -63,8 +82,13 @@ export const contentsSlice = createSlice({
             state.isCreateCourseShown = pageContent["Course Enroll"][2].value;
             state.isSearchCourseShown = pageContent["Course Enroll"][3].value;
         },
-        toCourse_1:(state,action) => {
-            state.courseList = action.payload
+        toActiveCourse:(state,action) => {
+            state.isContentShown = false;
+            state.isContent1Shown = false;
+            state.isCreateCourseShown = false;
+            state.isSearchCourseShown = false;
+            state.activeCourse = action.payload;
+            state.activeTab = 0;
         },
         renewSearchedCourse:(state, action) => {
             state.searchedCourse = action.payload
@@ -72,17 +96,45 @@ export const contentsSlice = createSlice({
         addEnrollCourse:(state, action) => {
             state.enrollingCourse = [...state.enrollingCourse, JSON.parse(action.payload)]
         },
-        removeEnrollCourse:(state, action) =>{
+        removeEnrollCourse:(state, action) => {
             state.enrollingCourse = state.enrollingCourse.filter(course =>
                 (course.code !== JSON.parse(action.payload).code || course.semester !== JSON.parse(action.payload).semester))
         },
+        updateEnrolledCourse:(state, action) => {
+            state.enrolledCourse = action.payload
+        },
+        changeTab:(state, action) => {
+            state.activeTab = action.payload
+        },
+        saveServer:(state, action) => {
+            state.server = action.payload
+        },
+        renewPosts:(state, action) =>{
+            state.posts = action.payload
+        },
+        renewActivePost:(state, action) =>{
+            state.activePostID = action.payload
+        },
+        renewActiveComments:(state,action) =>{
+            state.activeComments = action.payload
+        },
+        addActiveComments:(state,action) =>{
+            state.activeComments = [...state.activeComments, action.payload]
+        },
+        renewActiveAnnouncements:(state, action) => {
+            state.activeAnnouncement = action.payload
+        }
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { toFrontPage, toSwitch1, toCreateCourse,
-    toCourseEnroll, toCourse_1, renewSearchedCourse,
-    addEnrollCourse, removeEnrollCourse} = contentsSlice.actions
+export const { saveEmail, savePassword, saveType,
+    toFrontPage, toSwitch1, toCreateCourse,
+    toCourseEnroll, toActiveCourse, renewSearchedCourse,
+    addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
+    changeTab, saveServer,
+    renewPosts, renewActivePost, renewActiveComments, addActiveComments,
+    renewActiveAnnouncements} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

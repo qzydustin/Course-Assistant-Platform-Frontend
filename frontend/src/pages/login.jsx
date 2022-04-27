@@ -13,44 +13,54 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
+
+import { saveEmail, savePassword, saveType, saveServer } from "./dashboard/dashboardSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const theme = createTheme();
 
-export default function Login() {
+export default function Login({server}) {
 
-    let toDashboard = false;
+    const dispatch = useDispatch();
+
+    dispatch(saveServer(server));
+
     let navigate = useNavigate();
-
-    // update toDashboard
-    // if(toDashboard === true) navigate("/dashboard");
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const loginForm = new FormData(event.currentTarget);
 
-        console.log("handle login button");
+        dispatch(saveEmail(loginForm.get("email")));
+        dispatch(savePassword(loginForm.get("password")));
+        dispatch(saveType(loginForm.get('role-group-label')));
+
+
         let data = JSON.stringify({
             "email": loginForm.get("email"),
             "password": loginForm.get("password"),
-            "type": loginForm.get('role-group-label')
+            "type": loginForm.get('role-group-label'),
         })
 
-        // console.log(data);
+        console.log("log in data is ",data);
 
-
-        axios.post('http://127.0.0.1:8080/login',
+        axios.post(server.host+'/login',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
                 if(response.data.code === 1000){
-                    console.log("Log in success!");
-                    toDashboard = true;
+                    console.log("Log in successfully!", response);
+
+                    localStorage.setItem('myEmail', loginForm.get("email"));
+                    localStorage.setItem('myPassword', loginForm.get("password"));
+                    localStorage.setItem('myType', loginForm.get("role-group-label"));
+                    localStorage.setItem('myUserName', response.data.data.username);
+
                     navigate('/dashboard');
-                    // window.moveTo("/dashboard");
                 } else {
                     console.log(response.data.message);
                 }

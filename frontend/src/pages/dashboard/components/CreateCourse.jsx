@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
 import axios from "axios";
+import {useSelector} from "react-redux";
 
 
 const departments = [
@@ -25,7 +26,14 @@ const offeredTimes = [
 ];
 
 
-export default function MultilineTextFields() {
+export default function CreateCourse({server}) {
+
+    let email = localStorage.getItem('myEmail')
+    let password = localStorage.getItem('myPassword')
+    let type = localStorage.getItem('myType')
+    // let email = useSelector(state => state.contentsController.email)
+    // let password = useSelector(state => state.contentsController.password)
+    // let type = useSelector(state => state.contentsController.type)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -34,9 +42,9 @@ export default function MultilineTextFields() {
         console.log("handle create course button");
 
         let data = JSON.stringify({
-            "email": "1234",
-            "password": "1234",
-            "type": "instructor",
+            "email": email,
+            "password": password,
+            "type": type,
             "code": createCourseForm.get("course id"),
             "title": createCourseForm.get("course name"),
             "seat": createCourseForm.get("availability"),
@@ -46,8 +54,8 @@ export default function MultilineTextFields() {
             "information": createCourseForm.get("description"),
         })
 
-        console.log(data);
-        axios.post('http://127.0.0.1:8080/add-course',
+        // console.log(data);
+        axios.post(server.host+'/create-course',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
@@ -75,12 +83,11 @@ export default function MultilineTextFields() {
         <Box
           component="form"
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
+            '& .MuiTextField-root': { m: 1, ml:4, mt:2, width: '25ch' },
           }}
           noValidate
           autoComplete="off"
           onSubmit={handleSubmit}
-          sx={{ml:4,mt:2,gap:2}}
         >
           <Box>
             <TextField

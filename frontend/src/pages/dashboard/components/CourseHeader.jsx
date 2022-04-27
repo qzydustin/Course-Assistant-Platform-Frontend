@@ -14,12 +14,33 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import {saveEmail, savePassword, saveType, changeTab} from "../dashboardSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
-function Header(props) {
-  const { onDrawerToggle } = props;
+function ManageHeader(props) {
+  const { onDrawerToggle } = props.onDrawerToggle;
+  const activeCourse = useSelector(state => state.contentsController.activeCourse);
 
+  console.log("activeCourse is ", activeCourse);
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  const tabValue = useSelector(state => state.contentsController.activeTab)
+  const handleChange = (event, newValue) => {
+    dispatch(changeTab(newValue));
+  };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    localStorage.clear();
+    dispatch(saveEmail(''));
+    dispatch(savePassword(''));
+    dispatch(saveType(''));
+    navigate('/login');
+  }
   return (
     <React.Fragment>
       <AppBar color="primary" position="sticky" elevation={0}>
@@ -49,8 +70,9 @@ function Header(props) {
                 }}
                 rel="noopener noreferrer"
                 target="_blank"
+                onClick={handleLogout}
               >
-                Go to docs
+                Log out
               </Link>
             </Grid>
             <Grid item>
@@ -79,7 +101,7 @@ function Header(props) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Header's header
+                {activeCourse.code}
               </Typography>
             </Grid>
             <Grid item>
@@ -103,10 +125,10 @@ function Header(props) {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-        <Tabs value={0} textColor="inherit">
-          <Tab label="Label_1" />
-          <Tab label="Label_2" />
-          <Tab label="Label_3" />
+        <Tabs value={tabValue} textColor="inherit" onChange={handleChange}>
+          <Tab label="Main" />
+          <Tab label="Discussion" />
+          <Tab label="Assignment" />
           <Tab label="Label_4" />
         </Tabs>
       </AppBar>
@@ -114,8 +136,8 @@ function Header(props) {
   );
 }
 
-Header.propTypes = {
+ManageHeader.propTypes = {
   onDrawerToggle: PropTypes.func.isRequired,
 };
 
-export default Header;
+export default ManageHeader;

@@ -15,10 +15,12 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom';
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({server}) {
+    let navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
         const signUpForm = new FormData(event.currentTarget);
@@ -31,8 +33,13 @@ export default function SignUp() {
         })
         // console.log(data);
 
-        axios.post('http://127.0.0.1:8080/signup', data, {headers: {'Content-Type': 'application/json'}}).then((response) => {
-            console.log(response);
+        axios.post(server.host+'/signup', data, {headers: {'Content-Type': 'application/json'}}).then((response) => {
+            if(response.data.code === 1000){
+                console.log("Sign up suceessfully!");
+                navigate('/login');
+            } else {
+                console.log(response.data.message)
+            }
         });
     };
 
