@@ -72,11 +72,11 @@ export default function AlignItemsList() {
     const announcements = useSelector(state => state.contentsController.activeAnnouncement)
 
     return (
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <List sx={{ width: '100%', maxWidth: 360}}>
             <Divider component="li" />
             {announcements.map( announcement =>(
-                <Grid>
-                    <ListItem key={announcement.id} alignItems="flex-start">
+                <Grid key={announcement.id}>
+                    <ListItem alignItems="flex-start">
                         <ListItemButton padding={0} onClick={handleAnnouncementClick}>
                             <ListItemText
                                 primary={announcement.title}
