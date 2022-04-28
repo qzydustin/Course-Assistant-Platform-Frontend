@@ -16,7 +16,7 @@ import IconButton from "@mui/material/IconButton";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import Box from "@mui/material/Box";
-
+import Assignment from './coursecomponents/Assignment'
 
 export default function CourseContent() {
 
@@ -55,12 +55,12 @@ export default function CourseContent() {
                 }
             });
 
-        console.log("getAnnouncements: ", userCourse);
+        // console.log("getAnnouncements: ", userCourse);
         axios.post(server.host+'/get-announcements',
             userCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                console.log(response.data.data);
+                // console.log(response.data.data);
                 if(response.data.code === 1000){
                     dispatch(renewActiveAnnouncements(response.data.data))
                     // dispatch(renewPosts(response.data.data.map( post => ({
@@ -95,7 +95,7 @@ export default function CourseContent() {
             "title": announcementCreationForm.get("title"),
             "content": announcementCreationForm.get("content")
         })
-        console.log("createAnnouncements: ", creatAnnouncement);
+        // console.log("createAnnouncements: ", creatAnnouncement);
         axios.post(server.host + '/create-announcement',
             creatAnnouncement,
             {headers: {'Content-Type': 'application/json'}})
@@ -114,32 +114,31 @@ export default function CourseContent() {
             })
     }
 
-    return (
-        <Grid container>
-            {(activeTab === 0) ? (
-                <Grid>
-                    <Paper sx={{ position: "fixed", top:220, right: 25 }}>
-                        <AppBar
-                            position="static"
-                            color="grey"
-                            elevation={0}
-                        >
-                            <Toolbar>
-                                <Grid container spacing={2} alignItems="center">
-                                    <Grid item xs>
-                                        Announcement
-                                    </Grid>
-                                    <Grid item>
-                                        {(type === 'instructor')? (<Button sx={{ mr: 1 }} onClick={handleClickOpen}>
-                                            New Announcement
-                                        </Button>):null}
-                                        <Dialog open={open} onClose={handleClose}>
-                                            <Box
-                                                component="form"
-                                                noValidate
-                                                autoComplete="off"
-                                                onSubmit={handleCreateAnnouncement}
-                                            >
+    if (activeTab === 0){
+        return (
+            <Grid>
+                <Paper sx={{ position: "fixed", top:220, right: 25 }}>
+                    <AppBar
+                        position="static"
+                        color="grey"
+                        elevation={0}
+                    >
+                        <Toolbar>
+                            <Grid container spacing={2} alignItems="center">
+                                <Grid item xs>
+                                    Announcement
+                                </Grid>
+                                <Grid item>
+                                    {(type === 'instructor')? (<Button sx={{ mr: 1 }} onClick={handleClickOpen}>
+                                        New Announcement
+                                    </Button>):null}
+                                    <Dialog open={open} onClose={handleClose}>
+                                        <Box
+                                            component="form"
+                                            noValidate
+                                            autoComplete="off"
+                                            onSubmit={handleCreateAnnouncement}
+                                        >
                                             <DialogTitle>New Announcement</DialogTitle>
                                             <DialogContent>
                                                 <TextField
@@ -170,18 +169,32 @@ export default function CourseContent() {
                                                 <Button type="submit">Publish</Button>
                                             </DialogActions>
                                         </Box>
-                                        </Dialog>
-                                    </Grid>
+                                    </Dialog>
                                 </Grid>
-                            </Toolbar>
-                        </AppBar>
-                        <AnnouncementPanel/>
-                    </Paper>
-                </Grid>) : null}
-            {(activeTab === 1) ? (
-                <Grid>
-                    <Discussion/>
-                </Grid>) : null}
-        </Grid>
-    );
+                            </Grid>
+                        </Toolbar>
+                    </AppBar>
+                    <AnnouncementPanel/>
+                </Paper>
+            </Grid>
+        )
+    }
+
+    if (activeTab === 1) {
+        return (
+            <Grid>
+                <Discussion/>
+            </Grid>
+        )
+    }
+
+    if (activeTab === 2) {
+        return (
+            <Assignment/>
+        )
+    }
+
+    if (activeTab === 3) {
+        return (<Grid/>)
+    }
 }

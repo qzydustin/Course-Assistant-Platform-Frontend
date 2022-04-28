@@ -46,7 +46,8 @@ export const contentsSlice = createSlice({
         posts:[],
         activePostID:{},
         activeComments:[],
-        activeAnnouncement:[]
+        activeAnnouncement:[],
+        assignments:[],
     },
     reducers: {
         saveEmail: (state, action) => {
@@ -121,9 +122,12 @@ export const contentsSlice = createSlice({
         addActiveComments:(state,action) =>{
             state.activeComments = [...state.activeComments, action.payload]
         },
-        renewActiveAnnouncements:(state, action) => {
+        renewActiveAnnouncements: (state, action) => {
             state.activeAnnouncement = action.payload
-        }
+        },
+        renewAssignments: (state, action) => {
+            state.assignments = action.payload
+        },
     }
 })
 
@@ -134,7 +138,7 @@ export const { saveEmail, savePassword, saveType,
     addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
     changeTab, saveServer,
     renewPosts, renewActivePost, renewActiveComments, addActiveComments,
-    renewActiveAnnouncements} = contentsSlice.actions
+    renewActiveAnnouncements, renewAssignments} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

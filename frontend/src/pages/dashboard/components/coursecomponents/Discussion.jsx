@@ -53,7 +53,7 @@ export default function Discussion() {
     }
 
     const handleNewPostSubmit = (event) => {
-        console.log("handle post submit")
+        // console.log("handle post submit")
         event.preventDefault();
         const postCreationForm = new FormData(event.currentTarget);
 
@@ -65,7 +65,7 @@ export default function Discussion() {
             "title": postCreationForm.get("title"),
             "content": postCreationForm.get("contents")
         })
-        console.log("Post is : ", post);
+        // console.log("Post is : ", post);
         axios.post(server.host + '/create-post',
             post,
             {headers: {'Content-Type': 'application/json'}})
@@ -127,7 +127,9 @@ export default function Discussion() {
             <Grid item xs={4}>
                 <List sx={{width: '100%', bgcolor: 'background.paper'}}>
                     <ListItem alignItems="flex-start">
-                        <ListItemButton padding={0} onClick={handleNewPostClick}>
+                        <ListItemButton disableGutters={true}
+                                        padding={0}
+                                        onClick={handleNewPostClick}>
                             <ListItemAvatar>
                                 <Avatar alt="N" src="/static/images/avatar/1.jpg"/>
                             </ListItemAvatar>
@@ -139,8 +141,10 @@ export default function Discussion() {
                     <Divider variant="inset" component="li"/>
                     {posts.map((thread) => (
                         <Grid>
-                            <ListItem alignItems="flex-start">
-                                <ListItemButton padding={0} onClick={() => handleThreadClick(thread.postID)}>
+                            <ListItem>
+                                <ListItemButton disableGutters={true}
+                                                padding={0}
+                                                onClick={() => handleThreadClick(thread.postID)}>
                                     <ListItemAvatar>
                                         <Avatar alt="Post" src="/static/images/avatar/1.jpg"/>
                                     </ListItemAvatar>
@@ -162,13 +166,14 @@ export default function Discussion() {
                                     />
                                 </ListItemButton>
                             </ListItem>
-                            <Divider variant="inset" component="li"/>
+                            <Divider variant="inset"/>
                         </Grid>
                     ))}
                 </List>
             </Grid>
             {isNewPost ? (
                     <Grid xs={8} padding={3}>
+                        <Divider orientation="vertical" flexItem/>
                         <Box
                             component="form"
                             noValidate
@@ -192,7 +197,7 @@ export default function Discussion() {
                                 </TextField>
                             </Grid>
                             <Grid padding={2}>
-                                <Stack direction="row" spacing={40}>
+                                <Stack direction="row" spacing={10}>
                                     <Button variant="outlined"
                                             startIcon={<DeleteIcon/>}>
                                         Delete
@@ -217,7 +222,7 @@ export default function Discussion() {
                                         primary={comment.studentName}
                                         secondary={
                                             <React.Fragment>
-                                                {comment.context}
+                                                {comment.content}
                                             </React.Fragment>}
                                     />
                                 </ListItem>
