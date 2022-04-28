@@ -73,7 +73,7 @@ public class PostController {
             post.setInstructor(instructorService.getInstructor(email));
         }
         postService.createPost(post);
-        return new Result<>(SUCCESS);
+        return new Result<>(SUCCESS,new ResultPost(post));
     }
 
 }
