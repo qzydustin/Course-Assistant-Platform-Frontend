@@ -36,14 +36,15 @@ export default function Discussion() {
     const server = useSelector(state => state.contentsController.server);
     const dispatch = useDispatch();
     const [isNewPost, setIsNewPost] = React.useState(false);
+    const [isPostOpened, setIsPostOpened] = React.useState(false);
     let posts = useSelector(state => state.contentsController.posts);
     let activeComments = useSelector(state => state.contentsController.activeComments);
     const activePostID = useSelector(state => state.contentsController.activePostID);
 
     function handleThreadClick(postID) {
         setIsNewPost(false)
+        setIsPostOpened(true)
         dispatch(renewActivePost(postID))
-
         handleGetComment(postID);
     }
 
@@ -72,9 +73,10 @@ export default function Discussion() {
             .then(function (response) {
                 console.log(response.data.message);
                 if (response.data.code === 1000) {
-
                 }
+                // handleThreadClick(postID)
             });
+
     }
 
     const handleNewCommentSubmit = (event) => {
@@ -212,8 +214,9 @@ export default function Discussion() {
                             </Grid>
                         </Box>
                     </Grid>
-                ) :
-                (<Grid xs={8} padding={3}>
+                ) : (null)}
+            {isPostOpened ? (
+                    <Grid xs={8} padding={3}>
                     <List sx={{width: '100%', bgcolor: 'background.paper'}}>
                         {activeComments.map((comment) => (
                             <Grid>
@@ -267,7 +270,7 @@ export default function Discussion() {
                             </Grid>
                         </Box>
                     </Grid>
-                </Grid>)}
+                </Grid>):(null)}
         </Grid>
     );
 }

@@ -128,6 +128,9 @@ export const contentsSlice = createSlice({
         renewAssignments: (state, action) => {
             state.assignments = action.payload
         },
+        renewAssignmentSubmission: (state, action) => {
+            state.assignmentsSubmission = action.payload
+        },
     }
 })
 
@@ -138,7 +141,7 @@ export const { saveEmail, savePassword, saveType,
     addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
     changeTab, saveServer,
     renewPosts, renewActivePost, renewActiveComments, addActiveComments,
-    renewActiveAnnouncements, renewAssignments} = contentsSlice.actions
+    renewActiveAnnouncements, renewAssignments, renewAssignmentSubmission} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

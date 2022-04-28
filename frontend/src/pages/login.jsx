@@ -58,7 +58,7 @@ export default function Login({server}) {
                     localStorage.setItem('myEmail', loginForm.get("email"));
                     localStorage.setItem('myPassword', loginForm.get("password"));
                     localStorage.setItem('myType', loginForm.get("role-group-label"));
-                    localStorage.setItem('myUserName', response.data.data.username);
+                    // localStorage.setItem('myUserName', response.data.data.username);
 
                     navigate('/dashboard');
                 } else {
