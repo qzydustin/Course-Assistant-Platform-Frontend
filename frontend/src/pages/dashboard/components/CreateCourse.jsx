@@ -7,7 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
 import axios from "axios";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {updateEnrolledCourse} from "../dashboardSlice";
 
 
 const departments = [
@@ -28,6 +29,7 @@ const offeredTimes = [
 
 export default function CreateCourse({server}) {
 
+    const dispatch = useDispatch();
     let email = localStorage.getItem('myEmail')
     let password = localStorage.getItem('myPassword')
     let type = localStorage.getItem('myType')
@@ -41,7 +43,7 @@ export default function CreateCourse({server}) {
 
         console.log("handle create course button");
 
-        let data = JSON.stringify({
+        let createCourse = JSON.stringify({
             "email": email,
             "password": password,
             "type": type,
@@ -56,11 +58,26 @@ export default function CreateCourse({server}) {
 
         // console.log(data);
         axios.post(server.host+'/create-course',
-            data,
+            createCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
                 if(response.data.code === 1000){
                     console.log("Add course successfully!");
+                    let user = JSON.stringify({
+                        "email": email,
+                        "password": password,
+                        "type": type,
+                    })
+                    axios.post(server.host+'/get-enrolled-courses',
+                        user,
+                        {headers: {'Content-Type': 'application/json'}})
+                        .then(function(response) {
+                            if(response.data.code === 1000){
+                                dispatch(updateEnrolledCourse(response.data.data))
+                            } else {
+                                console.log(response.data.message);
+                            }
+                        });
                 } else {
                     console.log(response.data.message);
                 }

@@ -124,7 +124,7 @@ export default function Discussion() {
 
     return (
         <Grid container>
-            <Grid item xs={4}>
+            <Grid xs={4}>
                 <List sx={{width: '100%', bgcolor: 'background.paper'}}>
                     <ListItem alignItems="flex-start">
                         <ListItemButton disableGutters={true}

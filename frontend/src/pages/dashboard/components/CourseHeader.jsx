@@ -29,7 +29,7 @@ function ManageHeader(props) {
   let navigate = useNavigate();
 
   const tabValue = useSelector(state => state.contentsController.activeTab)
-  const handleChange = (event, newValue) => {
+  const handleTabChange = (event, newValue) => {
     dispatch(changeTab(newValue));
   };
 
@@ -125,7 +125,7 @@ function ManageHeader(props) {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-        <Tabs value={tabValue} textColor="inherit" onChange={handleChange}>
+        <Tabs value={tabValue} textColor="inherit" onChange={handleTabChange}>
           <Tab label="Main" />
           <Tab label="Discussion" />
           <Tab label="Assignment" />

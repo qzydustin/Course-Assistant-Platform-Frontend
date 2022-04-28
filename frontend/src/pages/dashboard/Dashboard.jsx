@@ -216,7 +216,7 @@ export default function Dashboard({server}) {
       .then(function(response) {
         if(response.data.code === 1000){
           console.log("Get enrolled course successfully!");
-          // console.log(response.data.data);
+          console.log(response);
           dispatch(updateEnrolledCourse(response.data.data))
           // dispatch(renewSearchedCourse(response.data.data));
         } else {

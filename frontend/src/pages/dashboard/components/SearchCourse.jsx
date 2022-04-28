@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
-import Row from './TableRow';
+import Row from './SearchCourseTableRow';
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {renewSearchedCourse} from '../dashboardSlice';
@@ -182,16 +182,16 @@ export default function SearchCourse({server}) {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TextField
-                                    fullWidth
-                                    name="course name"
-                                    placeholder="Search course by its name"
-                                    InputProps={{
-                                        disableUnderline: false,
-                                        sx: {fontSize: '12px'},
-                                    }}
-                                    variant="standard"
-                                />
+                                {/*<TextField*/}
+                                {/*    fullWidth*/}
+                                {/*    name="course name"*/}
+                                {/*    placeholder="Search course by its name"*/}
+                                {/*    InputProps={{*/}
+                                {/*        disableUnderline: false,*/}
+                                {/*        sx: {fontSize: '12px'},*/}
+                                {/*    }}*/}
+                                {/*    variant="standard"*/}
+                                {/*/>*/}
                             </Grid>
                             <Grid item>
                                 <Button type="submit"
