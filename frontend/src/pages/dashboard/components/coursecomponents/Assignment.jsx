@@ -8,7 +8,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import ListItemButton from "@mui/material/ListItemButton";
-import {renewActiveComments, renewActivePost, renewAssignments} from "../../dashboardSlice";
+import {renewActiveComments, renewActivePost, renewAssignments, renewAssignmentSubmission} from "../../dashboardSlice";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
@@ -27,24 +27,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Table from "@mui/material/Table";
 
-// const assignments = [
-//     {
-//         id: 0,
-//         title: "First assignment",
-//         courseCode: "CSC 111",
-//         starting_date: "Apr 26, 2022",
-//         end_data: "Apr 28,2022",
-//         file_path: "url_link",
-//     },
-//     {
-//         id: 1,
-//         title: "Second assignment",
-//         courseCode: "CSC 111",
-//         starting_date: "Apr 28, 2022",
-//         end_data: "Apr 30,2022",
-//         file_path: "url_link",
-//     }
-// ]
 
 export default function Assignments() {
 
@@ -61,12 +43,12 @@ export default function Assignments() {
 
     const [hasUpdatedAssignment, setHasUpdatedAssignment] = React.useState(false);
     const [activeAssignment, setActiveAssignment] = React.useState(null);
+    const assignmentsSubmission = useSelector(state => state.contentsController.assignmentsSubmission)
 
     const handleNewAssignmentSubmit = (event) => {
         // console.log("handle post submit")
         event.preventDefault();
         const postCreationForm = new FormData(event.currentTarget);
-
         let assignment = JSON.stringify({
             "email": email,
             "password": password,
@@ -110,6 +92,27 @@ export default function Assignments() {
             });
     }
 
+    function getAssignmentSubmissions() {
+        let getAssignmentsSubmissions = JSON.stringify({
+            "email": email,
+            "password": password,
+            "type": type,
+            "courseID": courseID,
+            "assignmentID": activeAssignment[0].id,
+        })
+        console.log("getAssignmentsSubmissions is : ", getAssignmentsSubmissions);
+        axios.post(server.host + '/get-assignment-submissions',
+            getAssignmentsSubmissions,
+            {headers: {'Content-Type': 'application/json'}})
+            .then(function (response) {
+                console.log("getAssignmentsSubmissions response is ", response.data);
+                if (response.data.code === 1000) {
+                    dispatch(renewAssignmentSubmission(response.data.data));
+                    console.log("getAssignmentSubmissions is ", response.data.data)
+                }
+            });
+    }
+
     if (!hasUpdatedAssignment) {
         getAssignments()
         setHasUpdatedAssignment(true)
@@ -124,7 +127,7 @@ export default function Assignments() {
         setIsNewAssignment(false)
         setActiveAssignment(assignments.filter(assignment =>
             (assignment.id === assignmentID)))
-
+        if(activeAssignment !== null) {getAssignmentSubmissions()}
         console.log("active assignment is", activeAssignment)
     }
 
@@ -150,6 +153,7 @@ export default function Assignments() {
             .then(function (response) {
                 console.log(response.data);
                 if (response.data.code === 1000) {
+                    getAssignmentSubmissions()
                 }
             });
     }
@@ -183,10 +187,10 @@ export default function Assignments() {
                             </ListItemAvatar>
                                 <ListItemText primary={assignment.title}
                                               secondary={
-                                                  <div>
-                                                      <div>{"Start: "+(new Date(assignment.startDate)).toString().substring(0,24)}</div>
+                                                  <Grid>
+                                                      <Grid>{"Start: "+(new Date(assignment.startDate)).toString().substring(0,24)}</Grid>
                                                       <div>{"End: " + (new Date(assignment.endDate)).toString().substring(0,24)}</div>
-                                                  </div>}
+                                                  </Grid>}
                                                   />
                         </ListItemButton>
                         </LocalizationProvider>
@@ -194,7 +198,7 @@ export default function Assignments() {
                 ))}
             </List>
             {isNewAssignment ? (
-                <Grid xs={7} padding={3}>
+                <Grid padding={3}>
                     <Divider orientation="vertical" flexItem/>
                     <Box
                         component="form"
@@ -284,19 +288,29 @@ export default function Assignments() {
                                 <TableCell component="th" scope="row">{"File Path"}</TableCell>
                                 <TableCell>{activeAssignment[0].filePath}</TableCell>
                             </TableRow>
+                            <TableRow key={"history"}>
+                                <TableCell component="th" scope="row">History submission</TableCell>
+                                <TableCell>
+                                    {assignmentsSubmission.map(submission => (
+                                        <TableRow key={"submission.id"}>{submission.content}</TableRow>
+                                    ))}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow key={"New submission"}>
+                                <TableCell component="th" scope="row">New submission</TableCell>
+                                <TableCell></TableCell>
+                            </TableRow>
                         </TableBody>
+                        <Divider variant="fullWidth"/>
                     </Table>
-                    <Divider orientation="vertical" flexItem/>
                     <Box
                         component="form"
                         noValidate
                         autoComplete="off"
                         onSubmit={handleNewSubmissionSubmit}
                     >
-                        <Grid m={1}>
-                            <Grid>
-                                New submission
-                            </Grid>
+                        <Grid m={2}>
+
                             <TextField multiline
                                        fullWidth
                                        rows={8}
