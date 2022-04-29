@@ -16,7 +16,7 @@ import Button from "@mui/material/Button";
 import * as PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import {renewActivePost, renewActiveComments, addActiveComments} from "../../dashboardSlice";
+import {renewActivePost, renewActiveComments, addActiveComments, renewPosts} from "../../dashboardSlice";
 
 function Div(props) {
     return null;
@@ -57,7 +57,7 @@ export default function Discussion() {
         event.preventDefault();
         const postCreationForm = new FormData(event.currentTarget);
 
-        let post = JSON.stringify({
+        let newPost = JSON.stringify({
             "email": email,
             "password": password,
             "type": type,
@@ -67,12 +67,25 @@ export default function Discussion() {
         })
         // console.log("Post is : ", post);
         axios.post(server.host + '/create-post',
-            post,
+            newPost,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
                 console.log(response.data.message);
                 if (response.data.code === 1000) {
-
+                    axios.post(server.host+'/get-posts',
+                        newPost,
+                        {headers: {'Content-Type': 'application/json'}})
+                        .then(function(response) {
+                            // console.log(response.data.data);
+                            if(response.data.code === 1000){
+                                dispatch(renewPosts(response.data.data.map( post => ({
+                                    title: post.title,
+                                    author: post.posterName,
+                                    contents: post.content,
+                                    postID: post.id
+                                }))));
+                            }
+                        });
                 }
             });
     }
@@ -219,7 +232,7 @@ export default function Discussion() {
                             <Grid>
                                 <ListItem alignItems="flex-start">
                                     <ListItemText
-                                        primary={comment.studentName}
+                                        primary={comment.commenterName+":"}
                                         secondary={
                                             <React.Fragment>
                                                 {comment.content}
