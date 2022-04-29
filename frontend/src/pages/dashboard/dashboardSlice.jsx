@@ -7,7 +7,7 @@ const pageContent = {
         { id: 'CreatCourse', value: false },
         { id: 'SearchCourse', value: false },
     ],
-    'Switch 1': [
+    'Calendar': [
         { id: 'Content', value: false},
         { id: 'Content1', value: true},
         { id: 'CreatCourse', value: false },
@@ -49,6 +49,7 @@ export const contentsSlice = createSlice({
         activeComments:[],
         activeAnnouncement:[],
         assignments:[],
+        isCourseRenewed: false,
     },
     reducers: {
         saveEmail: (state, action) => {
@@ -66,11 +67,11 @@ export const contentsSlice = createSlice({
             state.isCreateCourseShown = pageContent["Front page"][2].value;
             state.isSearchCourseShown = pageContent["Front page"][3].value;
         },
-        toSwitch1: (state) => {
-            state.isContentShown = pageContent["Switch 1"][0].value;
-            state.isContent1Shown = pageContent["Switch 1"][1].value;
-            state.isCreateCourseShown = pageContent["Switch 1"][2].value;
-            state.isSearchCourseShown = pageContent["Switch 1"][3].value;
+        toCalendar: (state) => {
+            state.isContentShown = pageContent["Calendar"][0].value;
+            state.isContent1Shown = pageContent["Calendar"][1].value;
+            state.isCreateCourseShown = pageContent["Calendar"][2].value;
+            state.isSearchCourseShown = pageContent["Calendar"][3].value;
         },
         toCreateCourse: (state) => {
             state.isContentShown = pageContent["Create Course"][0].value;
@@ -137,19 +138,25 @@ export const contentsSlice = createSlice({
         },
         toNotNewPost: (state) => {
             state.isNewPost = false
+        },
+        toRenewCourse: (state) => {
+            state.isCourseRenewed = true
+        },
+        toNotRenewCourse: (state) => {
+            state.isCourseRenewed = false
         }
     }
 })
 
 // Action creators are generated for each case reducer function
 export const { saveEmail, savePassword, saveType,
-    toFrontPage, toSwitch1, toCreateCourse,
+    toFrontPage, toCalendar, toCreateCourse,
     toCourseEnroll, toActiveCourse, renewSearchedCourse,
     addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
     changeTab, saveServer,
     renewPosts, renewActivePost, renewActiveComments, addActiveComments,
     renewActiveAnnouncements, renewAssignments, renewAssignmentSubmission,
-    toNewPost, toNotNewPost} = contentsSlice.actions
+    toNewPost, toNotNewPost, toRenewCourse, toNotRenewCourse} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

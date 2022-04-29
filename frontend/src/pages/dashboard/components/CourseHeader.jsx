@@ -129,7 +129,7 @@ function ManageHeader(props) {
           <Tab label="Main" />
           <Tab label="Discussion" />
           <Tab label="Assignment" />
-          <Tab label="Label_4" />
+          <Tab label="Management" />
         </Tabs>
       </AppBar>
     </React.Fragment>

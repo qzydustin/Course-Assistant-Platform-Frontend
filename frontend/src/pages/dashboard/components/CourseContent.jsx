@@ -9,7 +9,7 @@ import {
     renewActiveComments,
     renewActivePost,
     renewPosts,
-    toNotNewPost
+    toNotNewPost, toRenewCourse
 } from "../dashboardSlice";
 import AnnouncementPanel from './coursecomponents/AnnouncementPanel';
 import Paper from "@mui/material/Paper";
@@ -42,6 +42,14 @@ import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+import MyCalendar from "./coursecomponents/Calendar";
+import 'react-big-calendar/lib/sass/styles.scss';
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'; // if using DnD
+
+
+
 export default function CourseContent() {
     const dispatch = useDispatch();
 
@@ -50,13 +58,13 @@ export default function CourseContent() {
     const type = localStorage.getItem('myType')
     const server = localStorage.getItem('myServer');
 
-    let courseID = useSelector(state => state.contentsController.activeCourse).id
+    const courseID = useSelector(state => state.contentsController.activeCourse).id
     const activeTab = useSelector(state => state.contentsController.activeTab);
-    let posts = useSelector(state => state.contentsController.posts);
+    const posts = useSelector(state => state.contentsController.posts);
+    const isRenewed = useSelector(state => state.contentsController.isCourseRenewed);
+    const activeAnnouncements = useSelector(state => state.contentsController.activeAnnouncement);
 
-    // const [announcement, setAnnouncement] = React.useState([]);
     let userCourse = {}
-    const [isRenewed, setIsRenewed] = React.useState(false);
     if(courseID && !isRenewed){
         userCourse = JSON.stringify({
             "email": email,
@@ -64,8 +72,8 @@ export default function CourseContent() {
             "type": type,
             "courseID": courseID
         })
-        console.log("getPosts")
-        setIsRenewed(true)
+        console.log("getPosts", userCourse)
+        dispatch(toRenewCourse())
         axios.post(server+'/get-posts',
             userCourse,
             {headers: {'Content-Type': 'application/json'}})
@@ -82,40 +90,43 @@ export default function CourseContent() {
                 }
             });
 
-        console.log("getAnnouncements: ", userCourse);
+        // console.log("getAnnouncements: ", userCourse);
 
-        console.log("getAnnouncements")
+        // console.log("getAnnouncements")
         axios.post(server+'/get-announcements',
             userCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                // console.log(response.data.data);
+                console.log("getAnnouncements", response.data.data);
                 if(response.data.code === 1000){
                     dispatch(renewActiveAnnouncements(response.data.data))
-                    // dispatch(renewPosts(response.data.data.map( post => ({
-                    //     title: post.title,
-                    //     author: post.posterName,
-                    //     contents: post.content,
-                    //     postID: post.id
-                    // }))));
+
                 }
             });
     }
 
-    const [open, setOpen] = React.useState(false);
+    const [newAssignmentOpen, setNewAssignmentOpen] = React.useState(false);
     // const [isNewPost, setIsNewPost] = React.useState(false);
+    const [assignmentOpen, setAssignmentOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleNewAnnouncementClick = () => {
+        setNewAssignmentOpen(true);
+    };
+    const handleAnnouncementClick = () => {
+        setAssignmentOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleNewAnnouncementClose = () => {
+        setNewAssignmentOpen(false);
     };
+    const handleAnnouncementClose = () => {
+        setAssignmentOpen(false);
+    };
+
 
     const handleCreateAnnouncement = (event) => {
         event.preventDefault();
-        setOpen(false);
+        setNewAssignmentOpen(false);
         const announcementCreationForm = new FormData(event.currentTarget);
         console.log("handleCreateAnnouncement")
         let creatAnnouncement = JSON.stringify({
@@ -176,106 +187,137 @@ export default function CourseContent() {
     if (activeTab === 0){
         return (
             <div>
-            <Accordion sx={{ position: "fixed", top:220, right: 25 }}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header">
-                    <Grid item xs>
-                        Announcement
-                    </Grid>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Grid container spacing={2} alignItems="center">
-                        <Grid item>
-                            {(type === 'instructor')? (<Button sx={{ mr: 1 }} onClick={handleClickOpen}>
-                                New Announcement
-                            </Button>):null}
-                            <Dialog open={open} onClose={handleClose}>
-                                <Box
-                                    component="form"
-                                    noValidate
-                                    autoComplete="off"
-                                    onSubmit={handleCreateAnnouncement}
-                                >
-                                    <DialogTitle>New Announcement</DialogTitle>
-                                    <DialogContent>
-                                        <TextField
-                                            autoFocus
-                                            margin="dense"
-                                            id="title"
-                                            label="Title"
-                                            type="Title"
-                                            name="title"
-                                            fullWidth
-                                            variant="outlined"
-                                        />
-                                        <TextField
-                                            autoFocus
-                                            margin="dense"
-                                            id="content"
-                                            label="Contents"
-                                            name="content"
-                                            type="content"
-                                            fullWidth
-                                            variant="outlined"
-                                            multiline
-                                            rows={8}
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose}>Cancel</Button>
-                                        <Button type="submit">Publish</Button>
-                                    </DialogActions>
-                                </Box>
-                            </Dialog>
+                <Grid item xs={8}><MyCalendar/></Grid>
+                <Grid item xs={4}>
+                <Accordion sx={{ position: "fixed", top:220, right: 25 }}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header">
+                        <Grid item xs>
+                            Announcement
                         </Grid>
-                    </Grid>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion sx={{ position: "fixed", top :400, right: 25 }}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
-                >
-                    <Typography>Discussion</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Typography>
-                        {posts.map((thread) => (
-                            <Grid>
-                                <ListItem key={thread.postID}>
-                                    <ListItemButton disableGutters={true}
-                                                    padding={0}
-                                                    onClick={() => handleMainPostClick(thread.postID)}>
-                                        <ListItemAvatar>
-                                            <Avatar alt="Post" src="/static/images/avatar/1.jpg"/>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={thread.title}
-                                            secondary={
-                                                <React.Fragment>
-                                                    <Typography
-                                                        sx={{display: 'inline'}}
-                                                        component="span"
-                                                        variant="body2"
-                                                        color="text.primary"
-                                                    >
-                                                        {thread.author}:
-                                                    </Typography>
-                                                    {thread.contents}
-                                                </React.Fragment>
-                                            }
-                                        />
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid item>
+                                {(type === 'instructor')? (<Button sx={{ mr: 1 }} onClick={handleNewAnnouncementClick}>
+                                    New Announcement
+                                </Button>):null}
+                                <Dialog open={newAssignmentOpen} onClose={handleNewAnnouncementClose}>
+                                    <Box
+                                        component="form"
+                                        noValidate
+                                        autoComplete="off"
+                                        onSubmit={handleCreateAnnouncement}
+                                    >
+                                        <DialogTitle>New Announcement</DialogTitle>
+                                        <DialogContent>
+                                            <TextField
+                                                autoFocus
+                                                margin="dense"
+                                                id="title"
+                                                label="Title"
+                                                type="Title"
+                                                name="title"
+                                                fullWidth
+                                                variant="outlined"
+                                            />
+                                            <TextField
+                                                autoFocus
+                                                margin="dense"
+                                                id="content"
+                                                label="Contents"
+                                                name="content"
+                                                type="content"
+                                                fullWidth
+                                                variant="outlined"
+                                                multiline
+                                                rows={8}
+                                            />
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleNewAnnouncementClose}>Cancel</Button>
+                                            <Button type="submit">Publish</Button>
+                                        </DialogActions>
+                                    </Box>
+                                </Dialog>
+                            </Grid>
+                            {activeAnnouncements.map( (announcement) => (
+                                <ListItem key={announcement.id}>
+                                    <ListItemButton sx={{ mr: 1 }} onClick={handleAnnouncementClick}>
+                                        <ListItemText>
+                                            {announcement.title}
+                                        </ListItemText>
+                                        <Dialog open={assignmentOpen} onClose={handleAnnouncementClose}>
+                                            <Box
+                                                component="form"
+                                                noValidate
+                                                autoComplete="off"
+                                                onSubmit={handleCreateAnnouncement}
+                                            >
+                                                <DialogTitle>{announcement.title}</DialogTitle>
+                                                <DialogContent>
+                                                    <DialogContentText id="alert-dialog-slide-description">
+                                                        {announcement.content}
+                                                    </DialogContentText>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={handleAnnouncementClose}>Cancel</Button>
+                                                    <Button type="submit">Publish</Button>
+                                                </DialogActions>
+                                            </Box>
+                                        </Dialog>
                                     </ListItemButton>
                                 </ListItem>
-                                <Divider variant="inset"/>
-                            </Grid>
-                        ))}
-                    </Typography>
-                </AccordionDetails>
-            </Accordion>
+                            ))}
+                        </Grid>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion sx={{ position: "fixed", top :400, right: 25 }}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2a-content"
+                        id="panel2a-header"
+                    >
+                        <Typography>Discussion</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography>
+                            {posts.map((thread) => (
+                                <Grid>
+                                    <ListItem key={thread.postID}>
+                                        <ListItemButton disableGutters={true}
+                                                        padding={0}
+                                                        onClick={() => handleMainPostClick(thread.postID)}>
+                                            <ListItemAvatar>
+                                                <Avatar alt="Post" src="/static/images/avatar/1.jpg"/>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={thread.title}
+                                                secondary={
+                                                    <React.Fragment>
+                                                        <Typography
+                                                            sx={{display: 'inline'}}
+                                                            component="span"
+                                                            variant="body2"
+                                                            color="text.primary"
+                                                        >
+                                                            {thread.author}:
+                                                        </Typography>
+                                                        {thread.contents}
+                                                    </React.Fragment>
+                                                }
+                                            />
+                                        </ListItemButton>
+                                    </ListItem>
+                                    <Divider variant="inset"/>
+                                </Grid>
+                            ))}
+                        </Typography>
+                    </AccordionDetails>
+                </Accordion>
+                </Grid>
             </div>
         )
     }

@@ -15,13 +15,25 @@ import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
 import PublicIcon from '@mui/icons-material/Public';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 import NotesIcon from '@mui/icons-material/Notes';
 
 import {useDispatch, useSelector} from 'react-redux';
-import { toFrontPage, toSwitch1, toCreateCourse, toCourseEnroll, toActiveCourse } from './dashboardSlice';
+import {
+  toFrontPage,
+  toCalendar,
+  toCreateCourse,
+  toCourseEnroll,
+  toActiveCourse,
+  toNotNewPost,
+  toNotRenewCourse
+} from './dashboardSlice';
 
 
 const item = {
@@ -49,12 +61,12 @@ export default function Navigator(props) {
       {
         id: 'Build',
         children: [
-          { id: 'Front page', icon: <PeopleIcon />, active: "Front Page",},
-          { id: 'Switch 1', icon: <DnsRoundedIcon /> , active: "Switch 1"},
-          { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
-          { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
-          { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
-          { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
+          { id: 'Front page', icon: <DashboardRoundedIcon />, active: "Front Page",},
+          { id: 'Calendar', icon: <CalendarMonthRoundedIcon /> , active: "Calendar"},
+          // { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
+          // { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
+          // { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
+          // { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
         ],
       }];
   categories = [
@@ -74,9 +86,8 @@ export default function Navigator(props) {
       {
         id: 'Management',
         children: [
-          { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
-          { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
-          { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
+          { id: 'Course Enroll', icon: <AppRegistrationRoundedIcon />, active: "Course Enroll"},
+          { id: 'Settings', icon: <SettingsIcon />, active: "Settings"},
         ],
       }];
   }
@@ -86,10 +97,9 @@ export default function Navigator(props) {
         {
           id: 'Management',
           children: [
-            { id: 'Create Course', icon: <TimerIcon />, active: "Create Course"},
-            { id: 'Course Enroll', icon: <SettingsIcon />, active: "Course Enroll"},
-            { id: 'Performance', icon: <TimerIcon />, active: "Performance"},
-            { id: 'Test Lab', icon: <PhonelinkSetupIcon />, active: "Test Lab"},
+            { id: 'Create Course', icon: <AddCircleRoundedIcon />, active: "Create Course"},
+            { id: 'Course Enroll', icon: <AppRegistrationRoundedIcon />, active: "Course Enroll"},
+            { id: 'Settings', icon: <SettingsIcon />, active: "Settings"},
           ],
         }];
     }
@@ -104,7 +114,7 @@ export default function Navigator(props) {
     console.log("active=",active);
     dispatch(toActiveCourse(''));
     if (active === "Front Page") dispatch(toFrontPage());
-    if (active === "Switch 1") dispatch(toSwitch1());
+    if (active === "Calendar") dispatch(toCalendar());
     if (active === "Create Course") dispatch(toCreateCourse());
     if (active === "Course Enroll") dispatch(toCourseEnroll());
   };
@@ -119,6 +129,7 @@ export default function Navigator(props) {
     console.log("active=",activeCourse);
 
     dispatch(toActiveCourse(activeCourse));
+    dispatch(toNotRenewCourse());
   };
 
 
@@ -127,7 +138,7 @@ export default function Navigator(props) {
       {/*<Drawer variant="permanent">*/}
       <List disablePadding>
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-          Home page header
+          Course Assistant Platform
         </ListItem>
         <ListItem sx={{ ...item, ...itemCategory }}>
           <ListItemIcon>
