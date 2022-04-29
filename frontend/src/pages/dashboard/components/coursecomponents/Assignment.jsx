@@ -32,12 +32,14 @@ export default function Assignments() {
 
     const [isNewAssignment, setIsNewAssignment] = React.useState(false);
     const dispatch = useDispatch();
-    let email = localStorage.getItem('myEmail')
-    let password = localStorage.getItem('myPassword')
-    let type = localStorage.getItem('myType')
-    let courseID = useSelector(state => state.contentsController.activeCourse).id
-    const server = useSelector(state => state.contentsController.server);
+    const email = localStorage.getItem('myEmail')
+    const password = localStorage.getItem('myPassword')
+    const type = localStorage.getItem('myType')
+    const server = localStorage.getItem('myServer');
+
+    const courseID = useSelector(state => state.contentsController.activeCourse).id
     const assignments = useSelector(state => state.contentsController.assignments);
+
     const [startDate, setStartDate] = React.useState(new Date());
     const [endDate, setEndDate] = React.useState(new Date());
 
@@ -45,6 +47,9 @@ export default function Assignments() {
     const [activeAssignment, setActiveAssignment] = React.useState(null);
     const assignmentsSubmission = useSelector(state => state.contentsController.assignmentsSubmission)
 
+    const [isInstructor, setIsInstructor] = React.useState(type==='instructor')
+    console.log("isInstructor is " , isInstructor)
+    console.log("type is " , type)
     const handleNewAssignmentSubmit = (event) => {
         // console.log("handle post submit")
         event.preventDefault();
@@ -61,7 +66,7 @@ export default function Assignments() {
             "endDate":endDate,
         })
         console.log("assignment is : ", assignment);
-        axios.post(server.host + '/create-assignment',
+        axios.post(server + '/create-assignment',
             assignment,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
@@ -81,7 +86,7 @@ export default function Assignments() {
 
         })
         console.log("getAssignments is : ", getAssignments);
-        axios.post(server.host + '/get-assignments',
+        axios.post(server + '/get-assignments',
             getAssignments,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
@@ -101,7 +106,7 @@ export default function Assignments() {
             "assignmentID": activeAssignment[0].id,
         })
         console.log("getAssignmentsSubmissions is : ", getAssignmentsSubmissions);
-        axios.post(server.host + '/get-assignment-submissions',
+        axios.post(server + '/get-assignment-submissions',
             getAssignmentsSubmissions,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
@@ -147,7 +152,7 @@ export default function Assignments() {
             "submitDate": new Date()
         })
         console.log("newSubmission is : ", newSubmission);
-        axios.post(server.host + '/create-assignment-submission',
+        axios.post(server + '/create-assignment-submission',
             newSubmission,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
@@ -161,7 +166,7 @@ export default function Assignments() {
     return (
         <Grid container>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                <ListItem alignItems="flex-start">
+                {(isInstructor) ? (<ListItem alignItems="flex-start">
                     <ListItemButton disableGutters={true}
                                     padding={0}
                                     onClick={handleNewAssignmentClick}>
@@ -172,7 +177,7 @@ export default function Assignments() {
                             primary="New Assignment"
                         />
                     </ListItemButton>
-                </ListItem>
+                </ListItem>):(null)}
                 {assignments.map( assignment =>(
                     <ListItem key={assignment.title}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>

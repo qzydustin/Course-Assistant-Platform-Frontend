@@ -35,7 +35,7 @@ function ManageHeader(props) {
 
   const handleLogout = (event) => {
     event.preventDefault();
-    localStorage.clear();
+    // localStorage.clear();
     dispatch(saveEmail(''));
     dispatch(savePassword(''));
     dispatch(saveType(''));

@@ -28,10 +28,10 @@ function Row(props) {
     const [hasChecked, setHasChecked] = React.useState(false);
     const [availability, setAvailability] = React.useState(0);
 
-    let email = localStorage.getItem('myEmail')
-    let password = localStorage.getItem('myPassword')
-    let type = localStorage.getItem('myType')
-    const server = useSelector(state => state.contentsController.server);
+    const email = localStorage.getItem('myEmail')
+    const password = localStorage.getItem('myPassword')
+    const type = localStorage.getItem('myType')
+    const server = localStorage.getItem('myServer');
 
     const handleCheckboxClick = (event) => {
         // console.log("on check");
@@ -63,7 +63,7 @@ function Row(props) {
         })
 
         console.log("checkCourse is ", checkCourse);
-        axios.post(server.host+'/get-course-enrolled-student-number',
+        axios.post(server+'/get-course-enrolled-student-number',
             checkCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {

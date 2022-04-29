@@ -57,7 +57,7 @@ export default function CreateCourse({server}) {
         })
 
         // console.log(data);
-        axios.post(server.host+'/create-course',
+        axios.post(server+'/create-course',
             createCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
@@ -68,7 +68,7 @@ export default function CreateCourse({server}) {
                         "password": password,
                         "type": type,
                     })
-                    axios.post(server.host+'/get-enrolled-courses',
+                    axios.post(server+'/get-enrolled-courses',
                         user,
                         {headers: {'Content-Type': 'application/json'}})
                         .then(function(response) {

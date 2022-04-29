@@ -16,6 +16,7 @@ import CourseHeader from "./components/CourseHeader";
 import {useDispatch, useSelector} from 'react-redux';
 import axios from "axios";
 import {updateEnrolledCourse} from "./dashboardSlice";
+import server from "../../server.json";
 
 function Copyright() {
   return (
@@ -185,9 +186,8 @@ export default function Dashboard({server}) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  // console.log("round 0");
-  // console.log(store.getState())
+  localStorage.setItem("myServer", server.host);
+  console.log("Dashboard")
 
   const isFrontPage = useSelector(state => state.contentsController.isContentShown);
   const isSwitch1 = useSelector(state => state.contentsController.isContent1Shown);
@@ -209,8 +209,9 @@ export default function Dashboard({server}) {
     "password": password,
     "type": type,
   })
+  server = localStorage.getItem("myServer")
   // console.log("Post get course data: ", user);
-  axios.post(server.host+'/get-enrolled-courses',
+  axios.post(server+'/get-enrolled-courses',
       user,
       {headers: {'Content-Type': 'application/json'}})
       .then(function(response) {

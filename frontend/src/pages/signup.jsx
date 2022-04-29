@@ -33,7 +33,7 @@ export default function SignUp({server}) {
         })
         // console.log(data);
 
-        axios.post(server.host+'/signup', data, {headers: {'Content-Type': 'application/json'}}).then((response) => {
+        axios.post(server+'/signup', data, {headers: {'Content-Type': 'application/json'}}).then((response) => {
             if(response.data.code === 1000){
                 console.log("Sign up suceessfully!");
                 navigate('/login');

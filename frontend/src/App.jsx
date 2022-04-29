@@ -6,14 +6,14 @@ import SignUp from "./pages/signup";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard/Dashboard";
 import {store} from "./pages/dashboardStore";
-import {Provider} from "react-redux";
+import {Provider, useDispatch} from "react-redux";
 import React from "react";
 
 
 export default function App({server}) {
     console.log("app server: ", server);
-    if (!server) return <p>Loading...</p>;
 
+    if (!server) return <p>Loading...</p>;
 
     return (
         <Provider store={store}>

@@ -16,7 +16,14 @@ import Button from "@mui/material/Button";
 import * as PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import {renewActivePost, renewActiveComments, addActiveComments, renewPosts} from "../../dashboardSlice";
+import {
+    renewActivePost,
+    renewActiveComments,
+    addActiveComments,
+    renewPosts,
+    toNewPost,
+    toNotNewPost
+} from "../../dashboardSlice";
 
 function Div(props) {
     return null;
@@ -29,19 +36,21 @@ Div.propTypes = {
 
 export default function Discussion() {
 
+    const dispatch = useDispatch();
+
     let email = localStorage.getItem('myEmail')
     let password = localStorage.getItem('myPassword')
     let type = localStorage.getItem('myType')
     let courseID = useSelector(state => state.contentsController.activeCourse).id
-    const server = useSelector(state => state.contentsController.server);
-    const dispatch = useDispatch();
-    const [isNewPost, setIsNewPost] = React.useState(false);
+    const server = localStorage.getItem('myServer');
+    let isNewPost = useSelector(state => state.contentsController.isNewPost)
+
     let posts = useSelector(state => state.contentsController.posts);
     let activeComments = useSelector(state => state.contentsController.activeComments);
     const activePostID = useSelector(state => state.contentsController.activePostID);
 
     function handleThreadClick(postID) {
-        setIsNewPost(false)
+        dispatch(toNotNewPost())
         dispatch(renewActivePost(postID))
 
         handleGetComment(postID);
@@ -49,7 +58,7 @@ export default function Discussion() {
 
     const handleNewPostClick = (event) => {
         event.preventDefault()
-        setIsNewPost(true)
+        dispatch(toNewPost())
     }
 
     const handleNewPostSubmit = (event) => {
@@ -66,13 +75,13 @@ export default function Discussion() {
             "content": postCreationForm.get("contents")
         })
         // console.log("Post is : ", post);
-        axios.post(server.host + '/create-post',
+        axios.post(server + '/create-post',
             newPost,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
                 console.log(response.data.message);
                 if (response.data.code === 1000) {
-                    axios.post(server.host+'/get-posts',
+                    axios.post(server+'/get-posts',
                         newPost,
                         {headers: {'Content-Type': 'application/json'}})
                         .then(function(response) {
@@ -104,7 +113,7 @@ export default function Discussion() {
             "content": postCreationForm.get("contents")
         })
         console.log("newComment is : ", newComment);
-        axios.post(server.host + '/create-comment',
+        axios.post(server + '/create-comment',
             newComment,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
@@ -124,7 +133,7 @@ export default function Discussion() {
             "postID": postID,
         })
         console.log("get comments is : ", comments);
-        axios.post(server.host + '/get-comments',
+        axios.post(server + '/get-comments',
             comments,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
@@ -139,7 +148,7 @@ export default function Discussion() {
         <Grid container>
             <Grid item xs={4}>
                 <List sx={{width: '100%', bgcolor: 'background.paper'}}>
-                    <ListItem alignItems="flex-start">
+                    <ListItem key="new post" alignItems="flex-start">
                         <ListItemButton disableGutters={true}
                                         padding={0}
                                         onClick={handleNewPostClick}>
@@ -154,7 +163,7 @@ export default function Discussion() {
                     <Divider variant="inset" component="li"/>
                     {posts.map((thread) => (
                         <Grid>
-                            <ListItem>
+                            <ListItem key={thread.postID}>
                                 <ListItemButton disableGutters={true}
                                                 padding={0}
                                                 onClick={() => handleThreadClick(thread.postID)}>

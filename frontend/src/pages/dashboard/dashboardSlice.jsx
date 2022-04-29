@@ -37,6 +37,7 @@ export const contentsSlice = createSlice({
         isContent1Shown: false,
         isCreateCourseShown: false,
         isSearchCourseShown: false,
+        isNewPost: false,
         activeCourse: {},
         searchedCourse: [],
         enrollingCourse: [],
@@ -131,6 +132,12 @@ export const contentsSlice = createSlice({
         renewAssignmentSubmission: (state, action) => {
             state.assignmentsSubmission = action.payload
         },
+        toNewPost: (state) => {
+            state.isNewPost = true
+        },
+        toNotNewPost: (state) => {
+            state.isNewPost = false
+        }
     }
 })
 
@@ -141,7 +148,8 @@ export const { saveEmail, savePassword, saveType,
     addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
     changeTab, saveServer,
     renewPosts, renewActivePost, renewActiveComments, addActiveComments,
-    renewActiveAnnouncements, renewAssignments, renewAssignmentSubmission} = contentsSlice.actions
+    renewActiveAnnouncements, renewAssignments, renewAssignmentSubmission,
+    toNewPost, toNotNewPost} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

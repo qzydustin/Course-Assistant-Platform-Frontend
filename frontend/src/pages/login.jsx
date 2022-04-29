@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 
-import { saveEmail, savePassword, saveType, saveServer } from "./dashboard/dashboardSlice";
+import { saveEmail, savePassword, saveType } from "./dashboard/dashboardSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -26,8 +26,6 @@ const theme = createTheme();
 export default function Login({server}) {
 
     const dispatch = useDispatch();
-
-    dispatch(saveServer(server));
 
     let navigate = useNavigate();
 
@@ -47,8 +45,9 @@ export default function Login({server}) {
         })
 
         console.log("log in data is ",data);
+        server = localStorage.getItem("myServer");
 
-        axios.post(server.host+'/login',
+        axios.post(server+'/login',
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
