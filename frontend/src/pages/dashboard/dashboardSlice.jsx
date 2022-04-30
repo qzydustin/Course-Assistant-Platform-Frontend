@@ -6,24 +6,35 @@ const pageContent = {
         { id: 'Content1', value: false },
         { id: 'CreatCourse', value: false },
         { id: 'SearchCourse', value: false },
+        { id: 'Settings', value: false },
     ],
     'Calendar': [
         { id: 'Content', value: false},
         { id: 'Content1', value: true},
         { id: 'CreatCourse', value: false },
         { id: 'SearchCourse', value: false },
+        { id: 'Settings', value: false },
     ],
     'Create Course': [
         { id: 'Content', value: false},
         { id: 'Content1', value: false},
         { id: 'CreateCourse', value: true },
         { id: 'SearchCourse', value: false },
+        { id: 'Settings', value: false },
     ],
     'Course Enroll': [
         { id: 'Content', value: false},
         { id: 'Content1', value: false},
         { id: 'CreatCourse', value: false },
         { id: 'SearchCourse', value: true },
+        { id: 'Settings', value: false },
+    ],
+    'Setting': [
+        { id: 'Content', value: false},
+        { id: 'Content1', value: false},
+        { id: 'CreatCourse', value: false },
+        { id: 'SearchCourse', value: false },
+        { id: 'Settings', value: true },
     ],
 }
 
@@ -37,6 +48,7 @@ export const contentsSlice = createSlice({
         isContent1Shown: false,
         isCreateCourseShown: false,
         isSearchCourseShown: false,
+        isSettings: false,
         isNewPost: false,
         isPostOpen: false,
         activeCourse: {},
@@ -67,6 +79,7 @@ export const contentsSlice = createSlice({
             state.isContent1Shown = pageContent["Front page"][1].value;
             state.isCreateCourseShown = pageContent["Front page"][2].value;
             state.isSearchCourseShown = pageContent["Front page"][3].value;
+            state.isSettings = pageContent["Front page"][4].value;
             state.activeCourse = '';
         },
         toCalendar: (state) => {
@@ -74,18 +87,28 @@ export const contentsSlice = createSlice({
             state.isContent1Shown = pageContent["Calendar"][1].value;
             state.isCreateCourseShown = pageContent["Calendar"][2].value;
             state.isSearchCourseShown = pageContent["Calendar"][3].value;
+            state.isSettings = pageContent["Calendar"][4].value;
         },
         toCreateCourse: (state) => {
             state.isContentShown = pageContent["Create Course"][0].value;
             state.isContent1Shown = pageContent["Create Course"][1].value;
             state.isCreateCourseShown = pageContent["Create Course"][2].value;
             state.isSearchCourseShown = pageContent["Create Course"][3].value;
+            state.isSettings = pageContent["Create Course"][4].value;
         },
         toCourseEnroll: (state) => {
             state.isContentShown = pageContent["Course Enroll"][0].value;
             state.isContent1Shown = pageContent["Course Enroll"][1].value;
             state.isCreateCourseShown = pageContent["Course Enroll"][2].value;
             state.isSearchCourseShown = pageContent["Course Enroll"][3].value;
+            state.isSettings = pageContent["Course Enroll"][4].value;
+        },
+        toSettings: (state) => {
+            state.isContentShown = pageContent["Setting"][0].value;
+            state.isContent1Shown = pageContent["Setting"][1].value;
+            state.isCreateCourseShown = pageContent["Setting"][2].value;
+            state.isSearchCourseShown = pageContent["Setting"][3].value;
+            state.isSettings = pageContent["Setting"][4].value;
         },
         toActiveCourse:(state,action) => {
             state.isContentShown = false;
@@ -158,7 +181,7 @@ export const contentsSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { saveEmail, savePassword, saveType,
-    toFrontPage, toCalendar, toCreateCourse,
+    toFrontPage, toCalendar, toCreateCourse, toSettings,
     toCourseEnroll, toActiveCourse, renewSearchedCourse,
     addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
     changeTab, saveServer,

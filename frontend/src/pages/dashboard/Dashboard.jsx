@@ -16,6 +16,7 @@ import CourseHeader from "./components/CourseHeader";
 import {useDispatch, useSelector} from 'react-redux';
 import axios from "axios";
 import {updateEnrolledCourse} from "./dashboardSlice";
+import Settings from "./components/Setting";
 import server from "../../server.json";
 
 function Copyright() {
@@ -193,6 +194,7 @@ export default function Dashboard({server}) {
   const isSwitch1 = useSelector(state => state.contentsController.isContent1Shown);
   const isCreateCourse = useSelector(state => state.contentsController.isCreateCourseShown);
   const isSearchCourse = useSelector(state => state.contentsController.isSearchCourseShown);
+  const isSettings = useSelector(state => state.contentsController.isSettings);
   const activeCourse = useSelector(state => state.contentsController.activeCourse)
 
   // console.log("isActive is ", activeCourse);
@@ -284,6 +286,14 @@ export default function Dashboard({server}) {
                 <ManageHeader onDrawerToggle={handleDrawerToggle}/>
                 <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
                   <SearchCourse server={server}/>
+                </Box>
+              </Box>
+          ):null}
+          {isSettings ? (
+              <Box>
+                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
+                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+                  <Settings server={server}/>
                 </Box>
               </Box>
           ):null}
