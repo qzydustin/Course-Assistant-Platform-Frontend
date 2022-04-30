@@ -12,6 +12,7 @@ import {
     toNotNewPost, toOpenPost, toRenewCourse
 } from "../dashboardSlice";
 import AnnouncementPanel from './coursecomponents/AnnouncementPanel';
+import Management from './coursecomponents/Management';
 import Paper from "@mui/material/Paper";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -23,6 +24,7 @@ import Typography from '@mui/material/Typography';
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import RefreshIcon from "@mui/icons-material/Refresh";
+
 import {
     Accordion,
     AccordionDetails,
@@ -289,9 +291,7 @@ export default function CourseContent() {
 
     if (activeTab === 1) {
         return (
-            <Grid>
-                <Discussion/>
-            </Grid>
+            <Discussion/>
         )
     }
 
@@ -302,6 +302,8 @@ export default function CourseContent() {
     }
 
     if (activeTab === 3) {
-        return (<Grid/>)
+        return (
+            <Management/>
+        )
     }
 }

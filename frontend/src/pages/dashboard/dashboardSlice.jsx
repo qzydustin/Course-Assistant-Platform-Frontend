@@ -67,6 +67,7 @@ export const contentsSlice = createSlice({
             state.isContent1Shown = pageContent["Front page"][1].value;
             state.isCreateCourseShown = pageContent["Front page"][2].value;
             state.isSearchCourseShown = pageContent["Front page"][3].value;
+            state.activeCourse = '';
         },
         toCalendar: (state) => {
             state.isContentShown = pageContent["Calendar"][0].value;
