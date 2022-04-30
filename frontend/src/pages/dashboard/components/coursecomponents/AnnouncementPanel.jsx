@@ -59,14 +59,14 @@ BootstrapDialogTitle.propTypes = {
 
 export default function AlignItemsList() {
 
-    const [open, setOpen] = React.useState(false);
+    const [openID, setOpenID] = React.useState(0);
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenID(0);
     };
 
-    const handleAnnouncementClick = (event) => {
-        setOpen(true);
+    function handleAnnouncementClick(announcementID){
+        setOpenID(announcementID);
     }
 
     const announcements = useSelector(state => state.contentsController.activeAnnouncement)
@@ -77,7 +77,7 @@ export default function AlignItemsList() {
             {announcements.map( announcement =>(
                 <Grid key={announcement.id}>
                     <ListItem alignItems="flex-start">
-                        <ListItemButton padding={0} onClick={handleAnnouncementClick}>
+                        <ListItemButton padding={0} onClick={() => handleAnnouncementClick(announcement.id)}>
                             <ListItemText
                                 primary={announcement.title}
                                 secondary={
@@ -90,7 +90,7 @@ export default function AlignItemsList() {
                         <BootstrapDialog
                             onClose={handleClose}
                             aria-labelledby="customized-dialog-title"
-                            open={open}
+                            open={openID === announcement.id}
                         >
                             <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
                                 {announcement.title}
