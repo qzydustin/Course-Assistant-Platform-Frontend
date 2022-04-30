@@ -38,6 +38,7 @@ export const contentsSlice = createSlice({
         isCreateCourseShown: false,
         isSearchCourseShown: false,
         isNewPost: false,
+        isPostOpen: false,
         activeCourse: {},
         searchedCourse: [],
         enrollingCourse: [],
@@ -144,7 +145,13 @@ export const contentsSlice = createSlice({
         },
         toNotRenewCourse: (state) => {
             state.isCourseRenewed = false
-        }
+        },
+        toOpenPost:(state) => {
+            state.isPostOpen = true
+        },
+        toClosePost:(state) =>{
+            state.isPostOpen = false
+}
     }
 })
 
@@ -156,7 +163,7 @@ export const { saveEmail, savePassword, saveType,
     changeTab, saveServer,
     renewPosts, renewActivePost, renewActiveComments, addActiveComments,
     renewActiveAnnouncements, renewAssignments, renewAssignmentSubmission,
-    toNewPost, toNotNewPost, toRenewCourse, toNotRenewCourse} = contentsSlice.actions
+    toNewPost, toNotNewPost, toRenewCourse, toNotRenewCourse, toOpenPost, toClosePost} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 

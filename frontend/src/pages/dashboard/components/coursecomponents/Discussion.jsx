@@ -16,7 +16,14 @@ import Button from "@mui/material/Button";
 import * as PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import {renewActivePost, renewActiveComments, addActiveComments, renewPosts} from "../../dashboardSlice";
+import {
+    renewActivePost,
+    renewActiveComments,
+    addActiveComments,
+    renewPosts,
+    toOpenPost,
+    toClosePost
+} from "../../dashboardSlice";
 
 function Div(props) {
     return null;
@@ -38,20 +45,22 @@ export default function Discussion() {
     const server = localStorage.getItem('myServer');
 
     const [isNewPost, setIsNewPost] = React.useState(false);
-    const [isPostOpened, setIsPostOpened] = React.useState(false);
+    // const [isPostOpened, setIsPostOpened] = React.useState(false);
+    const isPostOpened = useSelector(state => state.contentsController.isPostOpen);
     let posts = useSelector(state => state.contentsController.posts);
     let activeComments = useSelector(state => state.contentsController.activeComments);
     const activePostID = useSelector(state => state.contentsController.activePostID);
 
     function handleThreadClick(postID) {
         setIsNewPost(false)
-        setIsPostOpened(true)
+        dispatch(toOpenPost())
         dispatch(renewActivePost(postID))
         handleGetComment(postID);
     }
 
     const handleNewPostClick = (event) => {
         event.preventDefault()
+        dispatch(toClosePost())
         setIsNewPost(true)
     }
 

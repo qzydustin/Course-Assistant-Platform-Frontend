@@ -32,7 +32,7 @@ import {
   toCourseEnroll,
   toActiveCourse,
   toNotNewPost,
-  toNotRenewCourse
+  toNotRenewCourse, toClosePost
 } from './dashboardSlice';
 
 
@@ -130,6 +130,7 @@ export default function Navigator(props) {
 
     dispatch(toActiveCourse(activeCourse));
     dispatch(toNotRenewCourse());
+    dispatch(toClosePost())
   };
 
 

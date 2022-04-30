@@ -9,7 +9,7 @@ import {
     renewActiveComments,
     renewActivePost,
     renewPosts,
-    toNotNewPost, toRenewCourse
+    toNotNewPost, toOpenPost, toRenewCourse
 } from "../dashboardSlice";
 import AnnouncementPanel from './coursecomponents/AnnouncementPanel';
 import Paper from "@mui/material/Paper";
@@ -63,7 +63,6 @@ export default function CourseContent() {
     const posts = useSelector(state => state.contentsController.posts);
     const isRenewed = useSelector(state => state.contentsController.isCourseRenewed);
 
-    const [announcement, setAnnouncement] = React.useState([]);
     let userCourse = {}
     if(courseID && !isRenewed){
         userCourse = JSON.stringify({
@@ -138,7 +137,7 @@ export default function CourseContent() {
                 if (response.data.code === 1000) {
 
                     axios.post(server + '/get-announcements',
-                        userCourse,
+                        creatAnnouncement,
                         {headers: {'Content-Type': 'application/json'}})
                         .then(function (response) {
                             if (response.data.code === 1000) {
@@ -147,6 +146,34 @@ export default function CourseContent() {
                         })
                 }
             })
+    }
+
+    function handleMainPostClick(postID) {
+        dispatch(toNotNewPost())
+        dispatch(renewActivePost(postID))
+        dispatch(changeTab(1));
+        dispatch(toOpenPost());
+        handleGetComment(postID);
+    }
+
+    function handleGetComment(postID){
+        let comments = JSON.stringify({
+            "email": email,
+            "password": password,
+            "type": type,
+            "courseID": courseID,
+            "postID": postID,
+        })
+        console.log("get comments is : ", comments);
+        axios.post(server + '/get-comments',
+            comments,
+            {headers: {'Content-Type': 'application/json'}})
+            .then(function (response) {
+                console.log("get comment response is ", response.data);
+                if (response.data.code === 1000) {
+                    dispatch(renewActiveComments(response.data.data));
+                }
+            });
     }
 
     if (activeTab === 0){
@@ -208,9 +235,52 @@ export default function CourseContent() {
                                     </Box>
                                 </Dialog>
                             </Grid>
+                            <AnnouncementPanel/>
                         </Grid>
                     </AccordionDetails>
-                    <AnnouncementPanel/>
+                </Accordion>
+                <Accordion sx={{ position: "fixed", top :400, right: 25 }}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2a-content"
+                        id="panel2a-header"
+                    >
+                        <Typography>Discussion</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography>
+                            {posts.map((thread) => (
+                                <Grid>
+                                    <ListItem key={thread.postID}>
+                                        <ListItemButton disableGutters={true}
+                                                        padding={0}
+                                                        onClick={() => handleMainPostClick(thread.postID)}>
+                                            <ListItemAvatar>
+                                                <Avatar alt="Post" src="/static/images/avatar/1.jpg"/>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={thread.title}
+                                                secondary={
+                                                    <React.Fragment>
+                                                        <Typography
+                                                            sx={{display: 'inline'}}
+                                                            component="span"
+                                                            variant="body2"
+                                                            color="text.primary"
+                                                        >
+                                                            {thread.author}:
+                                                        </Typography>
+                                                        {thread.contents}
+                                                    </React.Fragment>
+                                                }
+                                            />
+                                        </ListItemButton>
+                                    </ListItem>
+                                    <Divider variant="inset"/>
+                                </Grid>
+                            ))}
+                        </Typography>
+                    </AccordionDetails>
                 </Accordion>
                 </Grid>
             </div>
