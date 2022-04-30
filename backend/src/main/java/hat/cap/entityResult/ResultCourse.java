@@ -15,6 +15,10 @@ public class ResultCourse {
     private String semester;
     private int unit;
     private int seat;
+    private String weekday;
+    private String startTime;
+    private String endTime;
+    private String location;
 
     public ResultCourse(Course course) {
         id = course.getId();
@@ -26,6 +30,10 @@ public class ResultCourse {
         semester = course.getSemester();
         unit = course.getUnit();
         seat = course.getSeat();
+        weekday = course.getWeekday();
+        startTime=course.getStartTime();
+        endTime= course.getEndTime();
+        location= course.getLocation();
     }
 }
 

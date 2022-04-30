@@ -28,6 +28,10 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    public void dropCourse(Course course, Student student) {
+        studentCourseRepository.deleteByStudentAndCourse(student,course);
+    }
+
     public ArrayList<ResultCourse> getEnrolledCourses(Student student) {
         List<StudentCourse> studentCourses = studentCourseRepository.findStudentCoursesByStudent(student);
         ArrayList<ResultCourse> resultCourses = new ArrayList<>();

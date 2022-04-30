@@ -63,6 +63,10 @@ public class CourseController {
         String semester = map.get("semester");
         String unit = map.get("unit");
         String seat = map.get("seat");
+        String weekday = map.get("weekday");
+        String startTime = map.get("startTime");
+        String endTime = map.get("endTime");
+        String location = map.get("location");
 
         if (!type.equals("instructor")) {
             return new Result<>(USER_TYPE_WRONG);
@@ -83,6 +87,11 @@ public class CourseController {
         course.setSemester(semester);
         course.setUnit(Integer.parseInt(unit));
         course.setSeat(Integer.parseInt(seat));
+        course.setWeekday(weekday);
+        course.setStartTime(startTime);
+        course.setEndTime(endTime);
+        course.setLocation(location);
+
         courseService.createCourse(course);
         return new Result<>(SUCCESS);
 
@@ -172,5 +181,37 @@ public class CourseController {
             return new Result<>(SUCCESS, resultCourses);
         }
         return new Result<>(USER_TYPE_WRONG);
+    }
+
+    @PostMapping("/drop-course")
+    public Result<?> dropCourse(@RequestBody Map<String, String> map) {
+        String type = map.get("type");
+        String email = map.get("email").toLowerCase();
+        String password = map.get("password");
+        String courseID = map.get("courseID");
+        String studentEmail;
+        if (type.equals("student")) {
+            studentEmail = email;
+        } else {
+            studentEmail = map.get("student_email");
+        }
+
+        if (!permissionService.hasPermission(type, email, password)) {
+            return new Result<>(NO_PERMISSION);
+        }
+        Student student = studentService.getStudent(studentEmail);
+        if (student == null) {
+            return new Result<>(USER_NOT_EXIST);
+        }
+        Course course = courseService.getCourse(Long.valueOf(courseID));
+        if (course == null) {
+            return new Result<>(COURSE_NOT_FOUND);
+        }
+        if (!courseService.hasEnrolledCourse(student, course)) {
+            return new Result<>(COURSE_HAS_NOT_BEEN_ENROLLED);
+        }
+        courseService.dropCourse(course,student);
+        return new Result<>(SUCCESS);
+
     }
 }

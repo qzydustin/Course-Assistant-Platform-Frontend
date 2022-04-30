@@ -26,4 +26,12 @@ public class InstructorService {
         Instructor instructor = new Instructor(email, username, password);
         instructorRepository.save(instructor);
     }
+
+    public void updateUsername(String username,Long id) {
+        instructorRepository.updateUsernameById(username,id);
+    }
+
+    public void updatePassword(String password,Long id) {
+        instructorRepository.updatePasswordById(password,id);
+    }
 }

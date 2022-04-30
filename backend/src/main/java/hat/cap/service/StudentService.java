@@ -23,4 +23,12 @@ public class StudentService {
         Student student = new Student(email, username, password);
         studentRepository.save(student);
     }
+
+    public void updateUsername(String username,Long id) {
+        studentRepository.updateUsernameById(username,id);
+    }
+
+    public void updatePassword(String password,Long id) {
+        studentRepository.updatePasswordById(password,id);
+    }
 }
