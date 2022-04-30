@@ -33,4 +33,12 @@ public class Course {
     private int unit;
     @Column(nullable = false)
     private int seat;
+    @Column(nullable = false)
+    private String weekday;
+    @Column(nullable = false)
+    private String startTime;
+    @Column(nullable = false)
+    private String endTime;
+    @Column(nullable = false)
+    private String location;
 }

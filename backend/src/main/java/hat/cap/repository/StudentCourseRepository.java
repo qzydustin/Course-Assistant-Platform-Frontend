@@ -5,6 +5,7 @@ import hat.cap.entityDatabase.Student;
 import hat.cap.entityDatabase.StudentCourse;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ public interface StudentCourseRepository extends CrudRepository<StudentCourse, L
     List<StudentCourse> findStudentCoursesByStudent(Student student);
 
     StudentCourse findStudentCourseByStudentAndCourse(Student student, Course course);
+
+    @Transactional
+    void deleteByStudentAndCourse(Student student, Course course);
 
 }
 

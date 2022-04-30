@@ -39,6 +39,10 @@ CREATE TABLE course
     semester      VARCHAR(255)          NOT NULL,
     unit          INT                   NOT NULL,
     seat          INT                   NOT NULL,
+    weekday       VARCHAR(255)          NOT NULL,
+    start_time    VARCHAR(255)          NOT NULL,
+    end_time      VARCHAR(255)          NOT NULL,
+    location      VARCHAR(255)          NOT NULL,
     CONSTRAINT pk_course PRIMARY KEY (id)
 );
 
