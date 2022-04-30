@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {updateEnrolledCourse} from "../dashboardSlice";
+import {renewEnrolledCourse} from "../dashboardSlice";
 import FormControl from "@mui/material/FormControl";
 import {Checkbox, Input, InputLabel, ListItemText, Select} from "@mui/material";
 import {DesktopTimePicker} from "@mui/x-date-pickers";
@@ -111,7 +111,7 @@ export default function CreateCourse({server}) {
                         {headers: {'Content-Type': 'application/json'}})
                         .then(function(response) {
                             if(response.data.code === 1000){
-                                dispatch(updateEnrolledCourse(response.data.data))
+                                dispatch(renewEnrolledCourse(response.data.data))
                             } else {
                                 console.log(response.data.message);
                             }

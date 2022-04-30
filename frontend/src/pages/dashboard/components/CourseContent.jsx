@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Discussion from './coursecomponents/Discussion';
 import axios from "axios";
 import {
-    changeTab,
+    toChangeTab,
     renewActiveAnnouncements,
     renewActiveComments,
     renewActivePost,
@@ -153,7 +153,7 @@ export default function CourseContent() {
     function handleMainPostClick(postID) {
         dispatch(toNotNewPost())
         dispatch(renewActivePost(postID))
-        dispatch(changeTab(1));
+        dispatch(toChangeTab(1));
         dispatch(toOpenPost());
         handleGetComment(postID);
     }

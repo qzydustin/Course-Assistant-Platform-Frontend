@@ -44,14 +44,14 @@ export const contentsSlice = createSlice({
         email: localStorage.getItem("myEmail"),
         password: localStorage.getItem("myPassword"),
         type: localStorage.getItem("myType"),
-        isContentShown: false,
+        isFrontPage: true,
         isContent1Shown: false,
         isCreateCourseShown: false,
         isSearchCourseShown: false,
         isSettings: false,
         isNewPost: false,
         isPostOpen: false,
-        activeCourse: {},
+        activeCourse: '',
         searchedCourse: [],
         enrollingCourse: [],
         enrolledCourse: [],
@@ -75,7 +75,7 @@ export const contentsSlice = createSlice({
             state.type = action.payload
         },
         toFrontPage: (state) => {
-            state.isContentShown = pageContent["Front page"][0].value;
+            state.isFrontPage = pageContent["Front page"][0].value;
             state.isContent1Shown = pageContent["Front page"][1].value;
             state.isCreateCourseShown = pageContent["Front page"][2].value;
             state.isSearchCourseShown = pageContent["Front page"][3].value;
@@ -83,35 +83,35 @@ export const contentsSlice = createSlice({
             state.activeCourse = '';
         },
         toCalendar: (state) => {
-            state.isContentShown = pageContent["Calendar"][0].value;
+            state.isFrontPage = pageContent["Calendar"][0].value;
             state.isContent1Shown = pageContent["Calendar"][1].value;
             state.isCreateCourseShown = pageContent["Calendar"][2].value;
             state.isSearchCourseShown = pageContent["Calendar"][3].value;
             state.isSettings = pageContent["Calendar"][4].value;
         },
         toCreateCourse: (state) => {
-            state.isContentShown = pageContent["Create Course"][0].value;
+            state.isFrontPage = pageContent["Create Course"][0].value;
             state.isContent1Shown = pageContent["Create Course"][1].value;
             state.isCreateCourseShown = pageContent["Create Course"][2].value;
             state.isSearchCourseShown = pageContent["Create Course"][3].value;
             state.isSettings = pageContent["Create Course"][4].value;
         },
         toCourseEnroll: (state) => {
-            state.isContentShown = pageContent["Course Enroll"][0].value;
+            state.isFrontPage = pageContent["Course Enroll"][0].value;
             state.isContent1Shown = pageContent["Course Enroll"][1].value;
             state.isCreateCourseShown = pageContent["Course Enroll"][2].value;
             state.isSearchCourseShown = pageContent["Course Enroll"][3].value;
             state.isSettings = pageContent["Course Enroll"][4].value;
         },
         toSettings: (state) => {
-            state.isContentShown = pageContent["Setting"][0].value;
+            state.isFrontPage = pageContent["Setting"][0].value;
             state.isContent1Shown = pageContent["Setting"][1].value;
             state.isCreateCourseShown = pageContent["Setting"][2].value;
             state.isSearchCourseShown = pageContent["Setting"][3].value;
             state.isSettings = pageContent["Setting"][4].value;
         },
         toActiveCourse:(state,action) => {
-            state.isContentShown = false;
+            state.isFrontPage = false;
             state.isContent1Shown = false;
             state.isCreateCourseShown = false;
             state.isSearchCourseShown = false;
@@ -128,10 +128,10 @@ export const contentsSlice = createSlice({
             state.enrollingCourse = state.enrollingCourse.filter(course =>
                 (course.code !== JSON.parse(action.payload).code || course.semester !== JSON.parse(action.payload).semester))
         },
-        updateEnrolledCourse:(state, action) => {
+        renewEnrolledCourse:(state, action) => {
             state.enrolledCourse = action.payload
         },
-        changeTab:(state, action) => {
+        toChangeTab:(state, action) => {
             state.activeTab = action.payload
         },
         saveServer:(state, action) => {
@@ -183,8 +183,8 @@ export const contentsSlice = createSlice({
 export const { saveEmail, savePassword, saveType,
     toFrontPage, toCalendar, toCreateCourse, toSettings,
     toCourseEnroll, toActiveCourse, renewSearchedCourse,
-    addEnrollCourse, removeEnrollCourse, updateEnrolledCourse,
-    changeTab, saveServer,
+    addEnrollCourse, removeEnrollCourse, renewEnrolledCourse,
+    toChangeTab, saveServer,
     renewPosts, renewActivePost, renewActiveComments, addActiveComments,
     renewActiveAnnouncements, renewAssignments, renewAssignmentSubmission,
     toNewPost, toNotNewPost, toRenewCourse, toNotRenewCourse, toOpenPost, toClosePost} = contentsSlice.actions

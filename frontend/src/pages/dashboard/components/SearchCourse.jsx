@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Row from './SearchCourseTableRow';
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {renewSearchedCourse, updateEnrolledCourse} from '../dashboardSlice';
+import {renewSearchedCourse, renewEnrolledCourse} from '../dashboardSlice';
 
 const departments = [
     {value: 'Empty', label: ''},
@@ -125,7 +125,7 @@ export default function SearchCourse({server}) {
                             {headers: {'Content-Type': 'application/json'}})
                             .then(function(response) {
                                 if(response.data.code === 1000){
-                                    dispatch(updateEnrolledCourse(response.data.data))
+                                    dispatch(renewEnrolledCourse(response.data.data))
                                 } else {
                                     console.log(response.data.message);
                                 }

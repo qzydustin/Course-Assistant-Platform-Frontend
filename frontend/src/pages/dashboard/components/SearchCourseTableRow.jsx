@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Checkbox from '@mui/material/Checkbox';
-import {addEnrollCourse, removeEnrollCourse, updateEnrolledCourse} from '../dashboardSlice';
+import {addEnrollCourse, removeEnrollCourse, renewEnrolledCourse} from '../dashboardSlice';
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@mui/material/Button";
 import axios from "axios";
@@ -71,7 +71,7 @@ function Row(props) {
                     console.log("Get enrolled course number successfully!");
                     setAvailability(row.seat - response.data.data);
                     setHasChecked(true);
-                    // dispatch(updateEnrolledCourse(response.data.data))
+                    // dispatch(renewEnrolledCourse(response.data.data))
                     // dispatch(renewSearchedCourse(response.data.data));
                 } else {
                     console.log(response.data.message);
@@ -117,6 +117,19 @@ function Row(props) {
                                     <TableRow key={"semester"}>
                                         <TableCell component="th" scope="row">{"Offered Time"}</TableCell>
                                         <TableCell>{row.semester}</TableCell>
+                                    </TableRow>
+                                    <TableRow key={"location"}>
+                                        <TableCell component="th" scope="row">{"Class Room"}</TableCell>
+                                        <TableCell>{row.location}</TableCell>
+                                    </TableRow>
+                                    <TableRow key={"weekday"}>
+                                        <TableCell component="th" scope="row">{"Days"}</TableCell>
+                                        <TableCell>{row.weekday}</TableCell>
+                                    </TableRow>
+                                    <TableRow key={"time"}>
+                                        <TableCell component="th" scope="row">{"Times"}</TableCell>
+                                        <TableCell>{row.startTime}</TableCell>
+                                        <TableCell>{row.endTime}</TableCell>
                                     </TableRow>
                                     <TableRow key={"availability"}>
                                         <TableCell component="th" scope="row">{"Availability"}</TableCell>
