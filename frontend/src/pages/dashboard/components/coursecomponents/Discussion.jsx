@@ -21,8 +21,8 @@ import {
     renewActiveComments,
     addActiveComments,
     renewPosts,
-    toNewPost,
-    toNotNewPost
+    toOpenPost,
+    toClosePost
 } from "../../dashboardSlice";
 
 function Div(props) {
@@ -43,22 +43,25 @@ export default function Discussion() {
     let type = localStorage.getItem('myType')
     let courseID = useSelector(state => state.contentsController.activeCourse).id
     const server = localStorage.getItem('myServer');
-    let isNewPost = useSelector(state => state.contentsController.isNewPost)
 
+    const [isNewPost, setIsNewPost] = React.useState(false);
+    // const [isPostOpened, setIsPostOpened] = React.useState(false);
+    const isPostOpened = useSelector(state => state.contentsController.isPostOpen);
     let posts = useSelector(state => state.contentsController.posts);
     let activeComments = useSelector(state => state.contentsController.activeComments);
     const activePostID = useSelector(state => state.contentsController.activePostID);
 
     function handleThreadClick(postID) {
-        dispatch(toNotNewPost())
+        setIsNewPost(false)
+        dispatch(toOpenPost())
         dispatch(renewActivePost(postID))
-
         handleGetComment(postID);
     }
 
     const handleNewPostClick = (event) => {
         event.preventDefault()
-        dispatch(toNewPost())
+        dispatch(toClosePost())
+        setIsNewPost(true)
     }
 
     const handleNewPostSubmit = (event) => {
@@ -96,7 +99,9 @@ export default function Discussion() {
                             }
                         });
                 }
+                // handleThreadClick(postID)
             });
+
     }
 
     const handleNewCommentSubmit = (event) => {
@@ -162,7 +167,7 @@ export default function Discussion() {
                     </ListItem>
                     <Divider variant="inset" component="li"/>
                     {posts.map((thread) => (
-                        <Grid>
+                        <div>
                             <ListItem key={thread.postID}>
                                 <ListItemButton disableGutters={true}
                                                 padding={0}
@@ -189,53 +194,54 @@ export default function Discussion() {
                                 </ListItemButton>
                             </ListItem>
                             <Divider variant="inset"/>
-                        </Grid>
+                        </div>
                     ))}
                 </List>
             </Grid>
             {isNewPost ? (
-                    <Grid xs={8} padding={3}>
-                        <Divider orientation="vertical" flexItem/>
-                        <Box
-                            component="form"
-                            noValidate
-                            autoComplete="off"
-                            onSubmit={handleNewPostSubmit}
-                        >
-                            <Grid m={1}>
-                                <TextField fullWidth
-                                           variant="outlined"
-                                           label="Title"
-                                           name="title"
-                                           sx={{m: 1}}>
-                                </TextField>
-                                <TextField multiline
-                                           fullWidth
-                                           rows={8}
-                                           variant="outlined"
-                                           label="Contents"
-                                           name="contents"
-                                           sx={{m: 1}}>
-                                </TextField>
-                            </Grid>
-                            <Grid padding={2}>
-                                <Stack direction="row" spacing={10}>
-                                    <Button variant="outlined"
-                                            startIcon={<DeleteIcon/>}>
-                                        Delete
-                                    </Button>
-                                    <Button variant="contained"
-                                            type="submit"
-                                            endIcon={<SendIcon/>}
-                                    >
-                                        Send
-                                    </Button>
-                                </Stack>
-                            </Grid>
-                        </Box>
-                    </Grid>
-                ) :
-                (<Grid xs={8} padding={3}>
+                <Grid xs={8} padding={3}>
+                    <Divider orientation="vertical" flexItem/>
+                    <Box
+                        component="form"
+                        noValidate
+                        autoComplete="off"
+                        onSubmit={handleNewPostSubmit}
+                    >
+                        <Grid m={1}>
+                            <TextField fullWidth
+                                       variant="outlined"
+                                       label="Title"
+                                       name="title"
+                                       sx={{m: 1}}>
+                            </TextField>
+                            <TextField multiline
+                                       fullWidth
+                                       rows={8}
+                                       variant="outlined"
+                                       label="Contents"
+                                       name="contents"
+                                       sx={{m: 1}}>
+                            </TextField>
+                        </Grid>
+                        <Grid padding={2}>
+                            <Stack direction="row" spacing={10}>
+                                <Button variant="outlined"
+                                        startIcon={<DeleteIcon/>}>
+                                    Delete
+                                </Button>
+                                <Button variant="contained"
+                                        type="submit"
+                                        endIcon={<SendIcon/>}
+                                >
+                                    Send
+                                </Button>
+                            </Stack>
+                        </Grid>
+                    </Box>
+                </Grid>
+            ) : (null)}
+            {isPostOpened ? (
+                <Grid xs={8} padding={3}>
                     <List sx={{width: '100%', bgcolor: 'background.paper'}}>
                         {activeComments.map((comment) => (
                             <Grid>
@@ -289,7 +295,7 @@ export default function Discussion() {
                             </Grid>
                         </Box>
                     </Grid>
-                </Grid>)}
+                </Grid>):(null)}
         </Grid>
     );
 }

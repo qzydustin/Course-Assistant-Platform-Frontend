@@ -7,8 +7,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
 import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {updateEnrolledCourse} from "../dashboardSlice";
+import FormControl from "@mui/material/FormControl";
+import {Checkbox, Input, InputLabel, ListItemText, Select} from "@mui/material";
+import {DesktopTimePicker} from "@mui/x-date-pickers";
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 
 
 const departments = [
@@ -25,7 +30,25 @@ const offeredTimes = [
     {value: '2022 fall', label: '2022 Fall',},
     {value: '2022 winter', label: '2022 Winter',},
 ];
-
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+const Weekdays = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+];
 
 export default function CreateCourse({server}) {
 
@@ -37,6 +60,17 @@ export default function CreateCourse({server}) {
     // let password = useSelector(state => state.contentsController.password)
     // let type = useSelector(state => state.contentsController.type)
 
+    const [personName, setPersonName] = React.useState([]);
+
+    const handleChange = (event) => {
+        const {
+            target: {value},
+        } = event;
+        setPersonName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
         const createCourseForm = new FormData(event.currentTarget);
@@ -51,12 +85,16 @@ export default function CreateCourse({server}) {
             "title": createCourseForm.get("course name"),
             "seat": createCourseForm.get("availability"),
             "unit": createCourseForm.get("units"),
+            "location": createCourseForm.get("location"),
+            "startTime": startTime,
+            "endTime": endTime,
             "department": createCourseForm.get("department"),
             "semester": createCourseForm.get("offered time"),
             "information": createCourseForm.get("description"),
+            "weekday": createCourseForm.get("weekday"),
         })
 
-        // console.log(data);
+        console.log(createCourse);
         axios.post(server+'/create-course',
             createCourse,
             {headers: {'Content-Type': 'application/json'}})
@@ -86,6 +124,8 @@ export default function CreateCourse({server}) {
 
     const [department, setDepartment] = React.useState('');
     const [offeredTime, setOfferedTime] = React.useState('');
+    const [startTime, setStartTime] = React.useState(new Date());
+    const [endTime, setEndTime] = React.useState(new Date());
 
 
     const handleDepartmentChange = (event) => {
@@ -97,110 +137,168 @@ export default function CreateCourse({server}) {
 
     return (
       <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, ml:4, mt:2, width: '25ch' },
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-          <Box>
-            <TextField
-              id="standard-textarea"
-              label="Course Name"
-              name="course name"
-              placeholder="Placeholder"
-              multiline
-              variant="standard"
-              sx={{m:2}}
-            />
-            <TextField
-              id="standard-textarea"
-              label="Course ID"
-              name="course id"
-              placeholder="Placeholder"
-              multiline
-              variant="standard"
-              sx={{m:2}}
-            />
-            <TextField
-              id="standard-textarea"
-              label="Availability"
-              name="availability"
-              placeholder="Placeholder"
-              multiline
-              variant="standard"
-              sx={{m:2}}
-            />
-            <TextField
-              id="standard-textarea"
-              label="Units"
-              name="units"
-              placeholder="Placeholder"
-              multiline
-              variant="standard"
-              sx={{m:2}}
-            />
-          </Box>
-          <div>
-            <TextField
-              id="standard-select-currency"
-              select
-              label="Department"
-              name="department"
-              value={department}
-              onChange={handleDepartmentChange}
-              helperText="Please select your department"
-              variant="standard"
-              sx={{m:2}}
-            >
-              {departments.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              id="standard-select-currency"
-              select
-              label="Offered Time"
-              name="offered time"
-              value={offeredTime}
-              onChange={handleOfferedTimeChange}
-              helperText="Please select your offered time"
-              variant="standard"
-              sx={{m:2}}
-            >
-              {offeredTimes.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                  </MenuItem>
-              ))}
-            </TextField>
-          </div>
-          <div>
-            <TextField
-              id="standard-multiline-static"
-              label="Description"
-              name="description"
-              multiline
-              rows={4}
-              variant="standard"
-              sx={{m:2}}
-            />
-          </div>
-            <Toolbar>
-                <Grid item>
-                    <Button type="submit"
-                            variant="contained"
-                            sx={{m:2}}
-                            placement="right-start">
-                        Create Course
-                    </Button>
-                </Grid>
-            </Toolbar>
+          <Box
+              component="form"
+              sx={{
+                  '& .MuiTextField-root': {m: 1, ml: 4, mt: 2, width: '25ch'},
+              }}
+              noValidate
+              autoComplete="off"
+              onSubmit={handleSubmit}
+          >
+              <Grid container>
+                  <Grid item xs={12}>
+                      <TextField
+                          id="standard-textarea"
+                          label="Course Name"
+                          name="course name"
+                          placeholder="Placeholder"
+                          variant="standard"
+                          sx={{m: 2}}
+                      />
+                      <TextField
+                          id="standard-textarea"
+                          label="Course ID"
+                          name="course id"
+                          placeholder="Placeholder"
+                          variant="standard"
+                          sx={{m: 2}}
+                      />
+                      <TextField
+                          id="standard-textarea"
+                          label="Availability"
+                          name="availability"
+                          placeholder="Placeholder"
+                          variant="standard"
+                          sx={{m: 2}}
+                      />
+                  </Grid>
+                  <Grid item>
+                      <TextField
+                          id="standard-textarea"
+                          label="Units"
+                          name="units"
+                          placeholder="Placeholder"
+                          variant="standard"
+                          sx={{m: 2}}
+                      />
+                      <TextField
+                          id="standard-textarea"
+                          label="Location"
+                          name="location"
+                          placeholder="Placeholder"
+                          variant="standard"
+                          sx={{m: 2}}
+                      />
+                  </Grid>
+                  <Grid item>
+                      <TextField
+                          id="standard-select-currency"
+                          select
+                          label="Department"
+                          name="department"
+                          value={department}
+                          onChange={handleDepartmentChange}
+                          helperText="Please select your department"
+                          variant="standard"
+                          sx={{m: 2}}
+                      >
+                          {departments.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                  {option.label}
+                              </MenuItem>
+                          ))}
+                      </TextField>
+                      <TextField
+                          id="standard-select-currency"
+                          select
+                          label="Offered Time"
+                          name="offered time"
+                          value={offeredTime}
+                          onChange={handleOfferedTimeChange}
+                          helperText="Please select your offered time"
+                          variant="standard"
+                          sx={{m: 2}}
+                      >
+                          {offeredTimes.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                  {option.label}
+                              </MenuItem>
+                          ))}
+                      </TextField>
+                  </Grid>
+                  <Grid item>
+                      <FormControl variant="standard" sx={{ml: 4, mt:2, minWidth: 225}}>
+                          <InputLabel id="demo-simple-select-standard-label">Weekday</InputLabel>
+                          <Select
+                              labelId="demo-multiple-checkbox-label"
+                              id="demo-multiple-checkbox"
+                              name="weekday"
+                              multiple={true}
+                              value={personName}
+                              onChange={handleChange}
+                              label="Weekday"
+                              input={<Input label="Tag"/>}
+                              renderValue={(selected) => selected.join(', ')}
+                              MenuProps={MenuProps}
+
+                              sx={{minWidth: 150}}
+                          >
+                              {Weekdays.map((name) => (
+                                  <MenuItem key={name} value={name}>
+                                      <Checkbox checked={personName.indexOf(name) > -1}/>
+                                      <ListItemText primary={name}/>
+                                  </MenuItem>
+                              ))}
+                          </Select>
+                      </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DesktopTimePicker
+                              label="Start time"
+                              name="start time"
+                              value={startTime}
+                              onChange={(newValue) => {
+                                  setStartTime(newValue);
+                              }}
+                              renderInput={(params) => <TextField {...params} />}
+                          />
+                      </LocalizationProvider>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DesktopTimePicker
+                              label="End time"
+                              name="end time"
+                              value={endTime}
+                              onChange={(newValue) => {
+                                  setEndTime(newValue);
+                              }}
+                              renderInput={(params) => <TextField {...params} />}
+                          />
+                      </LocalizationProvider>
+                  </Grid>
+                  <Grid item>
+                      <TextField
+                          id="standard-multiline-static"
+                          label="Description"
+                          name="description"
+                          multiline
+                          rows={4}
+                          variant="standard"
+                          sx={{m: 2}}
+                      />
+                  </Grid>
+              </Grid>
+              <Toolbar>
+                  <Grid item>
+                      <Button type="submit"
+                              variant="contained"
+                              sx={{m: 2}}
+                              placement="right-start">
+                          Create Course
+                      </Button>
+                  </Grid>
+              </Toolbar>
         </Box>
       </Paper>
     );

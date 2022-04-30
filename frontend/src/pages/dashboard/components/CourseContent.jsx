@@ -9,9 +9,10 @@ import {
     renewActiveComments,
     renewActivePost,
     renewPosts,
-    toNotNewPost, toRenewCourse
+    toNotNewPost, toOpenPost, toRenewCourse
 } from "../dashboardSlice";
 import AnnouncementPanel from './coursecomponents/AnnouncementPanel';
+import Management from './coursecomponents/Management';
 import Paper from "@mui/material/Paper";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -23,6 +24,7 @@ import Typography from '@mui/material/Typography';
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import RefreshIcon from "@mui/icons-material/Refresh";
+
 import {
     Accordion,
     AccordionDetails,
@@ -62,7 +64,6 @@ export default function CourseContent() {
     const activeTab = useSelector(state => state.contentsController.activeTab);
     const posts = useSelector(state => state.contentsController.posts);
     const isRenewed = useSelector(state => state.contentsController.isCourseRenewed);
-    const activeAnnouncements = useSelector(state => state.contentsController.activeAnnouncement);
 
     let userCourse = {}
     if(courseID && !isRenewed){
@@ -72,7 +73,7 @@ export default function CourseContent() {
             "type": type,
             "courseID": courseID
         })
-        console.log("getPosts", userCourse)
+
         dispatch(toRenewCourse())
         axios.post(server+'/get-posts',
             userCourse,
@@ -91,44 +92,37 @@ export default function CourseContent() {
             });
 
         // console.log("getAnnouncements: ", userCourse);
-
-        // console.log("getAnnouncements")
         axios.post(server+'/get-announcements',
             userCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                console.log("getAnnouncements", response.data.data);
+                // console.log(response.data.data);
                 if(response.data.code === 1000){
                     dispatch(renewActiveAnnouncements(response.data.data))
-
+                    // dispatch(renewPosts(response.data.data.map( post => ({
+                    //     title: post.title,
+                    //     author: post.posterName,
+                    //     contents: post.content,
+                    //     postID: post.id
+                    // }))));
                 }
             });
     }
 
-    const [newAssignmentOpen, setNewAssignmentOpen] = React.useState(false);
-    // const [isNewPost, setIsNewPost] = React.useState(false);
-    const [assignmentOpen, setAssignmentOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
 
-    const handleNewAnnouncementClick = () => {
-        setNewAssignmentOpen(true);
-    };
-    const handleAnnouncementClick = () => {
-        setAssignmentOpen(true);
+    const handleClickOpen = () => {
+        setOpen(true);
     };
 
-    const handleNewAnnouncementClose = () => {
-        setNewAssignmentOpen(false);
+    const handleClose = () => {
+        setOpen(false);
     };
-    const handleAnnouncementClose = () => {
-        setAssignmentOpen(false);
-    };
-
-
     const handleCreateAnnouncement = (event) => {
         event.preventDefault();
-        setNewAssignmentOpen(false);
+        setOpen(false);
         const announcementCreationForm = new FormData(event.currentTarget);
-        console.log("handleCreateAnnouncement")
+
         let creatAnnouncement = JSON.stringify({
             "email": email,
             "password": password,
@@ -145,7 +139,7 @@ export default function CourseContent() {
                 if (response.data.code === 1000) {
 
                     axios.post(server + '/get-announcements',
-                        userCourse,
+                        creatAnnouncement,
                         {headers: {'Content-Type': 'application/json'}})
                         .then(function (response) {
                             if (response.data.code === 1000) {
@@ -160,6 +154,7 @@ export default function CourseContent() {
         dispatch(toNotNewPost())
         dispatch(renewActivePost(postID))
         dispatch(changeTab(1));
+        dispatch(toOpenPost());
         handleGetComment(postID);
     }
 
@@ -183,7 +178,6 @@ export default function CourseContent() {
             });
     }
 
-    console.log("activeTab is ", activeTab)
     if (activeTab === 0){
         return (
             <div>
@@ -201,10 +195,10 @@ export default function CourseContent() {
                     <AccordionDetails>
                         <Grid container spacing={2} alignItems="center">
                             <Grid item>
-                                {(type === 'instructor')? (<Button sx={{ mr: 1 }} onClick={handleNewAnnouncementClick}>
+                                {(type === 'instructor')? (<Button sx={{ mr: 1 }} onClick={handleClickOpen}>
                                     New Announcement
                                 </Button>):null}
-                                <Dialog open={newAssignmentOpen} onClose={handleNewAnnouncementClose}>
+                                <Dialog open={open} onClose={handleClose}>
                                     <Box
                                         component="form"
                                         noValidate
@@ -237,40 +231,13 @@ export default function CourseContent() {
                                             />
                                         </DialogContent>
                                         <DialogActions>
-                                            <Button onClick={handleNewAnnouncementClose}>Cancel</Button>
+                                            <Button onClick={handleClose}>Cancel</Button>
                                             <Button type="submit">Publish</Button>
                                         </DialogActions>
                                     </Box>
                                 </Dialog>
                             </Grid>
-                            {activeAnnouncements.map( (announcement) => (
-                                <ListItem key={announcement.id}>
-                                    <ListItemButton sx={{ mr: 1 }} onClick={handleAnnouncementClick}>
-                                        <ListItemText>
-                                            {announcement.title}
-                                        </ListItemText>
-                                        <Dialog open={assignmentOpen} onClose={handleAnnouncementClose}>
-                                            <Box
-                                                component="form"
-                                                noValidate
-                                                autoComplete="off"
-                                                onSubmit={handleCreateAnnouncement}
-                                            >
-                                                <DialogTitle>{announcement.title}</DialogTitle>
-                                                <DialogContent>
-                                                    <DialogContentText id="alert-dialog-slide-description">
-                                                        {announcement.content}
-                                                    </DialogContentText>
-                                                </DialogContent>
-                                                <DialogActions>
-                                                    <Button onClick={handleAnnouncementClose}>Cancel</Button>
-                                                    <Button type="submit">Publish</Button>
-                                                </DialogActions>
-                                            </Box>
-                                        </Dialog>
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
+                            <AnnouncementPanel/>
                         </Grid>
                     </AccordionDetails>
                 </Accordion>
@@ -324,9 +291,7 @@ export default function CourseContent() {
 
     if (activeTab === 1) {
         return (
-            <Grid>
-                <Discussion />
-            </Grid>
+            <Discussion/>
         )
     }
 
@@ -337,6 +302,8 @@ export default function CourseContent() {
     }
 
     if (activeTab === 3) {
-        return (<Grid/>)
+        return (
+            <Management/>
+        )
     }
 }

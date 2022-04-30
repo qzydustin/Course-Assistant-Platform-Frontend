@@ -32,7 +32,7 @@ import {
   toCourseEnroll,
   toActiveCourse,
   toNotNewPost,
-  toNotRenewCourse
+  toNotRenewCourse, toClosePost, toSettings
 } from './dashboardSlice';
 
 
@@ -117,6 +117,7 @@ export default function Navigator(props) {
     if (active === "Calendar") dispatch(toCalendar());
     if (active === "Create Course") dispatch(toCreateCourse());
     if (active === "Course Enroll") dispatch(toCourseEnroll());
+    if (active === "Settings") dispatch(toSettings());
   };
 
   const handleCourseListClick = (event, active, semester, courseID) => {
@@ -130,6 +131,7 @@ export default function Navigator(props) {
 
     dispatch(toActiveCourse(activeCourse));
     dispatch(toNotRenewCourse());
+    dispatch(toClosePost())
   };
 
 
