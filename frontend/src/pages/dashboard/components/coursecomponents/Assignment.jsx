@@ -43,13 +43,14 @@ export default function Assignments() {
     const [startDate, setStartDate] = React.useState(new Date());
     const [endDate, setEndDate] = React.useState(new Date());
 
-    const [hasUpdatedAssignment, setHasUpdatedAssignment] = React.useState(false);
     const [activeAssignment, setActiveAssignment] = React.useState(null);
-    const assignmentsSubmission = useSelector(state => state.contentsController.assignmentsSubmission)
-
+    const [hasUpdatedAssignment, setHasUpdatedAssignment] = React.useState(false);
+    if (!hasUpdatedAssignment) {
+        getAssignments()
+        setHasUpdatedAssignment(true)
+    }
     const [isInstructor, setIsInstructor] = React.useState(type==='instructor')
-    console.log("isInstructor is " , isInstructor)
-    console.log("type is " , type)
+
     const handleNewAssignmentSubmit = (event) => {
         // console.log("handle post submit")
         event.preventDefault();
@@ -118,17 +119,15 @@ export default function Assignments() {
             });
     }
 
-    if (!hasUpdatedAssignment) {
-        getAssignments()
-        setHasUpdatedAssignment(true)
-    }
+    const assignmentsSubmission = useSelector(state => state.contentsController.assignmentsSubmission)
+
 
     const handleNewAssignmentClick = (event) => {
         event.preventDefault()
         setIsNewAssignment(true)
     }
 
-    function handleAssignmentClick(assignmentID) {
+    async function handleAssignmentClick(assignmentID) {
         setIsNewAssignment(false)
         setActiveAssignment(assignments.filter(assignment =>
             (assignment.id === assignmentID)))
@@ -156,7 +155,7 @@ export default function Assignments() {
             newSubmission,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
-                console.log(response.data);
+                console.log("response is", response.data);
                 if (response.data.code === 1000) {
                     getAssignmentSubmissions()
                 }
@@ -297,13 +296,9 @@ export default function Assignments() {
                                 <TableCell component="th" scope="row">History submission</TableCell>
                                 <TableCell>
                                     {assignmentsSubmission.map(submission => (
-                                        <TableRow key={"submission.id"}>{submission.content}</TableRow>
+                                        <TableRow key={submission.id}>{submission.content}</TableRow>
                                     ))}
                                 </TableCell>
-                            </TableRow>
-                            <TableRow key={"New submission"}>
-                                <TableCell component="th" scope="row">New submission</TableCell>
-                                <TableCell></TableCell>
                             </TableRow>
                         </TableBody>
                         <Divider variant="fullWidth"/>
@@ -320,7 +315,7 @@ export default function Assignments() {
                                        fullWidth
                                        rows={8}
                                        variant="outlined"
-                                       label="Submission"
+                                       label="New Submission"
                                        name="submission"
                                        sx={{m: 1}}>
                             </TextField>

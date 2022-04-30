@@ -167,7 +167,7 @@ export default function Discussion() {
                     </ListItem>
                     <Divider variant="inset" component="li"/>
                     {posts.map((thread) => (
-                        <Grid>
+                        <div>
                             <ListItem key={thread.postID}>
                                 <ListItemButton disableGutters={true}
                                                 padding={0}
@@ -194,7 +194,7 @@ export default function Discussion() {
                                 </ListItemButton>
                             </ListItem>
                             <Divider variant="inset"/>
-                        </Grid>
+                        </div>
                     ))}
                 </List>
             </Grid>
