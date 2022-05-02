@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Map;
 
-import static hat.cap.entityResult.Code.NO_PERMISSION;
-import static hat.cap.entityResult.Code.SUCCESS;
+import static hat.cap.entityResult.Code.*;
 
 @RestController
 public class LoginController {
@@ -32,9 +31,15 @@ public class LoginController {
 
         if (type.equals("student")) {
             Student student = studentService.getStudent(email, password);
+            if (student==null){
+                return new Result<>(LOGIN_FAIL);
+            }
             return new Result<>(SUCCESS, new ResultUser(student));
         } else if (type.equals("instructor")) {
             Instructor instructor = instructorService.getInstructor(email, password);
+            if (instructor==null){
+                return new Result<>(LOGIN_FAIL);
+            }
             return new Result<>(SUCCESS, new ResultUser(instructor));
         } else {
             return new Result<>(NO_PERMISSION);

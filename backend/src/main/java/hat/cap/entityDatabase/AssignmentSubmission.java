@@ -27,4 +27,6 @@ public class AssignmentSubmission {
     private Student student;
     @Column
     private Date submitDate;
+    @Column
+    private double score;
 }

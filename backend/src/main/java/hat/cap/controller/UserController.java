@@ -31,6 +31,10 @@ public class UserController {
         String username = map.get("username");
         String password = map.get("password");
 
+        if(email.equals("") || username.equals("") || password.equals("")){
+            return new Result<>(INFORMATION_IS_EMPTY);
+        }
+
         if (type.equals("student")) {
             Student student = studentService.getStudent(email);
             if (student != null) {

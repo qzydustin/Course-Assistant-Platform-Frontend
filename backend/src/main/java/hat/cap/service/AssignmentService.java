@@ -16,12 +16,12 @@ import java.util.List;
 @Service
 public class AssignmentService {
     @Resource
-    private AssignmentRepository AssignmentRepository;
+    private AssignmentRepository assignmentRepository;
     @Resource
-    private AssignmentSubmissionRepository AssignmentSubmissionRepository;
+    private AssignmentSubmissionRepository assignmentSubmissionRepository;
 
     public List<ResultAssignment> getAssignments(Course course) {
-        List<Assignment> Assignments = AssignmentRepository.findAssignmentsByCourse(course);
+        List<Assignment> Assignments = assignmentRepository.findAssignmentsByCourse(course);
         ArrayList<ResultAssignment> resultAssignments = new ArrayList<>();
         for (Assignment Assignment : Assignments) {
             resultAssignments.add(new ResultAssignment(Assignment));
@@ -30,15 +30,15 @@ public class AssignmentService {
     }
 
     public void createAssignment(Assignment Assignment) {
-        AssignmentRepository.save(Assignment);
+        assignmentRepository.save(Assignment);
     }
 
     public Assignment getAssignment(Long id) {
-        return AssignmentRepository.findAssignmentById(id);
+        return assignmentRepository.findAssignmentById(id);
     }
 
     public List<ResultAssignmentSubmission> getSubmissions(Assignment Assignment) {
-        List<AssignmentSubmission> AssignmentSubmissions = AssignmentSubmissionRepository.findAssignmentSubmissionsByAssignment(Assignment);
+        List<AssignmentSubmission> AssignmentSubmissions = assignmentSubmissionRepository.findAssignmentSubmissionsByAssignment(Assignment);
         ArrayList<ResultAssignmentSubmission> resultAssignmentSubmissions = new ArrayList<>();
         for (AssignmentSubmission AssignmentSubmission : AssignmentSubmissions) {
             resultAssignmentSubmissions.add(new ResultAssignmentSubmission((AssignmentSubmission)));
@@ -47,6 +47,14 @@ public class AssignmentService {
     }
 
     public void createAssignmentSubmission(AssignmentSubmission AssignmentSubmission) {
-        AssignmentSubmissionRepository.save(AssignmentSubmission);
+        assignmentSubmissionRepository.save(AssignmentSubmission);
+    }
+
+    public AssignmentSubmission getAssignmentSubmission(Long id){
+        return assignmentSubmissionRepository.findAssignmentSubmissionById(id);
+    }
+
+    public void updateScore(Double score, Long id){
+        assignmentSubmissionRepository.updateScoreById(score, id);
     }
 }
