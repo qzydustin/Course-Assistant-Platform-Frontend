@@ -24,6 +24,7 @@ function ManageHeader(props) {
   const { onDrawerToggle } = props;
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const userName = localStorage.getItem("myUserName");
 
   const handleLogout = (event) => {
     event.preventDefault()
@@ -103,7 +104,7 @@ function ManageHeader(props) {
                 color="inherit"
                 size="small"
               >
-                Web setup
+                {userName}
               </Button>
             </Grid>
             <Grid item>

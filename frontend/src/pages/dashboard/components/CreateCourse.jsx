@@ -8,13 +8,21 @@ import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {updateEnrolledCourse} from "../dashboardSlice";
+import {renewEnrolledCourse} from "../dashboardSlice";
 import FormControl from "@mui/material/FormControl";
 import {Checkbox, Input, InputLabel, ListItemText, Select} from "@mui/material";
 import {DesktopTimePicker} from "@mui/x-date-pickers";
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import Avatar from "@mui/material/Avatar";
 
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import PersonIcon from "@mui/icons-material/Person";
+import { blue } from "@mui/material/colors";
 
 const departments = [
     {value: 'Empty', label: ''},
@@ -111,7 +119,7 @@ export default function CreateCourse({server}) {
                         {headers: {'Content-Type': 'application/json'}})
                         .then(function(response) {
                             if(response.data.code === 1000){
-                                dispatch(updateEnrolledCourse(response.data.data))
+                                dispatch(renewEnrolledCourse(response.data.data))
                             } else {
                                 console.log(response.data.message);
                             }
@@ -133,6 +141,12 @@ export default function CreateCourse({server}) {
     }
     const handleOfferedTimeChange = (event) => {
         setOfferedTime(event.target.value);
+    }
+
+    const [openCreateCourseDialog, setOpenCreateCourseDialog] = React.useState(false)
+
+    const handleCloseCreateCourseDialog = (event) =>{
+        setOpenCreateCourseDialog(false)
     }
 
     return (
@@ -297,6 +311,23 @@ export default function CreateCourse({server}) {
                               placement="right-start">
                           Create Course
                       </Button>
+                      <Dialog onClose={handleCloseCreateCourseDialog} open={openCreateCourseDialog}>
+                                <DialogTitle>Error</DialogTitle>
+                                <List sx={{ pt: 0 }}>
+                                    
+                                    <ListItem
+                                        button
+                                        onClick={handleCloseCreateCourseDialog}
+                                    >
+                                        <ListItemAvatar>
+                                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                                            <PersonIcon />
+                                        </Avatar>
+                                        </ListItemAvatar>
+                                    </ListItem>
+                                    )
+                                </List>
+                            </Dialog>
                   </Grid>
               </Toolbar>
         </Box>

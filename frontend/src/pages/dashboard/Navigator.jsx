@@ -59,14 +59,10 @@ export default function Navigator(props) {
   let type = localStorage.getItem('myType')
   let categories = [
       {
-        id: 'Build',
+        id: 'Main',
         children: [
           { id: 'Front page', icon: <DashboardRoundedIcon />, active: "Front Page",},
           { id: 'Calendar', icon: <CalendarMonthRoundedIcon /> , active: "Calendar"},
-          // { id: 'Switch 2', icon: <PermMediaOutlinedIcon /> , active: "Switch 2"},
-          // { id: 'Switch 3', icon: <PublicIcon /> , active: "Switch 3"},
-          // { id: 'Switch 4', icon: <SettingsEthernetIcon /> , active: "Switch 4"},
-          // { id: 'Machine learning', icon: <SettingsInputComponentIcon />, active: "Machine learning"},
         ],
       }];
   categories = [
@@ -120,13 +116,10 @@ export default function Navigator(props) {
     if (active === "Settings") dispatch(toSettings());
   };
 
-  const handleCourseListClick = (event, active, semester, courseID) => {
+  const handleCourseListClick = (event, active, courseID) => {
     setSelectedIndex(active);
-    let activeCourse = {
-      code: active,
-      semester: semester,
-      id: courseID
-    }
+
+    let activeCourse = enrolledCourse.filter(course => (course.id === courseID))
     console.log("active=",activeCourse);
 
     dispatch(toActiveCourse(activeCourse));
@@ -158,7 +151,7 @@ export default function Navigator(props) {
                     <ListItem disablePadding key={childId}>
                     <ListItemButton selected={selectedIndex === active}
                                     sx={item}
-                                    onClick={(event) => handleCourseListClick(event, active, semester, courseID)}>
+                                    onClick={(event) => handleCourseListClick(event, active, courseID)}>
                       <ListItemIcon>{icon}</ListItemIcon>
                       <ListItemText>{childId}</ListItemText>
                     </ListItemButton>

@@ -21,6 +21,19 @@ import { saveEmail, savePassword, saveType } from "./dashboard/dashboardSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 
+
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import PersonIcon from "@mui/icons-material/Person";
+import { blue } from "@mui/material/colors";
+
+
+  
+  
+
 const theme = createTheme();
 
 export default function Login({server}) {
@@ -62,9 +75,16 @@ export default function Login({server}) {
                     navigate('/dashboard');
                 } else {
                     console.log(response.data.message);
+                    setOpenLoginDialog(true)
                 }
         });
     };
+
+    const [openLoginDialog, setOpenLoginDialog] = React.useState(false)
+
+    const handleCloseLoginDialog = (event) =>{
+        setOpenLoginDialog(false)
+    }
 
 
     return (
@@ -157,6 +177,23 @@ export default function Login({server}) {
                             >
                                 Sign In
                             </Button>
+                            <Dialog onClose={handleCloseLoginDialog} open={openLoginDialog}>
+                                <DialogTitle>Error</DialogTitle>
+                                <List sx={{ pt: 0 }}>
+                                    
+                                    <ListItem
+                                        button
+                                        onClick={handleCloseLoginDialog}
+                                    >
+                                        <ListItemAvatar>
+                                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                                            <PersonIcon />
+                                        </Avatar>
+                                        </ListItemAvatar>
+                                    </ListItem>
+                                    )
+                                </List>
+                            </Dialog>
                             <Grid container>
                                 <Grid item xs></Grid>
                                 <Grid item>

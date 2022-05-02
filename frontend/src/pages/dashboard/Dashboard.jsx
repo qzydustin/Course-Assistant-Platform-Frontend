@@ -15,7 +15,7 @@ import ManageHeader from './components/ManageHeader';
 import CourseHeader from "./components/CourseHeader";
 import {useDispatch, useSelector} from 'react-redux';
 import axios from "axios";
-import {updateEnrolledCourse} from "./dashboardSlice";
+import {renewEnrolledCourse} from "./dashboardSlice";
 import Settings from "./components/Setting";
 import server from "../../server.json";
 
@@ -190,7 +190,7 @@ export default function Dashboard({server}) {
   localStorage.setItem("myServer", server.host);
   console.log("Dashboard")
 
-  const isFrontPage = useSelector(state => state.contentsController.isContentShown);
+  const isFrontPage = useSelector(state => state.contentsController.isFrontPage);
   const isSwitch1 = useSelector(state => state.contentsController.isContent1Shown);
   const isCreateCourse = useSelector(state => state.contentsController.isCreateCourseShown);
   const isSearchCourse = useSelector(state => state.contentsController.isSearchCourseShown);
@@ -212,7 +212,7 @@ export default function Dashboard({server}) {
     "type": type,
   })
   server = localStorage.getItem("myServer")
-  // console.log("Post get course data: ", user);
+  console.log("Post get course data: ", user);
   axios.post(server+'/get-enrolled-courses',
       user,
       {headers: {'Content-Type': 'application/json'}})
@@ -220,7 +220,7 @@ export default function Dashboard({server}) {
         if(response.data.code === 1000){
           console.log("Get enrolled course successfully!");
           console.log(response);
-          dispatch(updateEnrolledCourse(response.data.data))
+          dispatch(renewEnrolledCourse(response.data.data))
           // dispatch(renewSearchedCourse(response.data.data));
         } else {
           console.log(response.data.message);

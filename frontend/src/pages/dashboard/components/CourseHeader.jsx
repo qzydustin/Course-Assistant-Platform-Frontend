@@ -14,7 +14,7 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import {saveEmail, savePassword, saveType, changeTab} from "../dashboardSlice";
+import {saveEmail, savePassword, saveType, toChangeTab} from "../dashboardSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -22,15 +22,15 @@ const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 function ManageHeader(props) {
   const { onDrawerToggle } = props.onDrawerToggle;
-  const activeCourse = useSelector(state => state.contentsController.activeCourse);
+  const activeCourse = useSelector(state => state.contentsController.activeCourse)[0];
 
-  console.log("activeCourse is ", activeCourse);
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const userName = localStorage.getItem("myUserName");
 
   const tabValue = useSelector(state => state.contentsController.activeTab)
   const handleTabChange = (event, newValue) => {
-    dispatch(changeTab(newValue));
+    dispatch(toChangeTab(newValue));
   };
 
   const handleLogout = (event) => {
@@ -111,7 +111,7 @@ function ManageHeader(props) {
                 color="inherit"
                 size="small"
               >
-                Web setup
+                {userName}
               </Button>
             </Grid>
             <Grid item>
