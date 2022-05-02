@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static hat.cap.entityResult.Code.*;
 
@@ -35,6 +36,17 @@ public class UserController {
             return new Result<>(INFORMATION_IS_EMPTY);
         }
 
+        if(email.equals(password)){
+            return new Result<>(PASSWORD_CAN_NOT_EQUALS_USERNAME);
+
+        }
+
+        // RFC 5322
+        String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        boolean emailValidation = Pattern.compile(regexPattern).matcher(email).matches();
+        if(!emailValidation){
+            return new Result<>(EMAIL_IS_NOT_VALID);
+        }
         if (type.equals("student")) {
             Student student = studentService.getStudent(email);
             if (student != null) {
