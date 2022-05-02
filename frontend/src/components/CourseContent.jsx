@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import {useDispatch, useSelector} from "react-redux";
-import Discussion from './coursecomponents/Discussion';
+import Discussion from './CoursePlaza/Discussion';
 import axios from "axios";
 import {
     toChangeTab,
@@ -10,9 +10,9 @@ import {
     renewActivePost,
     renewPosts,
     toNotNewPost, toOpenPost, toRenewCourse, renewAssignments
-} from "../dashboardSlice";
-import AnnouncementPanel from './coursecomponents/AnnouncementPanel';
-import Management from './coursecomponents/Management';
+} from "../pages/DashboardSlice";
+import AnnouncementPanel from './CoursePlaza/AnnouncementPanel';
+import Management from './CoursePlaza/Management';
 import Paper from "@mui/material/Paper";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -37,7 +37,7 @@ import {
     DialogTitle
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import Assignment from './coursecomponents/Assignment'
+import Assignment from './CoursePlaza/Assignment'
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -47,11 +47,11 @@ import Divider from "@mui/material/Divider";
 
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
-import MyCalendar from "./coursecomponents/Calendar";
+import MyCalendar from "./CoursePlaza/Calendar";
 import 'react-big-calendar/lib/sass/styles.scss';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss';
-import AssignmentPanel from "./coursecomponents/AssignmentPanel"; // if using DnD
-import DiscussionPanel from "./coursecomponents/DiscussionPanel"; // if using DnD
+import AssignmentPanel from "./CoursePlaza/AssignmentPanel"; // if using DnD
+import DiscussionPanel from "./CoursePlaza/DiscussionPanel"; // if using DnD
 
 
 

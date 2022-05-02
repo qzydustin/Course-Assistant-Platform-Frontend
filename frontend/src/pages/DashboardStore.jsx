@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import contentsReducer from "./dashboard/dashboardSlice";
+import contentsReducer from "./DashboardSlice";
 
 export const store = configureStore({
     reducer: {
         contentsController: contentsReducer,
     },
-    devTools: true
+    devTools: true // TODO
 })
 
 // import { createStore } from 'redux';

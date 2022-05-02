@@ -1,33 +1,28 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
 import Grid from "@mui/material/Grid";
-import {useDispatch, useSelector} from "react-redux";
-import {renewPosts, saveEmail, savePassword, saveType, toFrontPage} from "../dashboardSlice";
+import {useDispatch} from "react-redux";
+import {savePassword, saveType, saveUserName} from "../pages/DashboardSlice";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import CapAlert from "./CapAlert";
 
-export default function MenuListComposition(){
+export default function MenuListComposition() {
 
     const dispatch = useDispatch();
-    const [isLeave, setIsLeave] = React.useState(false)
-    const handleLeaveClick = (event) => {
-        setIsMyAccount(false)
-        setIsLeave(true)
-    }
-    const [isMyAccount, setIsMyAccount] = React.useState(false)
+
+    const [isMyAccount, setIsMyAccount] = React.useState(true)
     const handleMyAccountClick = (event) => {
         setIsMyAccount(true)
-        setIsLeave(false)
     }
-
+    const [alert, setAlert] = React.useState({
+        message: "",
+        type: null
+    })
     const email = localStorage.getItem('myEmail')
     const type = localStorage.getItem('myType');
     const server = localStorage.getItem('myServer');
@@ -53,11 +48,12 @@ export default function MenuListComposition(){
             data,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                if(response.data.code === 1000){
-                    console.log("Update password successfully!", response);
-                    localStorage.setItem('myPassword', loginForm.get("new password"));
+                if (response.data.code === 1000) {
+
+                    setAlert({message: response.data.message, type: "success"})
+                    localStorage.setItem('myPassword', response.data.data.password);
                 } else {
-                    console.log(response.data.message);
+                    setAlert({message: response.data.message, type: "error"})
                 }
             });
     };
@@ -76,35 +72,35 @@ export default function MenuListComposition(){
             "newUsername": loginForm.get("new username"),
         })
 
-        console.log("Update data is ",data);
 
-        axios.post(server+'/update-username',
+        axios.post(server + '/update-username',
             data,
             {headers: {'Content-Type': 'application/json'}})
-            .then(function(response) {
-                if(response.data.code === 1000){
-                    console.log("Update username successfully!", response);
+            .then(function (response) {
+                if (response.data.code === 1000) {
+                    setAlert({message: response.data.message, type: "success"})
                     localStorage.setItem('myUserName', loginForm.get("new username"));
                 } else {
-                    console.log(response.data.message);
+                    setAlert({message: response.data.message, type: "error"})
                 }
             });
+        dispatch(saveUserName(loginForm.get("new username")))
     };
 
     return (
         <Paper>
             <Grid container>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
                     <MenuList>
-                        <MenuItem>Course Details</MenuItem>
                         <MenuItem onClick={handleMyAccountClick}>My account</MenuItem>
-                        <MenuItem onClick={handleLeaveClick}>Leave</MenuItem>
                     </MenuList>
                 </Grid>
                 <Grid item xs={8}>
+                    <Grid item xs={12} mt={1}>
+                        <CapAlert message={alert.message} type={alert.type}/>
+                    </Grid>
                     <MenuList>
-                        {/*<MenuItem>Profile</MenuItem>*/}
-                        {isMyAccount? (
+                        {isMyAccount ? (
                             <Grid container>
                                 <Grid item>
                                     <Box
@@ -183,7 +179,6 @@ export default function MenuListComposition(){
                                 </Grid>
                             </Grid>
                             ):(null)}
-                        {isLeave? (<MenuItem>Drop Course</MenuItem>):(null)}
                     </MenuList>
                 </Grid>
             </Grid>

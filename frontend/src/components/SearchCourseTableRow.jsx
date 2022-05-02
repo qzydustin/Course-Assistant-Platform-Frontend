@@ -9,16 +9,16 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Checkbox from '@mui/material/Checkbox';
-import {addEnrollCourse, removeEnrollCourse, renewEnrolledCourse} from '../dashboardSlice';
-import {useDispatch, useSelector} from "react-redux";
+import {addEnrollCourse, removeEnrollCourse} from '../pages/DashboardSlice';
+import {useDispatch} from "react-redux";
 import Button from "@mui/material/Button";
 import axios from "axios";
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
 
 function Row(props) {
@@ -34,22 +34,19 @@ function Row(props) {
     const server = localStorage.getItem('myServer');
 
     const handleCheckboxClick = (event) => {
-        // console.log("on check");
-        // console.log(event.target)
+
         if(event.target.checked){
             let enrollCourse = JSON.stringify({
                 "code": row.code,
                 "semester": row.semester,
             });
             dispatch(addEnrollCourse(enrollCourse));
-            // console.log("Enrolling: ", enrollCourse);
         } else {
             let removeCourse = JSON.stringify({
                 "code": row.code,
                 "semester": row.semester,
             });
             dispatch(removeEnrollCourse(removeCourse));
-            // console.log("Remove: ", removeCourse);
         }
     }
 
@@ -62,20 +59,13 @@ function Row(props) {
             "semester": row.semester,
         })
 
-        console.log("checkCourse is ", checkCourse);
         axios.post(server+'/get-course-enrolled-student-number',
             checkCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
                 if(response.data.code === 1000){
-                    console.log("Get enrolled course number successfully!");
                     setAvailability(row.seat - response.data.data);
                     setHasChecked(true);
-                    // dispatch(renewEnrolledCourse(response.data.data))
-                    // dispatch(renewSearchedCourse(response.data.data));
-                } else {
-                    console.log(response.data.message);
-                    // dispatch(renewSearchedCourse([]));
                 }
             });
     }
@@ -126,16 +116,20 @@ function Row(props) {
                                         <TableCell component="th" scope="row">{"Days"}</TableCell>
                                         <TableCell>{row.weekday}</TableCell>
                                     </TableRow>
-                                    <TableRow key={"time"}>
-                                        <TableCell component="th" scope="row">{"Times"}</TableCell>
-                                        <TableCell>{row.startTime}</TableCell>
-                                        <TableCell>{row.endTime}</TableCell>
+                                    <TableRow key={"start time"}>
+                                        <TableCell component="th" scope="row">{"Start Times"}</TableCell>
+                                        <TableCell>{row.startTime.toString().substring(11, 16)}</TableCell>
+                                    </TableRow>
+                                    <TableRow key={"end time"}>
+                                        <TableCell component="th" scope="row">{"End Times"}</TableCell>
+                                        <TableCell>{row.endTime.toString().substring(11, 16)}</TableCell>
                                     </TableRow>
                                     <TableRow key={"availability"}>
                                         <TableCell component="th" scope="row">{"Availability"}</TableCell>
                                         {hasChecked ?
-                                            (<TableCell>{availability}</TableCell>):
-                                            (<TableCell><Button onClick={handleCheckAvailability}>Check</Button></TableCell>)}
+                                            (<TableCell>{availability}</TableCell>) :
+                                            (<TableCell><Button
+                                                onClick={handleCheckAvailability}>Check</Button></TableCell>)}
                                     </TableRow>
                                 </TableBody>
                             </Table>

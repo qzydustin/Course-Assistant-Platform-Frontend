@@ -5,22 +5,21 @@ import Grid from "@mui/material/Grid";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Divider from "@mui/material/Divider";
 import {useDispatch, useSelector} from "react-redux";
 import {
     renewActiveAssignment,
-    renewActivePost, renewAssignmentSubmission,
+    renewAssignmentSubmission,
     toActiveAssignment,
-    toChangeTab, toCreateAssignment,
-    toNotNewPost,
-    toOpenPost
-} from "../../dashboardSlice";
+    toChangeTab,
+    toCreateAssignment
+} from "../../pages/DashboardSlice";
 import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 
 export default function AssignmentPanel() {
 
@@ -43,7 +42,7 @@ export default function AssignmentPanel() {
     async function handleAssignmentClick(assignmentID) {
         dispatch(toChangeTab(2))
         dispatch(toActiveAssignment())
-        console.log("assignmentID is ",assignmentID)
+        console.log("assignmentID is ", assignmentID)
         dispatch(renewActiveAssignment(assignments.filter(assignment =>
             (assignment.id === assignmentID))))
         getAssignmentSubmissions()
@@ -73,10 +72,10 @@ export default function AssignmentPanel() {
             });
     }
 
-    return(
-        <Accordion sx={{ right: 5 }} defaultExpanded={true}>
+    return (
+        <Accordion sx={{right: 5}} defaultExpanded={true}>
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon/>}
                 aria-controls="panel3a-content"
                 id="panel3a-header"
             >
@@ -85,11 +84,11 @@ export default function AssignmentPanel() {
             </AccordionSummary>
             <AccordionDetails>
                 <Typography>
-                    {(type === 'instructor')? (
-                        <IconButton size="small" sx={{ mr: 1 }} onClick={handleNewAssignmentClick}>
+                    {(type === 'instructor') ? (
+                        <IconButton size="small" sx={{mr: 1}} onClick={handleNewAssignmentClick}>
                             <AddIcon fontSize="inherit"/>
                             <div>New Assignment</div>
-                        </IconButton>):null}
+                        </IconButton>) : null}
                     {assignments.map((assignment) => (
                         <Grid>
                             <ListItem key={assignment.id}>
@@ -97,7 +96,7 @@ export default function AssignmentPanel() {
                                                 padding={0}
                                                 onClick={() => handleAssignmentClick(assignment.id)}>
                                     <ListItemAvatar>
-                                        <Avatar alt="Assignment" src="/static/images/avatar/1.jpg"/>
+                                        <FileCopyOutlinedIcon fontSize={"large"}/>
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary={assignment.title}

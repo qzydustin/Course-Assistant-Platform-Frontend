@@ -3,8 +3,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import ListItemButton from "@mui/material/ListItemButton";
 import DialogContent from "@mui/material/DialogContent";
@@ -22,11 +20,11 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-import {renewActiveAnnouncements} from "../../dashboardSlice";
+import {renewActiveAnnouncements} from "../../pages/DashboardSlice";
 import {Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(Dialog)(({theme}) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
     },
@@ -36,10 +34,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
+    const {children, onClose, ...other} = props;
 
     return (
-        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+        <DialogTitle sx={{m: 0, p: 2}} {...other}>
             {children}
             {onClose ? (
                 <IconButton
@@ -52,7 +50,7 @@ const BootstrapDialogTitle = (props) => {
                         color: (theme) => theme.palette.grey[500],
                     }}
                 >
-                    <CloseIcon />
+                    <CloseIcon/>
                 </IconButton>
             ) : null}
         </DialogTitle>
@@ -76,7 +74,8 @@ export default function AnnouncementPanel() {
     const handleAnnouncementClose = () => {
         setOpenAnnouncementID(0);
     };
-    function handleAnnouncementClick(announcementID){
+
+    function handleAnnouncementClick(announcementID) {
         setOpenAnnouncementID(announcementID);
     }
 
@@ -104,7 +103,6 @@ export default function AnnouncementPanel() {
             "title": announcementCreationForm.get("title"),
             "content": announcementCreationForm.get("content")
         })
-        console.log("createAnnouncements: ", creatAnnouncement);
         axios.post(server + '/create-announcement',
             creatAnnouncement,
             {headers: {'Content-Type': 'application/json'}})
@@ -126,7 +124,7 @@ export default function AnnouncementPanel() {
     return (
         <Accordion sx={{right: 5}} defaultExpanded={true}>
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header">
                 <Grid item xs>
@@ -136,11 +134,11 @@ export default function AnnouncementPanel() {
             <AccordionDetails>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item>
-                        {(type === 'instructor')? (
-                            <IconButton size="small" sx={{ mr: 1 }} onClick={handleNewAnnouncementClickOpen}>
+                        {(type === 'instructor') ? (
+                            <IconButton size="small" sx={{mr: 1}} onClick={handleNewAnnouncementClickOpen}>
                                 <AddIcon fontSize="inherit"/>
                                 <div>New Announcement</div>
-                            </IconButton>):null}
+                            </IconButton>) : null}
                         <Dialog open={openNew} onClose={handleNewAnnouncementClose}>
                             <Box
                                 component="form"
@@ -180,11 +178,12 @@ export default function AnnouncementPanel() {
                             </Box>
                         </Dialog>
                     </Grid>
-                    <List sx={{ width: '100%', maxWidth: 360}}>
-                        {announcements.map( announcement =>(
+                    <List sx={{width: '100%', maxWidth: 360}}>
+                        {announcements.map(announcement => (
                             <Grid key={announcement.id}>
                                 <ListItem alignItems="flex-start">
-                                    <ListItemButton padding={0} onClick={() => handleAnnouncementClick(announcement.id)}>
+                                    <ListItemButton padding={0}
+                                                    onClick={() => handleAnnouncementClick(announcement.id)}>
                                         <ListItemText
                                             primary={announcement.title}
                                             secondary={
@@ -199,7 +198,8 @@ export default function AnnouncementPanel() {
                                         aria-labelledby="customized-dialog-title"
                                         open={openAnnouncementID === announcement.id}
                                     >
-                                        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleAnnouncementClose}>
+                                        <BootstrapDialogTitle id="customized-dialog-title"
+                                                              onClose={handleAnnouncementClose}>
                                             {announcement.title}
                                         </BootstrapDialogTitle>
                                         <DialogContent dividers>
@@ -214,7 +214,7 @@ export default function AnnouncementPanel() {
                                         </DialogActions>
                                     </BootstrapDialog>
                                 </ListItem>
-                                <Divider component="li" />
+                                <Divider component="li"/>
                             </Grid>
                         ))}
                     </List>

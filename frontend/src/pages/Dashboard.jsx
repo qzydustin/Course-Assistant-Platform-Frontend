@@ -5,27 +5,25 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import Navigator from './Navigator';
-import Content from './components/Content';
-import Content_1 from './components/Content_1';
-import CourseContent from './components/CourseContent';
-import CreateCourse from './components/CreateCourse';
-import SearchCourse from './components/SearchCourse';
-import ManageHeader from './components/ManageHeader';
-import CourseHeader from "./components/CourseHeader";
+import Navigator from '../components/Navigator';
+import Calendar from '../components/CoursePlaza/Calendar';
+import CourseContent from '../components/CourseContent';
+import CreateCourse from '../components/CreateCourse';
+import SearchCourse from '../components/SearchCourse';
+import CourseHeader from "../components/Header";
 import {useDispatch, useSelector} from 'react-redux';
 import axios from "axios";
-import {renewEnrolledCourse} from "./dashboardSlice";
-import Settings from "./components/Setting";
-import server from "../../server.json";
+import {renewEnrolledCourse} from "./DashboardSlice";
+import Settings from "../components/Setting";
+import server from "../server.json";
 
 function Copyright() {
   return (
       <Typography variant="body2" color="text.secondary" align="center">
         {'Copyright © '}
         <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
+        Course Assistant Platform
+      </Link>
       {new Date().getFullYear()}.
     </Typography>
   );
@@ -178,9 +176,7 @@ const drawerWidth = 256;
 
 export default function Dashboard({server}) {
 
-  // read username and password from cookie, send them to the server
-  // if the response is true, show user's contend, if not, back to the
-  // login page or show error.
+
   const dispatch = useDispatch();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
@@ -188,23 +184,18 @@ export default function Dashboard({server}) {
     setMobileOpen(!mobileOpen);
   };
   localStorage.setItem("myServer", server.host);
-  console.log("Dashboard")
 
-  const isFrontPage = useSelector(state => state.contentsController.isFrontPage);
-  const isSwitch1 = useSelector(state => state.contentsController.isContent1Shown);
+
+  const isCalendar = useSelector(state => state.contentsController.isCalendar);
   const isCreateCourse = useSelector(state => state.contentsController.isCreateCourseShown);
   const isSearchCourse = useSelector(state => state.contentsController.isSearchCourseShown);
   const isSettings = useSelector(state => state.contentsController.isSettings);
   const activeCourse = useSelector(state => state.contentsController.activeCourse)
 
-  // console.log("isActive is ", activeCourse);
 
   let email = localStorage.getItem('myEmail')
   let password = localStorage.getItem('myPassword')
   let type = localStorage.getItem('myType')
-  // let email = useSelector(state => state.contentsController.email)
-  // let password = useSelector(state => state.contentsController.password)
-  // let type = useSelector(state => state.contentsController.type)
 
   let user = JSON.stringify({
     "email": email,
@@ -218,13 +209,7 @@ export default function Dashboard({server}) {
       {headers: {'Content-Type': 'application/json'}})
       .then(function(response) {
         if(response.data.code === 1000){
-          console.log("Get enrolled course successfully!");
-          console.log(response);
           dispatch(renewEnrolledCourse(response.data.data))
-          // dispatch(renewSearchedCourse(response.data.data));
-        } else {
-          console.log(response.data.message);
-          // dispatch(renewSearchedCourse([]));
         }
       });
 
@@ -251,53 +236,31 @@ export default function Dashboard({server}) {
 
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          {isFrontPage ? (
-              <Box>
-                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
-                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
-                  <Content/>
-                </Box>
-              </Box>
-          ):null}
-          {isSwitch1 ? (
-              <Box>
-                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
-                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
-                  <Content_1/>
-                </Box>
-              </Box>
+          <CourseHeader onDrawerToggle={handleDrawerToggle}/>
+          {isCalendar ? (
+              <Calendar/>
           ):null}
           {(activeCourse !== '') ? (
-              <Box>
-                <CourseHeader onDrawerToggle={handleDrawerToggle}/>
+              <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
                 <CourseContent/>
               </Box>
           ):null}
           {isCreateCourse ? (
-              <Box>
-                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
-                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
-                  <CreateCourse server={server}/>
-                </Box>
+              <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+                <CreateCourse server={server}/>
               </Box>
           ):null}
           {isSearchCourse ? (
-              <Box>
-                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
-                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
-                  <SearchCourse server={server}/>
-                </Box>
+              <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+                <SearchCourse server={server}/>
               </Box>
           ):null}
           {isSettings ? (
-              <Box>
-                <ManageHeader onDrawerToggle={handleDrawerToggle}/>
-                <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
-                  <Settings server={server}/>
-                </Box>
+              <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
+              <Settings server={server}/>
               </Box>
           ):null}
-          <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
+          <Box component="footer" sx={{ mb: 0, bgcolor: '#eaeff1' }}>
             <Copyright />
           </Box>
         </Box>
