@@ -86,6 +86,10 @@ export default function MenuListComposition() {
     };
 
     return (
+        <div>
+            <Grid item xs={12} mb={2}>
+                <CapAlert message={alert.message} type={alert.type}/>
+            </Grid>
         <Paper>
             <Grid container>
                 <Grid item xs={2}>
@@ -94,9 +98,7 @@ export default function MenuListComposition() {
                     </MenuList>
                 </Grid>
                 <Grid item xs={8}>
-                    <Grid item xs={12} mt={1}>
-                        <CapAlert message={alert.message} type={alert.type}/>
-                    </Grid>
+
                     <MenuList>
                         {isMyAccount ? (
                             <Grid container>
@@ -181,5 +183,6 @@ export default function MenuListComposition() {
                 </Grid>
             </Grid>
         </Paper>
+        </div>
     )
 }
