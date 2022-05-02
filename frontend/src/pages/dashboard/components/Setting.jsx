@@ -31,7 +31,7 @@ export default function MenuListComposition(){
     const email = localStorage.getItem('myEmail')
     const type = localStorage.getItem('myType');
     const server = localStorage.getItem('myServer');
-    const courseID = useSelector(state => state.contentsController.activeCourse).id
+    // const courseID = useSelector(state => state.contentsController.activeCourse)[0].id
 
 
     const handleUpdatePassword = (event) => {

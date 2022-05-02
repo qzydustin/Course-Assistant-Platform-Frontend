@@ -59,7 +59,7 @@ export default function Navigator(props) {
   let type = localStorage.getItem('myType')
   let categories = [
       {
-        id: 'Build',
+        id: 'Main',
         children: [
           { id: 'Front page', icon: <DashboardRoundedIcon />, active: "Front Page",},
           { id: 'Calendar', icon: <CalendarMonthRoundedIcon /> , active: "Calendar"},

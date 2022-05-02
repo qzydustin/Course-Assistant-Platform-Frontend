@@ -26,6 +26,7 @@ function ManageHeader(props) {
 
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const userName = localStorage.getItem("myUserName");
 
   const tabValue = useSelector(state => state.contentsController.activeTab)
   const handleTabChange = (event, newValue) => {
@@ -110,7 +111,7 @@ function ManageHeader(props) {
                 color="inherit"
                 size="small"
               >
-                Web setup
+                {userName}
               </Button>
             </Grid>
             <Grid item>

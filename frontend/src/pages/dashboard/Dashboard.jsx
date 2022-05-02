@@ -212,7 +212,7 @@ export default function Dashboard({server}) {
     "type": type,
   })
   server = localStorage.getItem("myServer")
-  // console.log("Post get course data: ", user);
+  console.log("Post get course data: ", user);
   axios.post(server+'/get-enrolled-courses',
       user,
       {headers: {'Content-Type': 'application/json'}})

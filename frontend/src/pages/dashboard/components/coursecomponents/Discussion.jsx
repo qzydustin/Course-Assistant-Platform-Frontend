@@ -22,7 +22,7 @@ import {
     addActiveComments,
     renewPosts,
     toOpenPost,
-    toClosePost
+    toClosePost, toCloseNewPost, toNewPost
 } from "../../dashboardSlice";
 
 function Div(props) {
@@ -41,18 +41,19 @@ export default function Discussion() {
     let email = localStorage.getItem('myEmail')
     let password = localStorage.getItem('myPassword')
     let type = localStorage.getItem('myType')
-    let courseID = useSelector(state => state.contentsController.activeCourse).id
+    const courseID = useSelector(state => state.contentsController.activeCourse)[0].id
     const server = localStorage.getItem('myServer');
 
-    const [isNewPost, setIsNewPost] = React.useState(false);
+    // const [isNewPost, setIsNewPost] = React.useState(false);
     // const [isPostOpened, setIsPostOpened] = React.useState(false);
+    const isNewPost = useSelector(state => state.contentsController.isNewPost);
     const isPostOpened = useSelector(state => state.contentsController.isPostOpen);
     let posts = useSelector(state => state.contentsController.posts);
     let activeComments = useSelector(state => state.contentsController.activeComments);
     const activePostID = useSelector(state => state.contentsController.activePostID);
 
     function handleThreadClick(postID) {
-        setIsNewPost(false)
+        dispatch(toCloseNewPost())
         dispatch(toOpenPost())
         dispatch(renewActivePost(postID))
         handleGetComment(postID);
@@ -61,7 +62,7 @@ export default function Discussion() {
     const handleNewPostClick = (event) => {
         event.preventDefault()
         dispatch(toClosePost())
-        setIsNewPost(true)
+        dispatch(toNewPost())
     }
 
     const handleNewPostSubmit = (event) => {
@@ -77,7 +78,7 @@ export default function Discussion() {
             "title": postCreationForm.get("title"),
             "content": postCreationForm.get("contents")
         })
-        // console.log("Post is : ", post);
+        console.log("newPost is : ", newPost);
         axios.post(server + '/create-post',
             newPost,
             {headers: {'Content-Type': 'application/json'}})

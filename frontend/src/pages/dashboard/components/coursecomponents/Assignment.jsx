@@ -8,7 +8,13 @@ import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import ListItemButton from "@mui/material/ListItemButton";
-import {renewActiveComments, renewActivePost, renewAssignments, renewAssignmentSubmission} from "../../dashboardSlice";
+import {
+    renewActiveAssignment,
+    renewActiveComments,
+    renewActivePost,
+    renewAssignments,
+    renewAssignmentSubmission, toActiveAssignment, toCreateAssignment
+} from "../../dashboardSlice";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
@@ -30,20 +36,23 @@ import Table from "@mui/material/Table";
 
 export default function Assignments() {
 
-    const [isNewAssignment, setIsNewAssignment] = React.useState(false);
+    // const [isNewAssignment, setIsNewAssignment] = React.useState(false);
+    const isNewAssignment = useSelector(state => state.contentsController.isNewAssignment)
     const dispatch = useDispatch();
     const email = localStorage.getItem('myEmail')
     const password = localStorage.getItem('myPassword')
     const type = localStorage.getItem('myType')
     const server = localStorage.getItem('myServer');
 
-    const courseID = useSelector(state => state.contentsController.activeCourse).id
+    const courseID = useSelector(state => state.contentsController.activeCourse)[0].id
     const assignments = useSelector(state => state.contentsController.assignments);
 
     const [startDate, setStartDate] = React.useState(new Date());
     const [endDate, setEndDate] = React.useState(new Date());
 
-    const [activeAssignment, setActiveAssignment] = React.useState(null);
+    // const [activeAssignment, setActiveAssignment] = React.useState(null);
+    const activeAssignment = useSelector(state => state.contentsController.activeAssignment);
+
     const [hasUpdatedAssignment, setHasUpdatedAssignment] = React.useState(false);
     if (!hasUpdatedAssignment) {
         getAssignments()
@@ -124,15 +133,18 @@ export default function Assignments() {
 
     const handleNewAssignmentClick = (event) => {
         event.preventDefault()
-        setIsNewAssignment(true)
+        dispatch(toCreateAssignment())
     }
 
     async function handleAssignmentClick(assignmentID) {
-        setIsNewAssignment(false)
-        setActiveAssignment(assignments.filter(assignment =>
+        dispatch(toActiveAssignment())
+        console.log("assignmentID is ",assignmentID)
+        dispatch(renewActiveAssignment(assignments.filter(assignment =>
+            (assignment.id === assignmentID))))
+        getAssignmentSubmissions()
+        console.log("active assignment is", assignments.filter(assignment =>
             (assignment.id === assignmentID)))
-        if(activeAssignment !== null) {getAssignmentSubmissions()}
-        console.log("active assignment is", activeAssignment)
+
     }
 
     const handleNewSubmissionSubmit = (event) => {
@@ -292,14 +304,14 @@ export default function Assignments() {
                                 <TableCell component="th" scope="row">{"File Path"}</TableCell>
                                 <TableCell>{activeAssignment[0].filePath}</TableCell>
                             </TableRow>
-                            <TableRow key={"history"}>
+                            {(assignmentsSubmission===null) ? (null) : (<TableRow key={"history"}>
                                 <TableCell component="th" scope="row">History submission</TableCell>
                                 <TableCell>
                                     {assignmentsSubmission.map(submission => (
                                         <TableRow key={submission.id}>{submission.content}</TableRow>
                                     ))}
                                 </TableCell>
-                            </TableRow>
+                            </TableRow>)}
                         </TableBody>
                         <Divider variant="fullWidth"/>
                     </Table>

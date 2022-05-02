@@ -51,6 +51,8 @@ export const contentsSlice = createSlice({
         isSettings: false,
         isNewPost: false,
         isPostOpen: false,
+        isNewAssignment: false,
+        activeAssignment: null,
         activeCourse: '',
         searchedCourse: [],
         enrollingCourse: [],
@@ -63,6 +65,7 @@ export const contentsSlice = createSlice({
         activeAnnouncement:[],
         assignments:[],
         isCourseRenewed: false,
+        assignmentsSubmission:null,
     },
     reducers: {
         saveEmail: (state, action) => {
@@ -115,8 +118,15 @@ export const contentsSlice = createSlice({
             state.isContent1Shown = false;
             state.isCreateCourseShown = false;
             state.isSearchCourseShown = false;
+            state.isSettings = false;
             state.activeCourse = action.payload;
             state.activeTab = 0;
+        },
+        toCreateAssignment:(state) => {
+            state.isNewAssignment = true
+        },
+        toActiveAssignment:(state) => {
+            state.isNewAssignment = false
         },
         renewSearchedCourse:(state, action) => {
             state.searchedCourse = action.payload
@@ -152,6 +162,9 @@ export const contentsSlice = createSlice({
         renewActiveAnnouncements: (state, action) => {
             state.activeAnnouncement = action.payload
         },
+        renewActiveAssignment: (state, action) => {
+            state.activeAssignment = action.payload
+        },
         renewAssignments: (state, action) => {
             state.assignments = action.payload
         },
@@ -161,7 +174,7 @@ export const contentsSlice = createSlice({
         toNewPost: (state) => {
             state.isNewPost = true
         },
-        toNotNewPost: (state) => {
+        toPost: (state) => {
             state.isNewPost = false
         },
         toRenewCourse: (state) => {
@@ -182,12 +195,13 @@ export const contentsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { saveEmail, savePassword, saveType,
     toFrontPage, toCalendar, toCreateCourse, toSettings,
-    toCourseEnroll, toActiveCourse, renewSearchedCourse,
+    toCourseEnroll, toActiveCourse, toCreateAssignment,
+    toActiveAssignment,renewSearchedCourse,
     addEnrollCourse, removeEnrollCourse, renewEnrolledCourse,
     toChangeTab, saveServer,
     renewPosts, renewActivePost, renewActiveComments, addActiveComments,
-    renewActiveAnnouncements, renewAssignments, renewAssignmentSubmission,
-    toNewPost, toNotNewPost, toRenewCourse, toNotRenewCourse, toOpenPost, toClosePost} = contentsSlice.actions
+    renewActiveAnnouncements, renewAssignments, renewActiveAssignment,renewAssignmentSubmission,
+    toNewPost, toPost: toCloseNewPost, toRenewCourse, toNotRenewCourse, toOpenPost, toClosePost} = contentsSlice.actions
 
 // export const selectController = (state) => state.contentsController.isContent1Shown
 
