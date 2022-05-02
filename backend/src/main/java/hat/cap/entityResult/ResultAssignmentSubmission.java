@@ -12,6 +12,7 @@ public class ResultAssignmentSubmission {
     private String content;
     private String filePath;
     private Date submitDate;
+    private double score;
 
     public ResultAssignmentSubmission(AssignmentSubmission assignmentSubmission) {
         id = assignmentSubmission.getId();
@@ -19,5 +20,6 @@ public class ResultAssignmentSubmission {
         content = assignmentSubmission.getContent();
         filePath = assignmentSubmission.getFilePath();
         submitDate = assignmentSubmission.getSubmitDate();
+        score = assignmentSubmission.getScore();
     }
 }

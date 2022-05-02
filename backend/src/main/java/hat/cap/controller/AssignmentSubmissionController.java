@@ -41,6 +41,9 @@ public class AssignmentSubmissionController {
         Long courseID = Long.valueOf(map.get("courseID"));
         Long assignmentID = Long.valueOf(map.get("assignmentID"));
 
+        if(!type.equals("instructor")){
+            return new Result<>(USER_TYPE_WRONG);
+        }
 
         if (!permissionService.hasCoursePermission(type, email, password, courseID)) {
             return new Result<>(NO_PERMISSION);
@@ -81,5 +84,46 @@ public class AssignmentSubmissionController {
         assignmentService.createAssignmentSubmission(assignmentSubmission);
         return new Result<>(SUCCESS);
     }
+
+    @PostMapping("/set-assignment-submission-score")
+    public Result<?> setAssignmentSubmissionScore(@RequestBody Map<String, String> map){
+        String type = map.get("type");
+        String email = map.get("email").toLowerCase();
+        String password = map.get("password");
+        Long courseID = Long.valueOf(map.get("courseID"));
+        Long assignmentSubmissionID = Long.valueOf(map.get("assignmentSubmissionID"));
+        Double score = Double.valueOf(map.get("score"));
+
+
+        if(!type.equals("instructor")){
+            return new Result<>(USER_TYPE_WRONG);
+        }
+        if (!permissionService.hasCoursePermission(type, email, password, courseID)) {
+            return new Result<>(NO_PERMISSION);
+        }
+        assignmentService.updateScore(score,assignmentSubmissionID);
+        AssignmentSubmission assignmentSubmission = assignmentService.getAssignmentSubmission(assignmentSubmissionID);
+
+        return new Result<>(SUCCESS,new ResultAssignmentSubmission(assignmentSubmission));
+    }
+
+    @PostMapping("/get-assignment-submission-score")
+    public Result<?> getAssignmentSubmissionScore(@RequestBody Map<String, String> map){
+        String type = map.get("type");
+        String email = map.get("email").toLowerCase();
+        String password = map.get("password");
+        Long courseID = Long.valueOf(map.get("courseID"));
+        Long assignmentSubmissionID = Long.valueOf(map.get("assignmentSubmissionID"));
+
+        if (!permissionService.hasCoursePermission(type, email, password, courseID)) {
+            return new Result<>(NO_PERMISSION);
+        }
+        AssignmentSubmission assignmentSubmission= assignmentService.getAssignmentSubmission(assignmentSubmissionID);
+
+        return new Result<>(SUCCESS,new ResultAssignmentSubmission(assignmentSubmission));
+
+    }
+
+
 
 }
