@@ -14,13 +14,13 @@ export default function MyCalendar(props) {
         for(let courseIndex = 0; courseIndex<enrolledCourse.length; courseIndex++){
             let activeCourse = enrolledCourse[courseIndex]
 
-            let startHour = activeCourse.startTime.substring(15,17)
-            let endHour = activeCourse.endTime.substring(15,17)
-            let startMinute = activeCourse.startTime.substring(19,21)
-            let endMinute = activeCourse.endTime.substring(19,21)
+            let startHour = parseInt(activeCourse.startTime.substring(16,18))
+            let endHour = parseInt(activeCourse.endTime.substring(16,18))
+            let startMinute = parseInt(activeCourse.startTime.substring(19,21))
+            let endMinute = parseInt(activeCourse.endTime.substring(19,21))
 
-            let startTime = new Date(2022, 0, 23, parseInt(startHour), parseInt(startMinute), 0, 0)  // Always Sunday
-            let endTime = new Date(2022, 0, 23, parseInt(endHour), parseInt(endMinute), 0, 0)  // Always Sunday
+            let startTime = new Date(2022, 0, 23, startHour, startMinute, 0, 0)  // Always Sunday
+            let endTime = new Date(2022, 0, 23, endHour, endMinute, 0, 0)  // Always Sunday
             let weeksInSemester = 16
             let weekDay = activeCourse.weekday.split(",")
             for(let day=0; day<weekDay.length; day++){

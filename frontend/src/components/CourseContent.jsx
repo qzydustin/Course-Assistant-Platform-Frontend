@@ -38,8 +38,8 @@ export default function CourseContent() {
     const isRenewed = useSelector(state => state.contentsController.isCourseRenewed);
 
     let events = []
-    let startHour = activeCourse.startTime.substring(15,17)
-    let endHour = activeCourse.endTime.substring(15,17)
+    let startHour = activeCourse.startTime.substring(16,18)
+    let endHour = activeCourse.endTime.substring(16,18)
     let startMinute = activeCourse.startTime.substring(19,21)
     let endMinute = activeCourse.endTime.substring(19,21)
 
