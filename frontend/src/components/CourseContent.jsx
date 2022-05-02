@@ -4,56 +4,26 @@ import {useDispatch, useSelector} from "react-redux";
 import Discussion from './CoursePlaza/Discussion';
 import axios from "axios";
 import {
-    toChangeTab,
     renewActiveAnnouncements,
-    renewActiveComments,
-    renewActivePost,
     renewPosts,
-    toNotNewPost, toOpenPost, toRenewCourse, renewAssignments
+    toRenewCourse, renewAssignments
 } from "../pages/DashboardSlice";
 import AnnouncementPanel from './CoursePlaza/AnnouncementPanel';
 import Management from './CoursePlaza/Management';
-import Paper from "@mui/material/Paper";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from '@mui/icons-material/Add';
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Typography from '@mui/material/Typography';
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import RefreshIcon from "@mui/icons-material/Refresh";
 
 import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import Assignment from './CoursePlaza/Assignment'
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
 import MyCalendar from "./CoursePlaza/Calendar";
 import 'react-big-calendar/lib/sass/styles.scss';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss';
 import AssignmentPanel from "./CoursePlaza/AssignmentPanel"; // if using DnD
 import DiscussionPanel from "./CoursePlaza/DiscussionPanel"; // if using DnD
 
-
+import templateevents from './CoursePlaza/events'
 
 export default function CourseContent() {
     const dispatch = useDispatch();
@@ -63,9 +33,47 @@ export default function CourseContent() {
     const type = localStorage.getItem('myType')
     const server = localStorage.getItem('myServer');
 
+    const activeCourse = useSelector(state => state.contentsController.activeCourse)[0];
     const courseID = useSelector(state => state.contentsController.activeCourse)[0].id;
     const activeTab = useSelector(state => state.contentsController.activeTab);
     const isRenewed = useSelector(state => state.contentsController.isCourseRenewed);
+
+    let events = []
+
+    let firstDay = new Date(2022, 1, 23)  // Always Sunday
+    let weeksInSemester = 16
+    let weekDay = activeCourse.weekday.split(",")
+    for(let day=0; day<weekDay.length; day++){
+        switch(weekDay[day]) {
+            case "Monday": weekDay[day] = 1;break;
+            case "Tuesday": weekDay[day] = 2;break;
+            case "Wednesday": weekDay[day] = 3;break;
+            case "Thursday": weekDay[day] = 4;break;
+            case "Friday": weekDay[day] = 5;break;
+            case "Saturday": weekDay[day] = 6;break;
+            case "Sunday": weekDay[day] = 0;break;
+        }
+    }
+    console.log("weekday is ", weekDay)
+    for(let week=0; week<weeksInSemester; week++){
+
+        for(let day=0;day<weekDay.length;day++){
+            let addEvent = {
+                'title': activeCourse.title,
+                'start': new Date(firstDay.getTime() + weekDay[day] * 24 * 60 * 60 * 1000),
+                'end': new Date(firstDay.getTime() + weekDay[day] * 25 * 60 * 60 * 1000),
+            }
+
+            events = [
+                ...events,
+                addEvent
+            ]
+        }
+        firstDay = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+    }
+    console.log("events is ", events)
+    console.log("templateevents is ", templateevents)
+
 
     let userCourse = {}
     if(courseID && !isRenewed){
@@ -126,7 +134,7 @@ export default function CourseContent() {
                             Course Calendar
                         </AccordionSummary>
                         <AccordionDetails>
-                            <MyCalendar/>
+                            <MyCalendar events={events}/>
                         </AccordionDetails>
                     </Accordion>
                 </Grid>

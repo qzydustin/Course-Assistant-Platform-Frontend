@@ -1,11 +1,11 @@
 import {Calendar, momentLocalizer} from "react-big-calendar";
 import moment from "moment";
-import events from './events';
 import * as React from "react";
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
 export default function MyCalendar(props) {
+    let events = props.events
     return(
     <div className="myCustomHeight" style={{height: 700}}>
         <Calendar
@@ -18,7 +18,7 @@ export default function MyCalendar(props) {
             }}
             startAccessor="start"
             endAccessor="end"
-            defaultDate={new Date(2015, 3, 1)}
+            defaultDate={new Date()}
         />
     </div>
 )}
