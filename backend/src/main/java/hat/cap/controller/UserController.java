@@ -3,6 +3,7 @@ package hat.cap.controller;
 import hat.cap.entityDatabase.Instructor;
 import hat.cap.entityDatabase.Student;
 import hat.cap.entityResult.Result;
+import hat.cap.entityResult.ResultUser;
 import hat.cap.service.InstructorService;
 import hat.cap.service.PermissionService;
 import hat.cap.service.StudentService;
@@ -37,7 +38,7 @@ public class UserController {
         }
 
         if(email.equals(password)){
-            return new Result<>(PASSWORD_CAN_NOT_EQUALS_USERNAME);
+            return new Result<>(PASSWORD_CAN_NOT_EQUAL_USERNAME);
 
         }
 
@@ -78,11 +79,13 @@ public class UserController {
         if (type.equals("student")) {
             Student student = studentService.getStudent(email);
             studentService.updatePassword(newPassword, student.getId());
-            return new Result<>(SUCCESS);
+            student.setPassword(newPassword);
+            return new Result<>(SUCCESS,new ResultUser(student));
         } else if (type.equals("instructor")) {
             Instructor instructor = instructorService.getInstructor(email);
-            instructorService.updatePassword(email, instructor.getId());
-            return new Result<>(SUCCESS);
+            instructorService.updatePassword(newPassword, instructor.getId());
+            instructor.setPassword(newPassword);
+            return new Result<>(SUCCESS,new ResultUser(instructor));
         } else {
             return new Result<>(USER_TYPE_WRONG);
         }
@@ -101,11 +104,15 @@ public class UserController {
         if (type.equals("student")) {
             Student student = studentService.getStudent(email);
             studentService.updateUsername(newUsername, student.getId());
-            return new Result<>(SUCCESS);
+            student.setUsername(newUsername);
+
+            return new Result<>(SUCCESS,new ResultUser(student));
         } else if (type.equals("instructor")) {
             Instructor instructor = instructorService.getInstructor(email);
             instructorService.updateUsername(newUsername, instructor.getId());
-            return new Result<>(SUCCESS);
+            instructor.setUsername(newUsername);
+
+            return new Result<>(SUCCESS,new ResultUser(instructor));
         } else {
             return new Result<>(USER_TYPE_WRONG);
         }
