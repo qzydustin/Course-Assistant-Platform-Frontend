@@ -31,7 +31,6 @@ export default function MenuListComposition() {
     const handleCourseDetailClick = (event) => {
         setIsCourseDetail(true)
         setIsLeave(false)
-        console.log("isCourseDetail is ", isCourseDetail)
     }
 
     const handleDropCourse = (event) => {

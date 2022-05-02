@@ -73,7 +73,6 @@ export default function CourseContent() {
         startTime = new Date(startTime.getTime() + 7 * 24 * 60 * 60 * 1000);
         endTime = new Date(endTime.getTime() + 7 * 24 * 60 * 60 * 1000);
     }
-    console.log("events is ", events)
     let userCourse = {}
     if(courseID && !isRenewed){
         userCourse = JSON.stringify({

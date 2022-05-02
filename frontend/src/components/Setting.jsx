@@ -42,8 +42,6 @@ export default function MenuListComposition() {
             "newPassword": loginForm.get("new password"),
         })
 
-        console.log("Update data is ",data);
-
         axios.post(server+'/update-password',
             data,
             {headers: {'Content-Type': 'application/json'}})

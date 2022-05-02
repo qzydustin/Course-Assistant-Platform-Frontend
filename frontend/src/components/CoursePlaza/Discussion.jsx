@@ -61,7 +61,6 @@ export default function Discussion() {
     const activePostID = useSelector(state => state.contentsController.activePostID);
     const activePost = posts.filter(post => (post.postID === activePostID))[0]
 
-    console.log("activePost is ", activePost)
 
     function handleThreadClick(postID) {
         dispatch(toCloseNewPost())
@@ -98,7 +97,6 @@ export default function Discussion() {
                         newPost,
                         {headers: {'Content-Type': 'application/json'}})
                         .then(function (response) {
-                            // console.log(response.data.data);
                             if (response.data.code === 1000) {
                                 dispatch(renewPosts(response.data.data.map(post => ({
                                     title: post.title,
@@ -133,7 +131,6 @@ export default function Discussion() {
             newComment,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
-                console.log(response.data);
                 if (response.data.code === 1000) {
                     handleGetComment(activePostID);
                 } else {
@@ -150,12 +147,10 @@ export default function Discussion() {
             "courseID": courseID,
             "postID": postID,
         })
-        console.log("get comments is : ", comments);
         axios.post(server + '/get-comments',
             comments,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
-                console.log("get comment response is ", response.data);
                 if (response.data.code === 1000) {
                     dispatch(renewActiveComments(response.data.data));
                 } else {

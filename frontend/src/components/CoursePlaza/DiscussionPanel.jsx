@@ -55,12 +55,10 @@ export default function DiscussionPanel() {
             "courseID": courseID,
             "postID": postID,
         })
-        console.log("get comments is : ", comments);
         axios.post(server + '/get-comments',
             comments,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
-                console.log("get comment response is ", response.data);
                 if (response.data.code === 1000) {
                     dispatch(renewActiveComments(response.data.data));
                 }

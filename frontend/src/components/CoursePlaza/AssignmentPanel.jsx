@@ -42,12 +42,9 @@ export default function AssignmentPanel() {
     async function handleAssignmentClick(assignmentID) {
         dispatch(toChangeTab(2))
         dispatch(toActiveAssignment())
-        console.log("assignmentID is ", assignmentID)
         dispatch(renewActiveAssignment(assignments.filter(assignment =>
             (assignment.id === assignmentID))))
         getAssignmentSubmissions()
-        console.log("active assignment is", assignments.filter(assignment =>
-            (assignment.id === assignmentID)))
 
     }
 
@@ -59,15 +56,12 @@ export default function AssignmentPanel() {
             "courseID": courseID,
             "assignmentID": activeAssignment[0].id,
         })
-        console.log("getAssignmentsSubmissions is : ", getAssignmentsSubmissions);
         axios.post(server + '/get-assignment-submissions',
             getAssignmentsSubmissions,
             {headers: {'Content-Type': 'application/json'}})
             .then(function (response) {
-                console.log("getAssignmentsSubmissions response is ", response.data);
                 if (response.data.code === 1000) {
                     dispatch(renewAssignmentSubmission(response.data.data));
-                    console.log("getAssignmentSubmissions is ", response.data.data)
                 }
             });
     }
