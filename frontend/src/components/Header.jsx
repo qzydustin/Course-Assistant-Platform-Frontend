@@ -21,7 +21,7 @@ function ManageHeader(props) {
   const activeCourse = useSelector(state => state.contentsController.activeCourse)[0];
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userName = useSelector(state => state.contentsController.userName);
+  const userName = localStorage.getItem("myUserName");
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -49,7 +49,7 @@ function ManageHeader(props) {
               <Grid item xs/>
               <Grid item>
                 <IconButton color="inherit" sx={{p: 0.5}}>
-                  <Avatar src="/static/images/avatar/1.jpg" alt={userName}/>
+                  <Avatar src="/static/images/avatar/1.jpg" alt={userName.toUpperCase()}/>
                 </IconButton>
               </Grid>
               <Grid item>
