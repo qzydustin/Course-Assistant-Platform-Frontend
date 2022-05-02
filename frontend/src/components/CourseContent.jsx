@@ -23,7 +23,6 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss';
 import AssignmentPanel from "./CoursePlaza/AssignmentPanel"; // if using DnD
 import DiscussionPanel from "./CoursePlaza/DiscussionPanel"; // if using DnD
 
-import templateevents from './CoursePlaza/events'
 
 export default function CourseContent() {
     const dispatch = useDispatch();
@@ -39,8 +38,13 @@ export default function CourseContent() {
     const isRenewed = useSelector(state => state.contentsController.isCourseRenewed);
 
     let events = []
+    let startHour = activeCourse.startTime.substring(15,17)
+    let endHour = activeCourse.endTime.substring(15,17)
+    let startMinute = activeCourse.startTime.substring(19,21)
+    let endMinute = activeCourse.endTime.substring(19,21)
 
-    let firstDay = new Date(2022, 1, 23)  // Always Sunday
+    let startTime = new Date(2022, 0, 23, parseInt(startHour), parseInt(startMinute), 0, 0)  // Always Sunday
+    let endTime = new Date(2022, 0, 23, parseInt(endHour), parseInt(endMinute), 0, 0)  // Always Sunday
     let weeksInSemester = 16
     let weekDay = activeCourse.weekday.split(",")
     for(let day=0; day<weekDay.length; day++){
@@ -54,27 +58,22 @@ export default function CourseContent() {
             case "Sunday": weekDay[day] = 0;break;
         }
     }
-    console.log("weekday is ", weekDay)
+
     for(let week=0; week<weeksInSemester; week++){
 
         for(let day=0;day<weekDay.length;day++){
             let addEvent = {
                 'title': activeCourse.title,
-                'start': new Date(firstDay.getTime() + weekDay[day] * 24 * 60 * 60 * 1000),
-                'end': new Date(firstDay.getTime() + weekDay[day] * 25 * 60 * 60 * 1000),
+                'allDay': false,
+                'start': new Date(startTime.getTime() + weekDay[day] * 24 * 60 * 60 * 1000),
+                'end': new Date(endTime.getTime() + weekDay[day] * 24 * 60 * 60 * 1000),
             }
-
-            events = [
-                ...events,
-                addEvent
-            ]
+            events.push(addEvent)
         }
-        firstDay = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+        startTime = new Date(startTime.getTime() + 7 * 24 * 60 * 60 * 1000);
+        endTime = new Date(endTime.getTime() + 7 * 24 * 60 * 60 * 1000);
     }
     console.log("events is ", events)
-    console.log("templateevents is ", templateevents)
-
-
     let userCourse = {}
     if(courseID && !isRenewed){
         userCourse = JSON.stringify({
@@ -89,7 +88,6 @@ export default function CourseContent() {
             userCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                // console.log(response.data.data);
                 if(response.data.code === 1000){
 
                     dispatch(renewPosts(response.data.data.map( post => ({
@@ -101,23 +99,19 @@ export default function CourseContent() {
                 }
             });
 
-        console.log("getAnnouncements: ", userCourse);
         axios.post(server+'/get-announcements',
             userCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                // console.log(response.data.data);
                 if(response.data.code === 1000){
                     dispatch(renewActiveAnnouncements(response.data.data))
                 }
             });
 
-        console.log("getAssignments: ", userCourse);
         axios.post(server+'/get-assignments',
             userCourse,
             {headers: {'Content-Type': 'application/json'}})
             .then(function(response) {
-                // console.log(response.data.data);
                 if(response.data.code === 1000){
                     dispatch(renewAssignments(response.data.data))
                 }

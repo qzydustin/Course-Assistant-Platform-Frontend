@@ -3,7 +3,7 @@ import moment from "moment";
 import * as React from "react";
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
-
+// moment.locale('en-GB');
 export default function MyCalendar(props) {
     let events = props.events
     return(

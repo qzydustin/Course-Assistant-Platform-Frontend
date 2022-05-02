@@ -100,12 +100,12 @@ export default function MenuListComposition() {
                                         <TableRow key={"start times"}>
                                             <TableCell component="th" scope="row">Start Times</TableCell>
                                             <TableCell component="th"
-                                                       scope="row">{activeCourse.startTime.toString().substring(11, 16)}</TableCell>
+                                                       scope="row">{activeCourse.startTime.toString().substring(16, 21)}</TableCell>
                                         </TableRow>
                                         <TableRow key={"end times"}>
                                             <TableCell component="th" scope="row">End Times</TableCell>
                                             <TableCell component="th"
-                                                       scope="row">{activeCourse.endTime.toString().substring(11, 16)}</TableCell>
+                                                       scope="row">{activeCourse.endTime.toString().substring(16, 21)}</TableCell>
                                         </TableRow>
                                         <TableRow key={"unit"}>
                                             <TableCell component="th" scope="row">Units</TableCell>

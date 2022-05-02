@@ -96,8 +96,8 @@ export default function CreateCourse({server}) {
             "seat": createCourseForm.get("availability"),
             "unit": createCourseForm.get("units"),
             "location": createCourseForm.get("location"),
-            "startTime": startTime,
-            "endTime": endTime,
+            "startTime": startTime.toString(),
+            "endTime": endTime.toString(),
             "department": createCourseForm.get("department"),
             "semester": createCourseForm.get("offered time"),
             "information": createCourseForm.get("description"),
@@ -133,7 +133,7 @@ export default function CreateCourse({server}) {
     const [offeredTime, setOfferedTime] = React.useState('');
     const [startTime, setStartTime] = React.useState(new Date());
     const [endTime, setEndTime] = React.useState(new Date());
-
+    console.log("startTime is ", startTime)
 
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);

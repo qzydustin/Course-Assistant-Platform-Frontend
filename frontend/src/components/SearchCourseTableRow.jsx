@@ -118,11 +118,11 @@ function Row(props) {
                                     </TableRow>
                                     <TableRow key={"start time"}>
                                         <TableCell component="th" scope="row">{"Start Times"}</TableCell>
-                                        <TableCell>{row.startTime.toString().substring(11, 16)}</TableCell>
+                                        <TableCell>{row.startTime.toString().substring(16, 21)}</TableCell>
                                     </TableRow>
                                     <TableRow key={"end time"}>
                                         <TableCell component="th" scope="row">{"End Times"}</TableCell>
-                                        <TableCell>{row.endTime.toString().substring(11, 16)}</TableCell>
+                                        <TableCell>{row.endTime.toString().substring(16, 21)}</TableCell>
                                     </TableRow>
                                     <TableRow key={"availability"}>
                                         <TableCell component="th" scope="row">{"Availability"}</TableCell>
