@@ -15,6 +15,15 @@ import Row from './SearchCourseTableRow';
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {renewSearchedCourse, renewEnrolledCourse} from '../dashboardSlice';
+import Avatar from "@mui/material/Avatar";
+
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import PersonIcon from "@mui/icons-material/Person";
+import { blue } from "@mui/material/colors";
 
 const departments = [
     {value: 'Empty', label: ''},
@@ -141,6 +150,12 @@ export default function SearchCourse({server}) {
 
     const courseList = useSelector(state => state.contentsController.searchedCourse);
 
+    const [openSearchCourseDialog, setOpenSearchCourseDialog] = React.useState(false)
+
+    const handleCloseSearchCourseDialog = (event) =>{
+        setOpenSearchCourseDialog(false)
+    }
+
     return (
         <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
             <Box
@@ -208,6 +223,23 @@ export default function SearchCourse({server}) {
                                         sx={{mr: 1}}>
                                     Search Course
                                 </Button>
+                                <Dialog onClose={handleCloseSearchCourseDialog} open={openSearchCourseDialog}>
+                                <DialogTitle>Error</DialogTitle>
+                                <List sx={{ pt: 0 }}>
+                                    
+                                    <ListItem
+                                        button
+                                        onClick={handleCloseSearchCourseDialog}
+                                    >
+                                        <ListItemAvatar>
+                                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                                            <PersonIcon />
+                                        </Avatar>
+                                        </ListItemAvatar>
+                                    </ListItem>
+                                    )
+                                </List>
+                            </Dialog>
                                 <Tooltip title="Reload">
                                     <IconButton>
                                         <RefreshIcon color="inherit" sx={{display: 'block'}}/>

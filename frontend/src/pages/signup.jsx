@@ -17,6 +17,14 @@ import FormControl from "@mui/material/FormControl";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import PersonIcon from "@mui/icons-material/Person";
+import { blue } from "@mui/material/colors";
+
 const theme = createTheme();
 
 export default function SignUp({server}) {
@@ -42,6 +50,14 @@ export default function SignUp({server}) {
             }
         });
     };
+
+
+
+    const [openSignupDialog, setOpenSignupDialog] = React.useState(false)
+
+    const handleCloseSignupDialog = (event) =>{
+        setOpenSignupDialog(false)
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -129,6 +145,23 @@ export default function SignUp({server}) {
                         >
                             Sign Up{" "}
                         </Button>{" "}
+                        <Dialog onClose={handleCloseSignupDialog} open={openSignupDialog}>
+                                <DialogTitle>Error</DialogTitle>
+                                <List sx={{ pt: 0 }}>
+                                    
+                                    <ListItem
+                                        button
+                                        onClick={handleCloseSignupDialog}
+                                    >
+                                        <ListItemAvatar>
+                                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                                            <PersonIcon />
+                                        </Avatar>
+                                        </ListItemAvatar>
+                                    </ListItem>
+                                    )
+                                </List>
+                            </Dialog>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link href="/login" variant="body2">
@@ -142,3 +175,4 @@ export default function SignUp({server}) {
         </ThemeProvider>
     );
 }
+
